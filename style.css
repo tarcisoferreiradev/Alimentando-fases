@@ -6216,5 +6216,323 @@ body section#adolescencia .news-card__excerpt strong {
     min-height: 20px; /* Garante que o elemento ocupe espaço */
     color: var(--color-primary); /* Cor de sucesso (verde) */
 }
+/* Estilo do Wrapper do Botão de Leitura (TTS) */
+.read-aloud-button-wrapper {
+    /* Centraliza o botão dentro da seção de conteúdo */
+    text-align: center;
+    /* Adiciona margem de separação com o conteúdo */
+    margin: 20px auto 40px; 
+    /* Garante que o botão fique abaixo do section-description */
+}
+/* =======================================================
+ * 📅 CALENDÁRIO PREMIUM (COMPACTO & SEGURO)
+ * ======================================================= */
 
-/* ⚠️ Nota: A cor de erro (Oops) será a mesma, mas se quiser customizar o erro, você pode adicionar classes dinâmicas no JavaScript. */
+/* 1. Botão Flutuante */
+.calendar-fab-container {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    z-index: 9990;
+}
+
+.calendar-fab {
+    background: linear-gradient(135deg, var(--color-secondary), #8a4b29);
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    font-size: 1.8em;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(110, 81, 61, 0.4);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar-fab:hover {
+    transform: scale(1.1) rotate(-10deg);
+    box-shadow: 0 12px 25px rgba(110, 81, 61, 0.6);
+}
+
+/* 2. Janela "Glassmorphism" (Compacta) */
+.calendar-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 25px;
+    width: 330px; /* Largura levemente ajustada */
+    
+    /* --- SEGURANÇA DE ALTURA --- */
+    height: 530px; /* Altura fixa segura */
+    max-height: 80vh; /* Impede que corte em telas baixas */
+    display: flex;
+    flex-direction: column;
+    /* --------------------------- */
+    
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+    z-index: 10000;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.8);
+    
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: bottom right;
+}
+
+.calendar-popup.hidden {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+    pointer-events: none;
+}
+
+/* 3. Cabeçalho (Mais fino) */
+.calendar-popup-header {
+    background: linear-gradient(135deg, var(--color-secondary), #5d3a2a);
+    padding: 15px 20px; /* Padding reduzido */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.calendar-popup-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('https://www.transparenttextures.com/patterns/cubes.png');
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+.calendar-popup-header h4 {
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: 1.1em;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.calendar-popup-header .close-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    cursor: pointer;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    font-size: 0.9em;
+}
+
+.calendar-popup-header .close-btn:hover {
+    background: rgba(255,255,255,0.4);
+}
+
+/* 4. Corpo do Calendário */
+.calendar-wrapper-mini {
+    padding: 15px; /* Padding reduzido */
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto; /* Permite scroll se a tela for MUITO pequena */
+}
+
+.calendar-header-mini {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px; /* Margem reduzida */
+}
+
+.calendar-header-mini span {
+    font-weight: 800;
+    color: var(--color-primary);
+    font-family: var(--font-heading);
+    text-transform: capitalize;
+    font-size: 1em;
+}
+
+.calendar-header-mini button {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    cursor: pointer;
+    color: var(--color-secondary);
+    width: 28px; /* Botão menor */
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.calendar-header-mini button:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+/* Dias da Semana */
+.weekdays-mini {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 5px 0; /* Margem reduzida */
+    text-align: center;
+}
+
+.weekdays-mini li {
+    font-size: 0.7em;
+    font-weight: 800;
+    color: #aaa;
+    text-transform: uppercase;
+}
+
+/* Grade de Dias (Compactada) */
+.days-mini {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px; /* Gap bem justo */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.days-mini li {
+    height: 32px; /* Altura reduzida (era 38px) */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9em;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--color-text-dark);
+    position: relative;
+    border: 1px solid transparent;
+}
+
+.days-mini li:hover:not(.inactive) {
+    background-color: #f0fdf4;
+    color: var(--color-primary);
+    transform: scale(1.1);
+    z-index: 2;
+}
+
+.days-mini li.inactive {
+    color: #e0e0e0;
+    pointer-events: none;
+}
+
+/* Estilos Visuais */
+.days-mini li.today {
+    background-color: var(--color-secondary);
+    color: white !important;
+    box-shadow: 0 2px 8px rgba(110, 81, 61, 0.3);
+    font-weight: bold;
+}
+
+.days-mini li.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    width: 4px;
+    height: 4px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+}
+
+.days-mini li.has-event.today::after {
+    background-color: white;
+}
+
+.days-mini li.in-range-mini {
+    background-color: #fff0f0;
+    color: #c0392b;
+    border-radius: 0;
+}
+.days-mini li.in-range-mini:first-child, 
+.days-mini li.in-range-start {
+    border-radius: 8px 0 0 8px;
+}
+.days-mini li.in-range-mini:last-child,
+.days-mini li.in-range-end {
+    border-radius: 0 8px 8px 0;
+}
+
+/* --- Área de Detalhes (Fundo) --- */
+.event-info-mini {
+    margin-top: auto; /* Empurra para o fundo */
+    padding: 12px;
+    background: linear-gradient(to right, #f9f9f9, #fff);
+    border-radius: 10px;
+    font-size: 0.85em; /* Fonte um pouco menor */
+    border-left: 4px solid var(--color-secondary);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    min-height: 65px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.event-info-mini strong {
+    color: var(--color-secondary);
+    font-size: 1.1em;
+    display: block;
+    margin-bottom: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+/* =======================================================
+ * AJUSTE DE ALINHAMENTO MOBILE (CHATBOT E CALENDÁRIO)
+ * ======================================================= */
+@media (max-width: 480px) {
+    /* Força o Chatbot a ficar na esquerda e na mesma altura */
+    .chatbot-container {
+        bottom: 15px !important;
+        left: 15px !important;
+        right: auto !important;
+    }
+
+    /* Força o Calendário a ficar na direita e na mesma altura */
+    .calendar-fab-container {
+        bottom: 15px !important;
+        right: 15px !important;
+        left: auto !important;
+    }
+}
+/* =======================================================
+ * CORREÇÃO FINAL: ESCONDER VLIBRAS NO CALENDÁRIO
+ * ======================================================= */
+
+/* Quando o calendário abre, o JS adiciona a classe .calendar-open no corpo do site.
+   Esta regra pega o widget do VLibras ([vw]) e o esconde completamente. */
+
+body.calendar-open [vw] {
+    display: none !important;       /* Remove da tela */
+    visibility: hidden !important;  /* Garante invisibilidade */
+    z-index: -1 !important;         /* Joga para trás de tudo por segurança */
+    opacity: 0 !important;
+}

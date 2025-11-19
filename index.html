@@ -334,7 +334,8 @@
                                                         stroke-linecap="round" stroke-linejoin="round" />
                                                 </svg>
                                             </a>
-                                        </li>
+                                        </li>                               
+                                        
                                         <li class="submenu-list__item has-submenu">
                                             <a href="#" class="submenu-list__item-wrapper nav-link" data-page="higiene"
                                                 role="button">
@@ -412,6 +413,39 @@
                                             </ul>
                                         </div>
 
+                                        <div class="submenu-content" data-submenu-for="Receitas Sazonais">
+    <div class="submenu-content__title" style="color: #992d2d !important;">🎄 Especial de Natal</div>
+    <ul class="submenu-content__list">
+        
+        <li class="submenu-content__list-item">
+            <a href="#recipe-grid" class="submenu-content__link submenu-link-scroll" data-page="receitas" role="button" onclick="setTimeout(() => document.querySelector('[data-filter=\'sazonal\']').click(), 500)">
+                <div class="submenu-content__link-img" style="border: 2px solid #992d2d;">
+                    <img src="Imagens/Farofa Festiva2.webp" alt="Farofa Natalina">
+                </div>
+                <div class="submenu-content__link-title" style="color: #992d2d;">Farofa Festiva</div>
+                <div class="submenu-content__link-text">Crocante, rica em fibras e feita com talos e castanhas.</div>
+            </a>
+        </li>
+
+        <li class="submenu-content__list-item">
+            <a href="#recipe-grid" class="submenu-content__link submenu-link-scroll" data-page="receitas" role="button">
+                <div class="submenu-content__link-img"><img src="Imagens/Rabanada de Forno2.webp" alt="Rabanada de Forno"></div>
+                <div class="submenu-content__link-title">Rabanada de Forno</div>
+                <div class="submenu-content__link-text">A versão saudável e sem fritura do clássico natalino.</div>
+            </a>
+        </li>
+        
+         <li class="submenu-content__list-item">
+            <a href="#recipe-grid" class="submenu-content__link submenu-link-scroll" data-page="receitas" role="button">
+                <div class="submenu-content__link-img"><img src="Imagens/Arroz Festivo2.webp" alt="Arroz Festivo"></div>
+                <div class="submenu-content__link-title">Arroz Festivo</div>
+                <div class="submenu-content__link-text">Colorido com açafrão e crocante com castanhas do Brasil.</div>
+            </a>
+        </li>
+
+    </ul>
+</div>
+                                
                                         <div class="submenu-content" data-submenu-for="Higiene dos Alimentos">
                                             <div class="submenu-content__title">Guias de Higiene</div>
                                             <ul class="submenu-content__list">
@@ -1268,7 +1302,7 @@
                                 <div class="quiz-resposta">
                                     <p><strong><i class="fa-solid fa-circle-xmark"></i>MITO!</strong> A maioria dos
                                         sucos de caixinha é ultraprocessada, cheia de açúcar e conservantes, e perde a
-                                        maior parte das fibras da fruta. Sempre prefira a fruta *in natura*!</p>
+                                        maior parte das fibras da fruta. Sempre prefira a fruta in natura!</p>
                                 </div>
                             </details>
 
@@ -1598,7 +1632,7 @@
                 <h2 class="section-title">Nutrição na Adolescência (12-19 anos)</h2>
                 <p class="section-description">A adolescência é uma fase biológica e social de transição do indivíduo,
                     que marca a passagem da infância para a idade adulta. Nesta fase de tantas transformações, a
-                    <strong>alimentação</strong> e a formação de <strong>hábidos saudáveis</strong> são cruciais para o
+                    <strong>alimentação</strong> e a formação de <strong>hábitos saudáveis</strong> são cruciais para o
                     desenvolvimento e o bem-estar futuro.
                 </p>
 
@@ -1822,7 +1856,7 @@
 
                             <h5>Consequências Comportamentais</h5>
                             <p>O uso dessas substâncias facilita a exposição a situações de risco devido ao prejuízo no
-                                julgamento, including:</p>
+                                julgamento, incluindo:</p>
                             <ul>
                                 <li>Acidentes e Lesões.</li>
                                 <li>Comportamento Sexual de Risco.</li>
@@ -3335,20 +3369,21 @@
                 <p class="section-description">Todas as receitas do site, separadas por categorias para facilitar sua
                     busca. Encontre pratos veganos, sem glúten e de aproveitamento integral.</p>
 
-                <div class="filter-bar">
-                    <button class="filter-btn active" data-filter="todos">
-                        <i class="fa-solid fa-utensils"></i> Todos (12)
-                    </button>
-                    <button class="filter-btn" data-filter="vegano">
-                        <i class="fa-solid fa-seedling"></i> Vegano (6)
-                    </button>
-                    <button class="filter-btn" data-filter="sem-gluten">
-                        <i class="fa-solid fa-wheat-awn-circle-exclamation"></i> Sem Glúten (7)
-                    </button>
-                    <button class="filter-btn" data-filter="integral">
-                        <i class="fa-solid fa-recycle"></i> Aproveitamento Integral (5)
-                    </button>
-                </div>
+                    <div class="filter-bar">
+    <button class="filter-btn active" data-filter="todos">
+        <i class="fa-solid fa-utensils"></i> Todos (12)
+    </button>
+    <button class="filter-btn" data-filter="vegano">
+        <i class="fa-solid fa-seedling"></i> Vegano (6)
+    </button>
+    <button class="filter-btn" data-filter="sem-gluten">
+        <i class="fa-solid fa-wheat-awn-circle-exclamation"></i> Sem Glúten (7)
+    </button>
+
+    <button class="filter-btn" data-filter="integral">
+        <i class="fa-solid fa-recycle"></i> Aproveitamento Integral (5)
+    </button>
+</div>
 
                 <div class="main">
                     <ul class="cards" id="recipe-grid">
@@ -3709,9 +3744,17 @@
                             </div>
                         </li>
 
+
+
+                </ol>
+            </div>
+        </div>
+    </div>
+</li>
                     </ul>
                 </div>
 
+                
             </section>
         </section>
 
@@ -3965,7 +4008,7 @@
                                         <li>
                                             <i class="fa-solid fa-microwave" aria-hidden="true"></i>
                                             <div><strong>No Micro-ondas:</strong> Use a função "descongelar" e cozinhe o
-                                                alimento *imediatamente* após.</div>
+                                                alimento imediatamente após.</div>
                                         </li>
                                     </ul>
                                 </div>
@@ -4283,7 +4326,7 @@
                                 requisitos da legislação. Muitas plataformas online oferecem ferramentas para que
                                 profissionais e pequenas empresas possam simular os valores dos nutrientes de suas
                                 receitas, de acordo com a RDC 429/2020 e IN 75/2020.</p>
-                            <p>Use essas ferramentas para entender como seus alimentos *in natura* se comparam aos
+                            <p>Use essas ferramentas para entender como seus alimentos in natura se comparam aos
                                 industrializados. Elas garantem que você esteja 100% alinhado com a nova legislação.</p>
 
                             <div style="text-align: center; margin-top: 30px;">
@@ -4916,6 +4959,39 @@
 
     </main>
 
+    </main>
+
+    </div>
+
+    <div class="calendar-fab-container">
+    <button id="calendar-toggle-btn" class="calendar-fab" aria-label="Abrir Calendário de Eventos">
+        <i class="fa-solid fa-calendar-days"></i>
+    </button>
+</div>
+
+<div id="calendar-popup" class="calendar-popup hidden">
+    <div class="calendar-popup-header">
+        <h4>Agenda & Eventos</h4>
+        <button id="calendar-close-btn" class="close-btn"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    
+    <div class="calendar-wrapper-mini">
+        <div class="calendar-header-mini">
+            <button id="prev-month-mini"><i class="fa-solid fa-chevron-left"></i></button>
+            <span id="current-month-mini">Dezembro 2025</span>
+            <button id="next-month-mini"><i class="fa-solid fa-chevron-right"></i></button>
+        </div>
+        <ul class="weekdays-mini">
+            <li>D</li><li>S</li><li>T</li><li>Q</li><li>Q</li><li>S</li><li>S</li>
+        </ul>
+        <ul class="days-mini" id="calendar-days-mini"></ul>
+        
+        <div class="event-info-mini" id="event-info-mini">
+            <p>Selecione uma data para ver detalhes.</p>
+        </div>
+    </div>
+</div>
+
     <div class="chatbot-container">
         <button id="chatbot-toggle-btn" class="chatbot-fab" aria-label="Abrir chat de nutrição">
             <i class="fa-solid fa-brain"></i> </button>
@@ -4980,7 +5056,6 @@
     <script src="wordsearch.js" defer></script>
     <script src="script.js?v=" defer></script>
 
-    <script src="script.js?v=" defer></script>
 
     <script src="https://cdn.jsdelivr.net/npm/@google/generative-ai/dist/index.min.js"></script>
 

@@ -1,10 +1,24 @@
-// Seu script.js COMPLETO (com TODAS as correções de Menu e Navegação)
-
-// *** (V25.5) CORREÇÃO Scroll-on-Refresh ***
 if (history.scrollRestoration) {
     history.scrollRestoration = 'manual';
 }
-// *** FIM DA CORREÇÃO ***
+
+/* =======================================================
+ * MAPA DE ÁUDIOS PRÉ-GERADOS (M4A)
+ * ======================================================= */
+const preGeneratedAudios = {
+    'quemsomos': 'audios/quemsomos.m4a',
+    'origem-alimentar': 'audios/origemalimentar.m4a',
+    'infancia': 'audios/infancia.m4a',
+    'adolescencia': 'audios/adolescencia.m4a',
+    'adulto': 'audios/adultos.m4a',
+    'idoso': 'audios/idosos.m4a',
+    'higiene': 'audios/higiene.m4a',
+    'rotulagem': 'audios/rotulagem.m4a',
+    'acoes': 'audios/acoes.m4a'
+};
+
+// Variável global para controlar a reprodução do áudio
+let currentAudio = null;
 
 
 // --- 2. LÓGICA DO MENU MOBILE ---
@@ -29,11 +43,9 @@ if (burger) {
 
 
 // --- 3. LÓGICA DO MEGA MENU (Desktop) ---
-// Este bloco agora vem ANTES da Lógica de Navegação
 const menuItems = document.querySelectorAll('.main-header__list-item.has-submenu');
-const mainHeader = document.querySelector('.main-header'); // Para "click outside"
+const mainHeader = document.querySelector('.main-header'); 
 
-// Função de hover para os TABS internos (Isso não muda)
 const handleSubmenuLinkHover = (event) => {
     const subLink = event.currentTarget;
     const parentMenuItem = subLink.closest('.main-header__list-item.has-submenu');
@@ -56,55 +68,38 @@ const handleSubmenuLinkHover = (event) => {
     }
 };
 
-// Função para FECHAR um menu
 function closeMenu(item) {
-    item.classList.remove('js-hover'); // 'js-hover' é a nossa classe que significa "aberto"
-    item.classList.add('is-closing'); // Ativa a animação de fechamento
+    item.classList.remove('js-hover'); 
+    item.classList.add('is-closing'); 
     const submenuLinks = item.querySelectorAll('.submenu-list__item.has-submenu');
     submenuLinks.forEach((subLink) => {
         subLink.removeEventListener('mouseenter', handleSubmenuLinkHover);
     });
 
-    // --- INÍCIO DA CORREÇÃO (NÍVEL 1) ---
-    // Fecha o acordeão no mobile
-
-    // 👇 CORREÇÃO ADICIONADA: SÓ EXECUTA NO MOBILE 👇
     const burger = document.querySelector('.main-header__burger');
     if (burger && getComputedStyle(burger).display === 'flex') {
         const submenuWrapper = item.querySelector('.submenu-wrapper');
         if (submenuWrapper) {
             submenuWrapper.style.maxHeight = null;
         }
-    } // 👈 FIM DA CONDIÇÃO
-
-    // --- FIM DA CORREÇÃO ---
+    } 
 }
 
-// Função para ABRIR um menu (VERSÃO CORRIGIDA)
 function openMenu(item) {
-    // 2. Abre ESTE menu
     item.classList.remove('is-closing');
-    item.classList.add('js-hover'); // Ativa a cor verde e a abertura (via CSS)
+    item.classList.add('js-hover'); 
 
-    // --- INÍCIO DA CORREÇÃO (LÓGICA DE ACORDEÃO L1 MOBILE) ---
-    // Abre o acordeão no mobile (L1)
     const burger = document.querySelector('.main-header__burger');
     if (burger && getComputedStyle(burger).display === 'flex') {
         const submenuWrapper = item.querySelector('.submenu-wrapper');
         if (submenuWrapper) {
-            // Usa scrollHeight para definir a altura exata do conteúdo
-            // (O CSS que adicionamos no Passo 1 garante que o scrollHeight seja o valor total)
             submenuWrapper.style.maxHeight = submenuWrapper.scrollHeight + "px";
         }
     }
-    // --- FIM DA CORREÇÃO ---
 
-    // 3. Lógica interna (ativar primeiro tab - APENAS DESKTOP)
     const submenuLinks = item.querySelectorAll('.submenu-list__item.has-submenu');
     const submenuContents = item.querySelectorAll('.submenu-content');
 
-    // 👇 CORREÇÃO ADICIONADA: SÓ EXECUTA NO DESKTOP 👇
-    // (Impede que a lógica de "abas" ative no mobile)
     const burgerCheck = document.querySelector('.main-header__burger');
     if (!burgerCheck || getComputedStyle(burgerCheck).display === 'none') {
         setTimeout(() => {
@@ -121,119 +116,75 @@ function openMenu(item) {
                     if (firstContent) firstContent.classList.add('active');
                 }
             }
-        }, 0); // Timeout 0
-    } // 👈 FIM DA CONDIÇÃO
+        }, 0); 
+    } 
 
-    // 4. Adiciona listeners (separados para Desktop e Mobile)
     submenuLinks.forEach((subLink) => {
-
-        // LÓGICA DE HOVER (DESKTOP)
-        // (A função 'handleSubmenuLinkHover' está definida fora, isso está correto)
         subLink.addEventListener('mouseenter', handleSubmenuLinkHover);
 
-        // LÓGICA DE CLIQUE (AGORA SIMPLIFICADA)
         subLink.addEventListener('click', (e) => {
             const burger = document.querySelector('.main-header__burger');
 
-            // Checa se NÃO é mobile (desktop)
             if (burger && getComputedStyle(burger).display !== 'flex') {
-                // É DESKTOP: Apenas fecha o menu principal ao clicar
                 const mainMenuItem = subLink.closest('.main-header__list-item.has-submenu');
                 if (mainMenuItem) {
                     closeMenu(mainMenuItem);
                 }
-                // Deixa o link navegar (não usa preventDefault)
                 return;
             }
 
-            // === INÍCIO DA CORREÇÃO MOBILE (SIMPLIFICAÇÃO) ===
-            // É MOBILE. O link <a> dentro deste <li> (subLink) 
-            // será pego pelo listener 'navLinks' (Lógica 1. SPA).
-            // Nós NÃO queremos e.preventDefault() no <li>.
-            // Nós NÃO queremos o L2 Accordion.
-
-            // Apenas fechamos os menus. O clique no <a> interno
-            // (que é um nav-link) vai cuidar da navegação.
-
-            // 1. Fecha o menu mobile principal (a gaveta)
             closeMobileMenu();
 
-            // 2. Fecha o L1 accordion (Fases da Vida)
             const mainMenuItem = subLink.closest('.main-header__list-item.has-submenu');
             if (mainMenuItem) {
                 closeMenu(mainMenuItem);
             }
-            // === FIM DA CORREÇÃO MOBILE ===
         });
     });
 }
 
-
-// --- Loop principal de setup do menu ---
 menuItems.forEach(item => {
     const link = item.querySelector(':scope > a');
     const submenuWrapper = item.querySelector('.submenu-wrapper');
 
     if (!link || !submenuWrapper) return;
 
-    // ===============================================
-    // LÓGICA DE CLIQUE (COM CORREÇÃO DE SCROLL)
-    // ===============================================
-
-    // 1. CLIQUE NO LINK PRINCIPAL (Ex: "Fases da Vida")
     link.addEventListener('click', (e) => {
-        e.preventDefault(); // Impede o link de navegar (#)
-        e.stopPropagation(); // <-- Impede o clique de "vazar" para o document
+        e.preventDefault(); 
+        e.stopPropagation(); 
 
-        // Verifica o estado do item clicado
         const wasOpen = item.classList.contains('js-hover');
 
-        // 1. Fecha TODOS OS OUTROS menus
         menuItems.forEach(otherItem => {
-            if (otherItem !== item) { // Só fecha os que NÃO são o item clicado
+            if (otherItem !== item) { 
                 closeMenu(otherItem);
             }
         });
 
-        // 2. Faz o toggle no item clicado
         if (wasOpen) {
-            closeMenu(item); // Se estava aberto, fecha
+            closeMenu(item); 
         } else {
-            openMenu(item); // Se estava fechado, abre
+            openMenu(item); 
 
-            // --- INÍCIO DA CORREÇÃO DE SCROLL DO ACORDEÃO MOBILE ---
             const burger = document.querySelector('.main-header__burger');
-            // Verifica se está no mobile e se o navWrapper existe (definido lá em cima)
             if (navWrapper && burger && getComputedStyle(burger).display === 'flex') {
-                // Espera a animação de max-height começar
                 setTimeout(() => {
-                    // Calcula a posição do item (<li>) relativo ao topo do navWrapper
                     const itemTop = item.offsetTop;
-                    // Pega o padding-top do navWrapper (definido no CSS como 20px)
                     const containerPaddingTop = parseFloat(window.getComputedStyle(navWrapper).paddingTop) || 0;
 
-                    // Rola o navWrapper para que o topo do item
-                    // fique no topo do container (descontando o padding)
                     navWrapper.scrollTo({
                         top: itemTop - containerPaddingTop,
                         behavior: 'smooth'
                     });
-                }, 50); // 50ms de delay
+                }, 50); 
             }
-            // --- FIM DA CORREÇÃO DE SCROLL ---
         }
     });
 
-    // 2. CLIQUE DENTRO DO PAINEL DO SUBMENU
     submenuWrapper.addEventListener('click', (e) => {
-        e.stopPropagation(); // <-- Impede que cliques *dentro* do menu fechem ele.
+        e.stopPropagation(); 
     });
 
-    // ===============================================
-    // FIM DA CORREÇÃO
-    // ===============================================
-
-    // Lógica de acessibilidade (focus) - ainda útil
     const focusableElements = Array.from(item.querySelectorAll('a, button'));
     if (focusableElements.length > 0) {
         const lastElement = focusableElements[focusableElements.length - 1];
@@ -256,7 +207,6 @@ menuItems.forEach(item => {
     }
 });
 
-// LÓGICA DE CLICAR FORA (Click Outside) - Mantida
 document.addEventListener('click', (e) => {
     menuItems.forEach(menuItem => {
         closeMenu(menuItem);
@@ -269,51 +219,37 @@ const navLinks = document.querySelectorAll('.nav-link');
 const pages = document.querySelectorAll('.page-content');
 const appContainer = document.getElementById('app-container');
 
-// =======================================================
-// ✅ FUNÇÃO navigateTo ATUALIZADA (com correção de scroll no início)
-// =======================================================
-function navigateTo(pageId, anchorId = null) { // <-- 1. PARÂMETRO ADICIONADO
-
-    // ** CORREÇÃO CHAVE: Rola para o topo IMEDIATAMENTE antes de tudo. **
+function navigateTo(pageId, anchorId = null) { 
     window.scrollTo({ top: 0, behavior: 'instant' });
 
-    // Esconde todas as páginas
     pages.forEach(page => page.classList.remove('active'));
 
-    // Mostra a página correta
     const targetPage = document.getElementById(pageId);
     if (targetPage) {
         targetPage.classList.add('active');
     } else {
-        // Se não achar, volta pra home
-        pageId = 'home'; // Garante que o pageId seja 'home'
+        pageId = 'home'; 
         document.getElementById('home').classList.add('active');
     }
 
-    // --- LÓGICA DE INICIALIZAÇÃO SOB DEMANDA (OTIMIZAÇÃO TBT) ---
-    // Esta lógica agora carrega os scripts APENAS da página que está sendo aberta.
+    setupTextToSpeech();
+
     if (pageId === 'home') {
         setupHeroCarousel();
     }
     else if (pageId === 'adolescencia') {
         if (typeof WordSearchGame !== 'undefined' && WordSearchGame.init) {
             setTimeout(() => { WordSearchGame.init(); }, 100);
-        } else {
-            console.warn('WordSearchGame não está pronto para iniciar.');
         }
     }
     else if (pageId === 'infancia') {
         if (typeof EmbeddedClassifyGame !== 'undefined' && EmbeddedClassifyGame.init) {
             setTimeout(() => { EmbeddedClassifyGame.init(); }, 100);
-        } else {
-            console.warn('EmbeddedClassifyGame não está pronto para iniciar.');
         }
     }
     else if (pageId === 'receitas') {
         if (typeof setupRecipeFilters !== 'undefined') {
             setTimeout(() => { setupRecipeFilters(); }, 100);
-        } else {
-            console.warn('setupRecipeFilters não está pronto para iniciar.');
         }
     }
     else if (pageId === 'adulto') {
@@ -329,17 +265,11 @@ function navigateTo(pageId, anchorId = null) { // <-- 1. PARÂMETRO ADICIONADO
     else if (pageId === 'origem-alimentar') {
         setupOriginMap();
     }
-    // --- FIM DA LÓGICA DE INICIALIZAÇÃO ---
 
-
-    // *** 2. LÓGICA DE ROLAGEM MODIFICADA ***
     if (anchorId) {
-        // Se uma âncora foi fornecida (ex: #infancia-quiz)
-        const targetElement = document.querySelector(anchorId); // <--- O BUG ACONTECIA AQUI
+        const targetElement = document.querySelector(anchorId); 
         if (targetElement) {
-            // Espera um instante para a página renderizar e rola suavemente
             setTimeout(() => {
-                // Ajuste de 90px para compensar o header fixo
                 const headerOffset = 90;
                 const elementPosition = targetElement.getBoundingClientRect().top;
                 const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -348,83 +278,171 @@ function navigateTo(pageId, anchorId = null) { // <-- 1. PARÂMETRO ADICIONADO
                     top: offsetPosition,
                     behavior: "smooth"
                 });
-            }, 50); // 50ms é geralmente suficiente
+            }, 50); 
         } else {
-            // Se não achar a âncora, rola para o topo
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     } else {
-        // Comportamento padrão: rola para o topo
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-    // *** FIM DA MODIFICAÇÃO DE ROLAGEM ***
 
-    // Fecha o menu mobile (já existia)
     closeMobileMenu();
 
-    // (V25.4) Fechamento de mega-menus
     if (menuItems && typeof closeMenu === 'function') {
         menuItems.forEach(menuItem => {
             closeMenu(menuItem);
         });
     }
 
-    // ******** INÍCIO DA CORREÇÃO (DUPLA) ********
-    // Dá um pequeno tempo (10ms) para o DOM atualizar o display:block
-    // antes de forçar o ScrollTrigger a recalcular as posições.
     if (typeof ScrollTrigger !== 'undefined') {
         setTimeout(() => {
             ScrollTrigger.refresh();
         }, 10);
     }
-    // ******** FIM DA CORREÇÃO ********
 }
 
-// =======================================================
-//   ✅ NOVO OUVINTE PARA O CHATBOT
-// =======================================================
-// Este ouvinte "escuta" o pedido de navegação vindo do
-// arquivo 'gemini-chat.js' e chama a função navigateTo.
+/* =======================================================
+ * LÓGICA DE LEITURA DE TELA (TTS)
+ * ======================================================= */
+function generateSpeechContent(pageId, button) {
+    const pageElement = document.getElementById(pageId);
+    if (!pageElement) return;
+
+    const synth = window.speechSynthesis;
+
+    if (synth.speaking) {
+        synth.cancel();
+        button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+        return;
+    }
+    
+    const readableElements = pageElement.querySelectorAll('.topic-content, .section-description, .pullquote, .quiz-pergunta, .card_content h2, .card_content h5');
+    
+    let textToRead = '';
+    readableElements.forEach(el => {
+        if (el.textContent.trim().length > 0 && el.offsetHeight > 0) {
+             textToRead += el.textContent.trim() + '. '; 
+        }
+    });
+
+    if (textToRead) {
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = 'pt-BR';
+        
+        button.innerHTML = '<i class="fa-solid fa-stop-circle"></i> Parar Leitura';
+
+        utterance.onend = () => {
+            button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+        };
+        synth.speak(utterance);
+    } else {
+        alert('Nenhum texto legível encontrado nesta seção.');
+    }
+}
+
+function playAudioContent(audioPath, button) {
+    const synth = window.speechSynthesis;
+    if (synth.speaking) {
+        synth.cancel();
+    }
+
+    if (!currentAudio) {
+        currentAudio = new Audio();
+    }
+    
+    if (currentAudio.src.endsWith(audioPath) && currentAudio.readyState >= 1) {
+        if (currentAudio.paused) {
+            currentAudio.play();
+        } else {
+            currentAudio.pause();
+        }
+    } else {
+        currentAudio.src = audioPath;
+        currentAudio.load();
+        currentAudio.play().catch(e => console.error("Erro ao tentar reproduzir o áudio:", e));
+    }
+
+    const updateButton = () => {
+        if (currentAudio.paused || currentAudio.ended) {
+            button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+            button.classList.remove('playing');
+        } else {
+            button.innerHTML = '<i class="fa-solid fa-stop-circle"></i> Parar Leitura';
+            button.classList.add('playing');
+        }
+    };
+    
+    currentAudio.onplay = updateButton;
+    currentAudio.onpause = updateButton;
+    currentAudio.onended = updateButton;
+    updateButton(); 
+}
+
+function readPageContent(pageId, button) {
+    const audioPath = preGeneratedAudios[pageId];
+
+    if (audioPath) {
+        playAudioContent(audioPath, button);
+    } else {
+        generateSpeechContent(pageId, button);
+    }
+}
+
+function setupTextToSpeech() {
+    const pagesWithContent = document.querySelectorAll('#infancia, #adolescencia, #adulto, #idoso, #quemsomos, #origem-alimentar, #higiene, #rotulagem, #acoes');
+    
+    pagesWithContent.forEach(page => {
+        const contentSection = page.querySelector('.content-section');
+        
+        if (contentSection && !page.querySelector('.read-aloud-button-wrapper')) {
+            
+            const button = document.createElement('button');
+            button.classList.add('cta-link', 'read-aloud-button');
+            button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+            button.setAttribute('aria-label', 'Clique para ler o conteúdo completo desta página');
+            
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('read-aloud-button-wrapper'); 
+            wrapper.appendChild(button);
+
+            const firstContentElement = page.querySelector('.section-description') || page.querySelector('.topic-container');
+            
+            if (firstContentElement) {
+                firstContentElement.parentNode.insertBefore(wrapper, firstContentElement);
+
+                button.addEventListener('click', () => {
+                    readPageContent(page.id, button);
+                });
+            }
+        }
+    });
+}
+
 document.addEventListener('navigateRequest', (e) => {
     const { pageId, anchorId } = e.detail;
     if (pageId) {
         navigateTo(pageId, anchorId);
     }
 });
-// =======================================================
-//   FIM DO NOVO OUVINTE
-// =======================================================
 
-
-// =======================================================
-// =======================================================
-// INÍCIO DA CORREÇÃO DE NAVEGAÇÃO (ANTI-querySelector('#'))
-// =======================================================
-// =======================================================
-
-// NOVO LISTENER COMBINADO para TODOS os .nav-link
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         const pageId = link.dataset.page;
-        if (!pageId) return; // Se não tem data-page, não é um link de navegação SPA
+        if (!pageId) return; 
 
-        e.preventDefault(); // Previne a navegação padrão (ex: href="#")
+        e.preventDefault(); 
 
         const href = link.getAttribute('href');
         let anchorId = null;
 
-        // Verifica se é um link de âncora VÁLIDO (começa com # e não é SÓ #)
         if (href && href.startsWith('#') && href.length > 1) {
             anchorId = href;
         }
 
-        // Chama a navegação
-        navigateTo(pageId, anchorId); // Se for só "#", anchorId será null (correto)
+        navigateTo(pageId, anchorId); 
 
-        // Fecha menus (código de conveniência)
         closeMobileMenu();
 
-        // (V25.4) Fechamento de mega-menus
         if (menuItems && typeof closeMenu === 'function') {
             menuItems.forEach(menuItem => {
                 closeMenu(menuItem);
@@ -432,15 +450,6 @@ navLinks.forEach(link => {
         }
     });
 });
-
-// Os listeners antigos 'navLinks.forEach' e 'scrollLinks.forEach' foram
-// substituídos pelo bloco único acima, corrigindo o bug do querySelector.
-
-// =======================================================
-// =======================================================
-// FIM DA CORREÇÃO DE NAVEGAÇÃO
-// =======================================================
-// =======================================================
 
 
 // =======================================================
@@ -452,7 +461,7 @@ function setupHeroCarousel() {
     const prevBtn = document.querySelector('.carousel-nav.prev');
     const nextBtn = document.querySelector('.carousel-nav.next');
 
-    if (slides.length <= 1) { // Se não houver slides ou só 1, não faz nada
+    if (slides.length <= 1) { 
         if (prevBtn) prevBtn.style.display = 'none';
         if (nextBtn) nextBtn.style.display = 'none';
         if (dots.length > 0) document.querySelector('.carousel-dots').style.display = 'none';
@@ -463,15 +472,12 @@ function setupHeroCarousel() {
     let slideInterval;
 
     function showSlide(n) {
-        // Ajusta o índice para loop
         if (n >= slides.length) { n = 0; }
         if (n < 0) { n = slides.length - 1; }
 
-        // Remove 'active' de todos
         slides.forEach(slide => slide.classList.remove('active'));
         dots.forEach(dot => dot.classList.remove('active'));
 
-        // Adiciona 'active' ao slide e dot corretos
         slides[n].classList.add('active');
         dots[n].classList.add('active');
 
@@ -486,7 +492,6 @@ function setupHeroCarousel() {
         showSlide(currentSlide - 1);
     }
 
-    // Event Listeners para os botões
     if (nextBtn) {
         nextBtn.addEventListener('click', () => {
             nextSlide();
@@ -501,7 +506,6 @@ function setupHeroCarousel() {
         });
     }
 
-    // Event Listeners para os pontos
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             showSlide(index);
@@ -509,9 +513,8 @@ function setupHeroCarousel() {
         });
     });
 
-    // Autoplay
     function startInterval() {
-        slideInterval = setInterval(nextSlide, 5000); // Muda de slide a cada 5 segundos
+        slideInterval = setInterval(nextSlide, 5000); 
     }
 
     function resetInterval() {
@@ -519,16 +522,12 @@ function setupHeroCarousel() {
         startInterval();
     }
 
-    showSlide(0); // Mostra o primeiro slide
-    startInterval(); // Inicia o autoplay
+    showSlide(0); 
+    startInterval(); 
 }
-// =======================================================
-// FIM DO CÓDIGO DO CARROSSEL
-// =======================================================
-
 
 // =======================================================
-// GRÁFICO DE BARRAS (SEÇÃO ADULTO) - AGORA COM ANIMAÇÃO
+// GRÁFICO DE BARRAS (SEÇÃO ADULTO)
 // =======================================================
 function animateChartBars() {
     const charts = document.querySelectorAll('.interactive-chart');
@@ -536,30 +535,26 @@ function animateChartBars() {
     charts.forEach(chart => {
         const bars = chart.querySelectorAll('.chart-bar');
 
-        // 1. Define o estado inicial (largura 0)
         if (typeof gsap !== 'undefined') {
             gsap.set(bars, {
                 width: "0%",
                 autoAlpha: 1
             });
 
-            // 2. Cria o gatilho (ScrollTrigger) para animar
             ScrollTrigger.create({
-                trigger: chart, // O gatilho é o próprio gráfico
-                start: "top 80%", // Começa quando 80% do gráfico estiver visível
-                once: true, // Anima apenas uma vez
+                trigger: chart, 
+                start: "top 80%", 
+                once: true, 
                 onEnter: () => {
-                    // Anima as barras para o valor final
                     gsap.to(bars, {
-                        duration: 1.5, // Duração da animação
+                        duration: 1.5, 
                         width: (i, target) => target.dataset.value.replace(',', '.') + "%",
-                        ease: "power2.out", // Efeito de desaceleração
-                        stagger: 0.1 // Atraso entre cada barra
+                        ease: "power2.out", 
+                        stagger: 0.1 
                     });
                 }
             });
         } else {
-            // Fallback se o GSAP não carregar: apenas mostra as barras
             bars.forEach(bar => {
                 bar.style.width = bar.dataset.value.replace(',', '.') + "%";
             });
@@ -570,7 +565,6 @@ function animateChartBars() {
 // --- 5. LÓGICA DE ANIMAÇÃO (GSAP) ---
 if (typeof gsap !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
-    // A chamada da animação do gráfico foi movida para o final (DOMContentLoaded)
 
     function animateFrom(elem, direction = 1, distance = 50) {
         let y = direction * distance;
@@ -587,20 +581,16 @@ if (typeof gsap !== 'undefined') {
         gsap.set(elem, { autoAlpha: 0 });
     }
 
-    // *** MELHORIA SCROLL REVEAL (Vem de Baixo/Esquerda/Direita) ***
-
     gsap.utils.toArray(".gs_reveal").forEach(function (elem) {
-        hide(elem); // Começa escondido
+        hide(elem); 
 
-        let direction = 1; // Padrão: Vir de baixo (y: 50)
+        let direction = 1; 
         let distance = 50;
 
-        // Animação para X (Esquerda/Direita)
         if (elem.classList.contains('gs_reveal_fromLeft') || elem.classList.contains('gs_reveal_fromRight')) {
 
             const xDistance = elem.classList.contains('gs_reveal_fromLeft') ? -100 : 100;
 
-            // Cria uma animação específica para vir da lateral (X)
             ScrollTrigger.create({
                 trigger: elem,
                 start: "top 85%",
@@ -615,10 +605,9 @@ if (typeof gsap !== 'undefined') {
                     });
                 }
             });
-            return; // Pula o ScrollTrigger padrão
+            return; 
         }
 
-        // ScrollTrigger Padrão (Vem de baixo - Y)
         ScrollTrigger.create({
             trigger: elem,
             start: "top 85%",
@@ -628,7 +617,6 @@ if (typeof gsap !== 'undefined') {
         });
     });
 
-    // *** FIM DA MELHORIA SCROLL REVEAL ***
 
     const topicBlocks = gsap.utils.toArray('#adolescencia .topic-block');
     if (topicBlocks.length > 0) {
@@ -763,9 +751,7 @@ function launchGame(containerId, gameInitializerFunction) {
         const gameArea = gameContainer.querySelector('.game-area');
         if (gameArea) {
             gameArea.classList.add('active');
-        } else {
-            console.warn(`Área de jogo não encontrada dentro de #${containerId}`);
-        }
+        } 
 
         if (gameInitializerFunction && typeof gameInitializerFunction === 'function') {
             try {
@@ -774,35 +760,24 @@ function launchGame(containerId, gameInitializerFunction) {
                 console.error(`Erro ao inicializar o jogo ${containerId}:`, error);
                 showGameCover();
             }
-        } else {
-            console.warn(`Função de inicialização para ${containerId} não fornecida ou inválida.`);
-        }
+        } 
 
     } else {
-        console.error(`Container do jogo "${containerId}" não encontrado.`);
         document.body.classList.remove('game-modal-open');
     }
 }
 
-// --- Anexando os Event Listeners ---
-
-// Jogo de Classificar (Embutido na página Infância)
 document.querySelector('#classify-game-area-embedded .game-restart-btn')?.addEventListener('click', () => {
     if (typeof EmbeddedClassifyGame !== 'undefined' && EmbeddedClassifyGame.init) EmbeddedClassifyGame.init();
 });
 
 
-// ===============================================
-// ==== ✂️ LÓGICA DA CALCULADORA REINSERIDA ✂️ =====
-// ===============================================
-
 /* =======================================================
- * 14. LÓGICA DA CALCULADORA DE HIDRATAÇÃO (IDOSO) - COM ANIMAÇÃO GSAP
+ * LÓGICA DA CALCULADORA DE HIDRATAÇÃO (IDOSO)
  * ======================================================= */
 function setupHydrationCalculator() {
-    // 1. Selecionar todos os elementos
     const calcContainer = document.getElementById('hydration-calculator');
-    if (!calcContainer) return; // Se não estiver na página, sai
+    if (!calcContainer) return; 
 
     const btnMenos = document.getElementById('btn-peso-menos');
     const btnMais = document.getElementById('btn-peso-mais');
@@ -815,22 +790,17 @@ function setupHydrationCalculator() {
     const displayCopos = document.getElementById('calcCopos');
     const displayDisclaimer = document.getElementById('calc-disclaimer');
 
-    // 2. Definir valores iniciais
     let currentPeso = 70;
-    let currentMlPorKg = 30; // Padrão para "Adultos (55-65)" que está ativo no HTML
-    let currentAnimation = null; // Para controlar a animação do número
+    let currentMlPorKg = 30; 
+    let currentAnimation = null; 
 
-    // 3. Funções de Lógica
-
-    // Atualiza o peso na tela
     function updatePesoDisplay() {
         if (displayPeso) displayPeso.textContent = currentPeso;
     }
 
-    // Lógica dos botões de peso
     if (btnMenos) {
         btnMenos.addEventListener('click', () => {
-            if (currentPeso > 20) { // Limite mínimo
+            if (currentPeso > 20) { 
                 currentPeso--;
                 updatePesoDisplay();
             }
@@ -839,85 +809,68 @@ function setupHydrationCalculator() {
 
     if (btnMais) {
         btnMais.addEventListener('click', () => {
-            if (currentPeso < 200) { // Limite máximo
+            if (currentPeso < 200) { 
                 currentPeso++;
                 updatePesoDisplay();
             }
         });
     }
 
-    // Lógica dos botões de idade
     ageButtons.forEach(button => {
         button.addEventListener('click', () => {
-            // Remove 'active' de todos
             ageButtons.forEach(btn => btn.classList.remove('active'));
-            // Adiciona 'active' ao clicado
             button.classList.add('active');
-            // Atualiza o multiplicador
             currentMlPorKg = parseInt(button.dataset.value, 10);
         });
     });
 
-    // Lógica do botão CALCULAR
     if (btnCalcular) {
         btnCalcular.addEventListener('click', () => {
-            // 1. Fazer o cálculo
             const totalMl = currentPeso * currentMlPorKg;
-            const totalLitros = (totalMl / 1000); // Valor numérico, ex: 2.1
-
-            // 2. Calcular copos (250ml por copo, arredondando para cima)
+            const totalLitros = (totalMl / 1000); 
             const totalCopos = Math.ceil(totalMl / 250);
 
-            // --- INÍCIO DAS NOVAS ANIMAÇÕES ---
-
-            // Verifica se o GSAP está disponível
             if (typeof gsap !== 'undefined') {
-                // A. Animação do Número (Contador)
-                let counter = { value: 0 }; // Objeto para o GSAP animar
+                let counter = { value: 0 }; 
 
-                // Tenta pegar o valor atual, se for um número, senão começa do 0
                 if (displayLitros && displayLitros.textContent) {
                     let currentText = displayLitros.textContent.split(' ')[0].replace(',', '.');
                     let currentValue = parseFloat(currentText);
                     if (!isNaN(currentValue)) {
-                        counter.value = currentValue; // Começa do valor que já está na tela
+                        counter.value = currentValue; 
                     }
                 }
 
-                // Se uma animação anterior estiver rodando, mate-a
                 if (currentAnimation) {
                     currentAnimation.kill();
                 }
 
-                // Anima o objeto 'counter' de seu valor atual até o valor final
                 currentAnimation = gsap.to(counter, {
-                    duration: 1.2, // Duração de 1.2s
+                    duration: 1.2, 
                     value: totalLitros,
                     ease: "power2.out",
                     onUpdate: () => {
-                        // a cada "frame" da animação, atualiza o texto
                         if (displayLitros) {
                             displayLitros.textContent = `${counter.value.toFixed(2).replace('.', ',')} Litros`;
                         }
                     },
                     onComplete: () => {
-                        currentAnimation = null; // Limpa a animação
+                        currentAnimation = null; 
                     }
                 });
 
-                // B. Animação das Gotas (Stagger)
                 if (displayCopos) {
-                    displayCopos.innerHTML = ''; // Limpa os copos antigos
-                    let copoElements = []; // Array para guardar os novos elementos
+                    displayCopos.innerHTML = ''; 
+                    let copoElements = []; 
 
                     if (totalCopos > 0) {
                         for (let i = 0; i < totalCopos; i++) {
                             const copoIcon = document.createElement('i');
                             copoIcon.className = 'fa-solid fa-droplet';
 
-                            if (i < 15) { // Mostra no máximo 15 copos
+                            if (i < 15) { 
                                 displayCopos.appendChild(copoIcon);
-                                copoElements.push(copoIcon); // Adiciona ao array
+                                copoElements.push(copoIcon); 
                             }
                         }
                         if (totalCopos > 15) {
@@ -930,51 +883,44 @@ function setupHydrationCalculator() {
                         }
                     }
 
-                    // Anima os elementos que acabamos de criar
-                    // Começa de uma opacidade e escala 0
                     gsap.fromTo(copoElements, {
                         opacity: 0,
                         scale: 0.5,
-                        y: -10 // Começa um pouco acima
+                        y: -10 
                     }, {
-                        duration: 0.3, // Duração de cada gota
+                        duration: 0.3, 
                         opacity: 1,
                         scale: 1,
                         y: 0,
                         ease: "back.out(1.7)",
-                        stagger: 0.08, // Atraso entre cada gota
-                        delay: 0.2 // Começa 0.2s depois do clique
+                        stagger: 0.08, 
+                        delay: 0.2 
                     });
                 }
             } else {
-                // --- FALLBACK (Se o GSAP não carregar) ---
                 if (displayLitros) displayLitros.textContent = `${totalLitros.toFixed(2).replace('.', ',')} Litros`;
                 if (displayCopos) {
-                    displayCopos.innerHTML = ''; // Limpa os copos antigos
+                    displayCopos.innerHTML = ''; 
                     if (totalCopos > 0) {
                         for (let i = 0; i < totalCopos; i++) {
-                            // ... (código de adicionar copos, igual ao de cima)
+                           
                         }
                     }
                 }
             }
-            // --- FIM DAS NOVAS ANIMAÇÕES ---
 
-            // 5. Esconder o aviso
             if (displayDisclaimer) {
                 displayDisclaimer.style.display = 'none';
             }
         });
     }
 
-    // 6. Inicializar o display
     updatePesoDisplay();
 }
-// --- FIM DA LÓGICA DA CALCULADORA ---
 
 
 // ===============================================
-// ==== INÍCIO DO CÓDIGO DO PLANEJADOR DE LANCHES (ADULTO) =====
+// ==== LÓGICA DO PLANEJADOR DE LANCHES (ADULTO) =====
 // ===============================================
 
 function setupSnackPlanner() {
@@ -984,10 +930,10 @@ function setupSnackPlanner() {
     const optionButtons = document.querySelectorAll('.snack-option-btn');
     const closeModalBtn = document.querySelector('#snack-selector-modal .game-close-btn');
     const resetBtn = document.getElementById('planner-reset-btn');
-    const downloadBtn = document.getElementById('planner-download-btn'); // NOVO: Botão de Download
+    const downloadBtn = document.getElementById('planner-download-btn'); 
 
     if (plannerDays.length === 0 || !modal || optionButtons.length === 0 || !resetBtn || !downloadBtn) {
-        return; // Sai se os elementos não forem encontrados
+        return; 
     }
 
     let currentDayElement = null;
@@ -1001,27 +947,20 @@ function setupSnackPlanner() {
         dom: 'Domingo'
     };
 
-    // Função para abrir o modal
     function openModal(dayElement) {
         currentDayElement = dayElement;
         const dayKey = currentDayElement.dataset.day;
         modalTitle.textContent = `Escolha seu lanche para: ${weekDayNames[dayKey]}`;
-
-        // Abre o modal e trava o body (o CSS agora o torna fixo e centralizado)
         modal.classList.add('active');
         document.body.classList.add('game-modal-open');
     }
 
-    // Função para fechar o modal
     function closeModal() {
         modal.classList.remove('active');
         document.body.classList.remove('game-modal-open');
         currentDayElement = null;
     }
 
-    // ===================================================
-    // FUNÇÃO PRINCIPAL: GERAR O ARQUIVO DE TEXTO
-    // ===================================================
     function generateDownload() {
         const date = new Date().toLocaleDateString('pt-BR');
         let content = "=== Meu Plano Semanal de Lanches (Alimentando Fases) ===\n";
@@ -1055,7 +994,6 @@ function setupSnackPlanner() {
         content += "\n========================================================\n";
         content += "Lembre-se: Hidratação e planejamento são a chave para o sucesso na rotina adulta!";
 
-        // Cria um BLOB (objeto de dados) e um link de download
         const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
         const url = URL.createObjectURL(blob);
 
@@ -1063,51 +1001,38 @@ function setupSnackPlanner() {
         a.href = url;
         a.download = `Plano_Lanches_Semana_${date.replace(/\//g, '-')}.txt`;
 
-        // Simula o clique para iniciar o download
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
-        URL.revokeObjectURL(url); // Libera o objeto
+        URL.revokeObjectURL(url); 
     }
-    // ===================================================
-    // FIM: GERAR O ARQUIVO DE TEXTO
-    // ===================================================
 
-
-    // ADICIONA EVENT LISTENERS
-
-    // 1. Botões dos Dias
     plannerDays.forEach(day => {
         day.addEventListener('click', () => {
             openModal(day);
         });
     });
 
-    // 2. Opções de Lanche (Lógica de 3 estados: Lanche, Folga, Limpar)
     optionButtons.forEach(button => {
         button.addEventListener('click', () => {
             if (currentDayElement) {
                 const choiceText = button.dataset.snack;
                 const choiceSpan = currentDayElement.querySelector('.planner-choice span');
 
-                // Limpa todos os estados anteriores
                 currentDayElement.classList.remove('filled', 'off-day');
                 currentDayElement.querySelector('.planner-choice i').style.display = 'block';
 
                 if (choiceText === "Folga") {
-                    // 1. Estado de FOLGA
                     choiceSpan.textContent = choiceText;
                     currentDayElement.classList.add('off-day');
                     currentDayElement.querySelector('.planner-choice i').style.display = 'none';
 
                 } else if (choiceText) {
-                    // 2. Estado de LANCE
                     choiceSpan.textContent = choiceText;
                     currentDayElement.classList.add('filled');
                     currentDayElement.querySelector('.planner-choice i').style.display = 'none';
 
                 } else {
-                    // 3. Estado de LIMPAR (Nenhum)
                     choiceSpan.textContent = 'Clique para escolher';
                 }
             }
@@ -1115,16 +1040,13 @@ function setupSnackPlanner() {
         });
     });
 
-    // 3. Eventos para fechar o modal
     closeModalBtn.addEventListener('click', closeModal);
     modal.addEventListener('click', (e) => {
-        // Fecha se clicar no overlay (fundo)
         if (e.target === modal) {
             closeModal();
         }
     });
 
-    // 4. Evento do botão de Resetar
     resetBtn.addEventListener('click', () => {
         plannerDays.forEach(day => {
             day.querySelector('.planner-choice span').textContent = 'Clique para escolher';
@@ -1133,36 +1055,8 @@ function setupSnackPlanner() {
         });
     });
 
-    // 5. Evento do botão de Download (NOVO)
     downloadBtn.addEventListener('click', generateDownload);
-
 }
-
-// ===============================================
-// ====== FIM DO CÓDIGO DO PLANEJADOR DE LANCHES ======
-// ===============================================
-
-// ===============================================
-// ==== INÍCIO DAS CHAMADAS DE FUNÇÕES =====
-// ===============================================
-
-// Funções Globais (rodam em todas as páginas)
-// setupFontControls(); // Removido pois os botões não estão no HTML
-
-// Funções da Página Inicial (Home) - Roda no carregamento inicial
-setupHeroCarousel();
-
-// Funções de outras páginas são chamadas dentro de navigateTo() para otimizar o TBT
-
-// ===============================================
-// ====== FIM DAS CHAMADAS DE FUNÇÕES ======
-// ===============================================
-
-
-// A LÓGICA DO CHATBOT FOI MOVIDA PARA 'gemini-chat.js'
-
-
-// ... (O restante das suas funções setup que são definidas fora do DOMContentLoaded, como triggerConfetti, setupHandwashGuide, etc., devem vir aqui) ...
 
 
 /* =======================================================
@@ -1189,8 +1083,8 @@ function triggerConfetti(modalElement) {
         confetti({
             particleCount: 150,
             spread: 90,
-            origin: origin,
             colors: ['#53954a', '#6e513d', '#f9efd4', '#FFFFFF'],
+            origin: origin,
             zIndex: 3000
         });
     }, 450);
@@ -1206,7 +1100,7 @@ const EmbeddedClassifyGame = {
         { name: 'Maçã', imageSrc: 'Imagens/maca.webp', category: 'natura' },
         { name: 'Brócolis', imageSrc: 'Imagens/brocolis.webp', category: 'natura' },
         { name: 'Arroz', imageSrc: 'Imagens/arroz.webp', category: 'natura' },
-        { name: 'Pão Francês', imageSrc: 'Imagens/pao.webp', category: 'processado' }, // Corrigido de "pao.png"
+        { name: 'Pão Francês', imageSrc: 'Imagens/pao.webp', category: 'processado' }, 
         { name: 'Queijo', imageSrc: 'Imagens/queijo.webp', category: 'processado' },
         { name: 'Geleia', imageSrc: 'Imagens/geleia.webp', category: 'processado' },
         { name: 'Salgadinho', imageSrc: 'Imagens/salgadinho.webp', category: 'ultra' },
@@ -1227,18 +1121,14 @@ const EmbeddedClassifyGame = {
         this.foodBank = this.gameArea?.querySelector('.classify-food-bank');
         this.dropZones = this.gameArea?.querySelectorAll('.classify-zone');
         this.scoreDisplay = document.getElementById('classify-score-embedded');
-        this.winModal = document.getElementById('classify-win-modal'); // Ele ainda tenta encontrar o modal
+        this.winModal = document.getElementById('classify-win-modal'); 
 
-        // --- INÍCIO DA CORREÇÃO (LINHA 983) ---
-        // A verificação !this.winModal foi REMOVIDA
         if (!this.gameArea || !this.foodBank || !this.dropZones || !this.scoreDisplay) {
             console.error("Elementos do DOM do Jogo de Classificar EMBUTIDO não encontrados.");
-            return; // O script para aqui se não encontrar os elementos ESSENCIAIA
+            return; 
         }
-        // --- FIM DA CORREÇÃO ---
 
         this.resetGame();
-        // A verificação abaixo já é segura, pois só usa o winModal SE ele existir
         if (this.winModal) this.winModal.classList.remove('active');
 
         this.foodBank.innerHTML = '';
@@ -1344,7 +1234,6 @@ const EmbeddedClassifyGame = {
     },
 
     showWinModal: function () {
-        // Esta função já é segura, pois só tenta usar o modal se ele foi encontrado
         if (this.winModal) {
             this.winModal.classList.add('active');
             triggerConfetti(this.winModal);
@@ -1368,58 +1257,11 @@ const EmbeddedClassifyGame = {
     }
 };
 
-/* =======================================================
- * CONTROLES DE ACESSIBILIDADE (TAMANHO DA FONTE)
- * ======================================================= */
-function setupFontControls() {
-    const htmlEl = document.documentElement; // Pega a tag <html>
-    const increaseBtn = document.getElementById('font-increase');
-    const decreaseBtn = document.getElementById('font-decrease');
-    const resetBtn = document.getElementById('font-reset');
-
-    if (!increaseBtn || !decreaseBtn || !resetBtn) {
-        return; // Sai se os botões não existirem
-    }
-
-    increaseBtn.addEventListener('click', () => {
-        if (htmlEl.classList.contains('font-large')) {
-            // Se já está 'large', vai para 'xlarge'
-            htmlEl.classList.remove('font-large');
-            htmlEl.classList.add('font-xlarge');
-        } else if (htmlEl.classList.contains('font-xlarge')) {
-            // Já está no máximo, não faz nada
-            return;
-        } else {
-            // Se está no normal, vai para 'large'
-            htmlEl.classList.add('font-large');
-        }
-    });
-
-    decreaseBtn.addEventListener('click', () => {
-        if (htmlEl.classList.contains('font-xlarge')) {
-            // Se está 'xlarge', volta para 'large'
-            htmlEl.classList.remove('font-xlarge');
-            htmlEl.classList.add('font-large');
-        } else if (htmlEl.classList.contains('font-large')) {
-            // Se está 'large', volta para normal
-            htmlEl.classList.remove('font-large');
-        } else {
-            // Já está no normal, não faz nada
-            return;
-        }
-    });
-
-    resetBtn.addEventListener('click', () => {
-        // Remove todas as classes de fonte
-        htmlEl.classList.remove('font-large', 'font-xlarge');
-    });
-}
 
 /* =======================================================
  * GUIA INTERATIVO (HIGIENE DAS MÃOS)
  * ======================================================= */
 function setupHandwashGuide() {
-    // 1. Definição dos Passos
     const handWashSteps = [
         {
             icon: 'fa-faucet',
@@ -1448,9 +1290,8 @@ function setupHandwashGuide() {
         }
     ];
 
-    // 2. Seleção dos ElementOS do DOM
     const guide = document.querySelector('.handwash-guide');
-    if (!guide) return; // Se o guia não estiver na página, não faz nada
+    if (!guide) return; 
 
     const prevBtn = document.getElementById('btn-prev-step');
     const nextBtn = document.getElementById('btn-next-step');
@@ -1462,32 +1303,26 @@ function setupHandwashGuide() {
 
     let currentStep = 0;
 
-    // 3. Função para Atualizar a Tela
     function updateStep(stepIndex) {
         const stepData = handWashSteps[stepIndex];
 
-        // Adiciona classe para animação de fade-out
         textEl.classList.add('fade-out');
-        iconEl.classList.add('fade-out'); // Anima o ícone também
+        iconEl.classList.add('fade-out'); 
 
         setTimeout(() => {
-            // Atualiza o conteúdo
-            iconEl.className = `fa-solid ${stepData.icon}`; // Atualiza o ícone
+            iconEl.className = `fa-solid ${stepData.icon}`; 
             titleEl.textContent = stepData.title;
             textEl.textContent = stepData.text;
             stepCounter.textContent = `${stepIndex + 1} / ${handWashSteps.length}`;
 
-            // Controla os botões
             prevBtn.disabled = (stepIndex === 0);
             nextBtn.disabled = (stepIndex === handWashSteps.length - 1);
 
-            // Remove classe para animação de fade-in
             textEl.classList.remove('fade-out');
             iconEl.classList.remove('fade-out');
-        }, 300); // Tempo da transição do CSS
+        }, 300); 
     }
 
-    // 4. Adiciona os Event Listeners
     nextBtn.addEventListener('click', () => {
         if (currentStep < handWashSteps.length - 1) {
             currentStep++;
@@ -1501,24 +1336,20 @@ function setupHandwashGuide() {
             updateStep(currentStep);
         }
     });
-
-    // 5. Inicializa o guia no primeiro passo
-    // (O HTML já cuida disso)
 }
 
 
 /* =======================================================
- * 22. LÓGICA DO MAPA INTERATIVO (JORNADA DOS SABORES)
+ * LÓGICA DO MAPA INTERATIVO (JORNADA DOS SABORES)
  * ======================================================= */
 
-// 1. Dados para cada Matriz
 const originMapData = {
     'indigena': {
         title: 'Matriz Indígena',
         imageSrc: 'Imagens/icone-indigena.webp',
         altText: 'Ícone da Matriz Indígena',
-        color: 'var(--color-primary)', // Verde
-        bgColor: '#f0fdf4', // Verde claro
+        color: 'var(--color-primary)', 
+        bgColor: '#f0fdf4', 
         items: [
             { icon: 'fa-seedling', text: 'Mandioca (Farinha, Beiju, Polvilho)' },
             { icon: 'fa-mortar-pestle', text: 'Paçoca (Mistura original)' },
@@ -1530,8 +1361,8 @@ const originMapData = {
         title: 'Matriz Portuguesa',
         imageSrc: 'Imagens/icone-portuguesa.webp',
         altText: 'Ícone da Matriz Portuguesa',
-        color: 'var(--color-secondary)', // Marrom
-        bgColor: 'var(--color-background)', // Bege
+        color: 'var(--color-secondary)', 
+        bgColor: 'var(--color-background)', 
         items: [
             { icon: 'fa-utensils', text: 'Adaptação de Pratos (Ex: Feijoada)' },
             { icon: 'fa-wheat-awn', text: 'Introdução do Arroz' },
@@ -1543,8 +1374,8 @@ const originMapData = {
         title: 'Matriz Africana',
         imageSrc: 'Imagens/icone-africana.webp',
         altText: 'Ícone da Matriz Africana',
-        color: '#d97706', // Laranja
-        bgColor: '#fffbeb', // Laranja claro
+        color: '#d97706', 
+        bgColor: '#fffbeb', 
         items: [
             { icon: 'fa-oil-can', text: 'Azeite de Dendê' },
             { icon: 'fa-mug-hot', text: 'Leite de Coco' },
@@ -1554,7 +1385,6 @@ const originMapData = {
     }
 };
 
-// 2. Função para fechar o modal
 function closeOriginModal() {
     const modal = document.getElementById('origin-modal');
     if (modal) {
@@ -1563,74 +1393,58 @@ function closeOriginModal() {
     }
 }
 
-// 3. Função para preencher e abrir o modal
 function populateOriginModal(data) {
     const modal = document.getElementById('origin-modal');
     if (!modal) return;
 
     const modalContent = modal.querySelector('.game-modal-content');
     const titleEl = document.getElementById('origin-modal-title');
-    const iconEl = document.getElementById('origin-modal-icon'); // Agora é um <img>
+    const iconEl = document.getElementById('origin-modal-icon'); 
     const listEl = document.getElementById('origin-modal-list');
-    const headerEl = modal.querySelector('.origin-modal-header');
-
-    // Preenche os dados
+    
     titleEl.textContent = data.title;
     iconEl.src = data.imageSrc;
     iconEl.alt = data.altText;
 
-    // Limpa a lista antiga
     listEl.innerHTML = '';
 
-    // Adiciona os novos itens
     data.items.forEach(item => {
         const li = document.createElement('li');
         li.innerHTML = `<i class="fa-solid ${item.icon}" aria-hidden="true"></i> ${item.text}`;
         listEl.appendChild(li);
     });
 
-    // Atualiza as cores dinamicamente
     modalContent.style.borderColor = data.color;
 
-    // Abre o modal
     modal.classList.add('active');
     document.body.classList.add('game-modal-open');
 }
 
-// 4. Função principal de setup
 function setupOriginMap() {
     const hotspots = document.querySelectorAll('.map-hotspot');
     const modal = document.getElementById('origin-modal');
 
-    // ===================================================
-    // === ANIMAÇÃO DE ENTRADA (GSAP) ===
-    // ===================================================
     if (typeof gsap !== 'undefined' && hotspots.length > 0) {
-        // Define o estado inicial (invisível e pequeno)
         gsap.set(hotspots, { opacity: 0, scale: 0.5 });
 
         gsap.to(hotspots, {
-            duration: 0.8, // Duração da animação de cada botão
+            duration: 0.8, 
             opacity: 1,
             scale: 1,
-            ease: "back.out(1.7)", // Efeito de "elástico"
-            stagger: 0.2, // Atraso entre cada botão
+            ease: "back.out(1.7)", 
+            stagger: 0.2, 
             scrollTrigger: {
-                trigger: ".origin-map-container", // O container do mapa
-                start: "top 75%", // Começa quando 75% do mapa estiver visível
-                toggleActions: "play none none none" // Anima apenas uma vez
+                trigger: ".origin-map-container", 
+                start: "top 75%", 
+                toggleActions: "play none none none" 
             }
         });
     }
-    // ===================================================
-    // === FIM DA ANIMAÇÃO ===
-    // ===================================================
 
-    if (!hotspots.length || !modal) return; // Não faz nada se os elementos não existirem
+    if (!hotspots.length || !modal) return; 
 
     const closeBtn = modal.querySelector('.game-close-btn');
 
-    // Listener para cada Hotspot
     hotspots.forEach(hotspot => {
         hotspot.addEventListener('click', () => {
             const matrizKey = hotspot.dataset.matriz;
@@ -1641,10 +1455,8 @@ function setupOriginMap() {
         });
     });
 
-    // Listeners para fechar o modal
     closeBtn.addEventListener('click', closeOriginModal);
     modal.addEventListener('click', (e) => {
-        // Fechar se clicar no fundo (overlay)
         if (e.target === modal) {
             closeOriginModal();
         }
@@ -1653,27 +1465,22 @@ function setupOriginMap() {
 
 
 /* =======================================================
- * 23. LÓGICA DO FILTRO DA PÁGINA DE RECEITAS
+ * LÓGICA DO FILTRO DA PÁGNA DE RECEITAS
  * ======================================================= */
 function setupRecipeFilters() {
     const filterContainer = document.querySelector('.filter-bar');
-    // Verificação para garantir que estamos na página de receitas
-    // Adiciona uma verificação pelo ID da página de receitas
     const recipePage = document.getElementById('receitas');
 
     if (!filterContainer || !recipePage || !recipePage.classList.contains('active')) {
-        // Se o container não existe OU a página de receitas não está ativa, não faz nada.
-        // Isso previne que o script tente rodar em outras páginas.
         return;
     }
 
     const filterButtons = filterContainer.querySelectorAll('.filter-btn');
     const recipeCards = document.querySelectorAll('#recipe-grid .cards_item');
 
-    // Função que realmente filtra
     const performFilter = (filter) => {
         recipeCards.forEach(card => {
-            const categories = card.dataset.category; // ex: "vegano sem-gluten"
+            const categories = card.dataset.category; 
 
             if (filter === 'todos' || (categories && categories.includes(filter))) {
                 card.classList.remove('hidden');
@@ -1683,22 +1490,17 @@ function setupRecipeFilters() {
         });
     };
 
-    // Adiciona listener aos botões
     filterButtons.forEach(button => {
         button.addEventListener('click', () => {
             const filter = button.dataset.filter;
 
-            // 1. Atualiza o botão ativo
             filterButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-            // 2. Filtra os cards
             performFilter(filter);
         });
     });
 
-    // Garante que o filtro 'todos' seja aplicado na primeira carga da página
-    // Encontra o botão 'todos' e o ativa, depois filtra
     const initialActiveButton = filterContainer.querySelector('.filter-btn[data-filter="todos"]');
     if (initialActiveButton) {
         filterButtons.forEach(btn => btn.classList.remove('active'));
@@ -1706,35 +1508,25 @@ function setupRecipeFilters() {
         performFilter('todos');
     }
 }
-// --- 7. LÓGICA DE CELEBRAÇÃO DA DEDICATÓRIA (FORMATURA) ---
-const dedicationBox = document.getElementById('class-dedication');
 
-// Variável para evitar disparar confetes a cada milissegundo.
+// --- LÓGICA DE CELEBRAÇÃO DA DEDICATÓRIA (FORMATURA) ---
+const dedicationBox = document.getElementById('class-dedication');
 let confettiTimer = null;
 
 if (dedicationBox && typeof triggerConfetti !== 'undefined') {
-
-    // Dispara o confete APENAS ao passar o mouse (hover)
     dedicationBox.addEventListener('mouseenter', () => {
-        // Checa se já existe um timer rodando para não sobrecarregar
         if (confettiTimer) {
             return;
         }
-
-        // Dispara o confete
         triggerConfetti(dedicationBox);
-
-        // Define um novo timer para impedir um novo disparo por 2 segundos
         confettiTimer = setTimeout(() => {
             confettiTimer = null;
         }, 2000);
     });
-
-    // O CÓDIGO DE DISPARO INICIAL FOI REMOVIDO DAQUI.
 }
 
 /* =======================================================
- * LÓGICA CHATBOT (IMPLEMENTAÇÃO COMPLETA)
+ * LÓGICA CHATBOT (CORRIGIDA - SEM TRAVAR TELA E FECHAR AO CLICAR FORA)
  * ======================================================= */
 
 function setupChatbotToggle() {
@@ -1742,52 +1534,253 @@ function setupChatbotToggle() {
     const closeBtn = document.getElementById('chatbot-close-btn');
     const chatWindow = document.getElementById('chatbot-window');
 
-    // ⚠️ Adicionado console.error para debugging, caso não encontre um elemento
+    // Verifica se os elementos existem para evitar erros
     if (!toggleBtn || !chatWindow || !closeBtn) {
-        console.error("ERRO: Elementos do Chatbot (toggleBtn, chatWindow, closeBtn) não foram encontrados no DOM.");
         return;
     }
 
     function toggleChatbot() {
         const isHidden = chatWindow.classList.contains('hidden');
 
-        // 1. Alterna a visibilidade da janela e do FAB
+        // 1. Alterna a visibilidade da janela e do botão
         chatWindow.classList.toggle('hidden');
         toggleBtn.classList.toggle('hidden');
 
-        // 2. Controla o scroll do body (trava a rolagem)
-        document.body.classList.toggle('game-modal-open', isHidden);
-
-        // 3. Foca no input ao abrir
+        // 2. (CORREÇÃO: REMOVIDO O BLOQUEIO DE SCROLL)
+        // document.body.classList.toggle('game-modal-open', isHidden); 
+        
+        // 3. Se abriu, fecha o calendário se ele estiver aberto (para não sobrepor)
         if (isHidden) {
+            const calendarPopup = document.getElementById('calendar-popup');
+            if (calendarPopup && !calendarPopup.classList.contains('hidden')) {
+                // Fecha o calendário visualmente e remove a classe do body
+                calendarPopup.classList.add('hidden');
+                document.body.classList.remove('calendar-open');
+            }
+
+            // Foca no input para digitar logo
             const input = document.getElementById('chatbot-input');
             if (input) {
-                // Timeout para garantir que o foco seja aplicado após a animação de abertura
                 setTimeout(() => input.focus(), 400);
             }
         }
     }
 
-    // Event listeners
     toggleBtn.addEventListener('click', toggleChatbot);
     closeBtn.addEventListener('click', toggleChatbot);
+
+    // 👇 NOVO: FECHAR AO CLICAR FORA
+    document.addEventListener('click', (event) => {
+        // Se o chat está ABERTO...
+        if (!chatWindow.classList.contains('hidden')) {
+            // ...e o clique NÃO foi dentro da janela do chat...
+            // ...e o clique NÃO foi no botão que abre o chat...
+            if (!chatWindow.contains(event.target) && !toggleBtn.contains(event.target)) {
+                // Fecha o Chatbot
+                chatWindow.classList.add('hidden');
+                toggleBtn.classList.remove('hidden');
+            }
+        }
+    });
 }
 
-// O restante da lógica de chat (envio de mensagem, gemini-chat.js, etc.) 
-// deve ser implementado no arquivo correspondente.
+
+/* =======================================================
+ * 📅 LÓGICA DO CALENDÁRIO POPUP (CORRIGIDO, VISUAL PREMIUM)
+ * ======================================================= */
+const MiniCalendar = {
+    date: new Date(),
+    today: new Date(),
+    
+    // BANCO DE DADOS DE EVENTOS (Datas no formato AAAA-MM-DD)
+    events: [
+        // Dia 23 teve duas ações (Infantil + Início Idosos)
+        { date: "2025-10-23", title: "Ação Infantil & Idosos (Dia 1)", type: "acao" },
+        
+        // Dia 24 foi a continuação dos Idosos
+        { date: "2025-10-24", title: "Ação Idosos (Dia 2)", type: "acao" },
+        
+        { date: "2025-11-03", title: "Ação Adultos", type: "acao" },
+        { date: "2025-11-05", title: "Ação Adultos (Dia 2)", type: "acao" },
+        { date: "2025-12-25", title: "Natal", type: "feriado" }
+    ],
+    // Intervalos (Ex: Temporada de Natal)
+    ranges: [
+        { start: "2025-12-01", end: "2026-01-06", title: "Temporada de Natal", type: "sazonal" }
+    ],
+
+    init: function() {
+        const toggleBtn = document.getElementById('calendar-toggle-btn');
+        const closeBtn = document.getElementById('calendar-close-btn');
+        const popup = document.getElementById('calendar-popup');
+        const prevBtn = document.getElementById('prev-month-mini');
+        const nextBtn = document.getElementById('next-month-mini');
+
+        if(!toggleBtn || !popup) return; 
+
+        // 1. Abrir/Fechar
+        const toggleCal = () => {
+            // Alterna a visibilidade
+            const isHidden = popup.classList.toggle('hidden');
+            
+            // SE o calendário ABRIU (não está hidden), adiciona classe no body
+            if (!isHidden) {
+                document.body.classList.add('calendar-open');
+                // Fecha o chatbot se estiver aberto para não sobrepor
+                const chatWindow = document.getElementById('chatbot-window');
+                if(chatWindow && !chatWindow.classList.contains('hidden')) {
+                    chatWindow.classList.add('hidden');
+                    document.getElementById('chatbot-toggle-btn')?.classList.remove('hidden');
+                }
+            } else {
+                // SE FECHOU, remove a classe
+                document.body.classList.remove('calendar-open');
+            }
+        };
+
+        toggleBtn.addEventListener('click', toggleCal);
+        closeBtn.addEventListener('click', toggleCal);
+
+        // 👇 NOVO: FECHAR AO CLICAR FORA
+        document.addEventListener('click', (event) => {
+            // Se o calendário está ABERTO...
+            if (!popup.classList.contains('hidden')) {
+                // ...e o clique NÃO foi dentro do calendário...
+                // ...e o clique NÃO foi no botão que abre o calendário...
+                if (!popup.contains(event.target) && !toggleBtn.contains(event.target)) {
+                    popup.classList.add('hidden');
+                    document.body.classList.remove('calendar-open');
+                }
+            }
+        });
+
+        // 2. Navegação Meses
+        prevBtn.addEventListener('click', () => {
+            this.date.setMonth(this.date.getMonth() - 1);
+            this.render();
+        });
+        nextBtn.addEventListener('click', () => {
+            this.date.setMonth(this.date.getMonth() + 1);
+            this.render();
+        });
+
+        this.render();
+    },
+
+    render: function() {
+        const monthYear = document.getElementById('current-month-mini');
+        const daysContainer = document.getElementById('calendar-days-mini');
+        const infoBox = document.getElementById('event-info-mini');
+        
+        this.date.setDate(1); 
+
+        const month = this.date.getMonth();
+        const year = this.date.getFullYear();
+        
+        const lastDay = new Date(year, month + 1, 0).getDate();
+        const prevLastDay = new Date(year, month, 0).getDate();
+        const firstDayIndex = this.date.getDay();
+        const lastDayIndex = new Date(year, month + 1, 0).getDay();
+        const nextDays = 7 - lastDayIndex - 1;
+
+        const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        
+        monthYear.innerText = `${months[month]} ${year}`;
+        daysContainer.innerHTML = "";
+
+        // Dias do mês anterior
+        for (let x = firstDayIndex; x > 0; x--) {
+            daysContainer.innerHTML += `<li class="inactive" style="opacity:0.3">${prevLastDay - x + 1}</li>`;
+        }
+
+        // Dias do mês atual
+        for (let i = 1; i <= lastDay; i++) {
+            let li = document.createElement('li');
+            li.innerText = i;
+            
+            // Checa se é hoje
+            const isToday = i === this.today.getDate() && month === this.today.getMonth() && year === this.today.getFullYear();
+            if (isToday) {
+                li.classList.add('today');
+            }
+
+            // Checa Eventos Pontuais
+            const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+            const event = this.events.find(e => e.date === dateStr);
+            
+            // Checa Ranges (Natal)
+            let inRange = false;
+            const currDateObj = new Date(year, month, i);
+            const range = this.ranges.find(r => {
+                const start = new Date(r.start + "T00:00:00");
+                const end = new Date(r.end + "T00:00:00");
+                return currDateObj >= start && currDateObj <= end;
+            });
+
+            if (event) {
+                li.classList.add('has-event');
+                
+                // Ícone visual no detalhe
+                let iconClass = 'fa-circle';
+                if(event.type === 'acao') iconClass = 'fa-handshake';
+                if(event.type === 'feriado') iconClass = 'fa-star';
+
+                li.onclick = () => {
+                    infoBox.innerHTML = `
+                        <strong style="color: var(--color-primary); font-size: 1.1em;">
+                            <i class="fa-solid ${iconClass}"></i> ${i} de ${months[month]}
+                        </strong>
+                        <span style="color: #555;">${event.title}</span>
+                    `;
+                };
+            } else if (range) {
+                 li.classList.add('in-range-mini');
+                 
+                 // Classes para bordas arredondadas no CSS
+                 const rStart = new Date(range.start + "T00:00:00");
+                 const rEnd = new Date(range.end + "T00:00:00");
+                 if (currDateObj.getTime() === rStart.getTime()) li.classList.add('in-range-start');
+                 if (currDateObj.getTime() === rEnd.getTime()) li.classList.add('in-range-end');
+
+                 li.onclick = () => {
+                    infoBox.innerHTML = `
+                        <strong style="color: #c0392b;">
+                            <i class="fa-solid fa-gift"></i> ${range.title}
+                        </strong>
+                        <span>Aproveite nossa decoração e receitas especiais!</span>
+                    `;
+                };
+            } else {
+                 li.onclick = () => {
+                    infoBox.innerHTML = `<strong>${i} de ${months[month]}</strong><span style="color:#999">Nenhum evento programado.</span>`;
+                };
+            }
+            
+            // Mensagem padrão para hoje sem evento
+            if(isToday && !event && !range) {
+                 li.onclick = () => {
+                    infoBox.innerHTML = `<strong>Hoje, ${i} de ${months[month]}</strong><span>Aproveite o dia!</span>`;
+                };
+            }
+
+            daysContainer.appendChild(li);
+        }
+    }
+};
 
 
 /* =======================================================
  * CHAMADAS GERAIS (Roda APÓS A DEFINIÇÃO das funções)
  * ======================================================= */
 
-// Funções da Página Inicial (Home) - Roda no carregamento inicial
 setupHeroCarousel();
 
-// Garante que o Chatbot e outras inicializações rodem *depois* do DOM
-// O DOMContentLoaded garante que todos os elementos HTML (como o botão) 
-// existam antes de tentarmos anexar o listener.
 document.addEventListener('DOMContentLoaded', () => {
-    // Funções que devem rodar no carregamento inicial da página, independente da seção ativa:
     setupChatbotToggle();
+    setupTextToSpeech();
+    
+    // 👇 Inicializa o novo calendário
+    if(typeof MiniCalendar !== 'undefined') {
+        MiniCalendar.init();
+    }
 });

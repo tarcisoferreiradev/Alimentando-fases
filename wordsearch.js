@@ -14,22 +14,22 @@ const WordSearchGame = {
 
     // --- 2. Dados do Jogo ---
     gridData: [
-        ['F', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'C', 'A', 'L', 'C', 'I', 'O', 'P'], // Linha 0
-        ['E', 'G', 'Z', 'X', 'C', 'P', 'R', 'O', 'T', 'E', 'I', 'N', 'A', 'K', 'R'], // Linha 1
-        ['R', 'H', 'A', 'M', 'V', 'B', 'N', 'M', 'K', 'J', 'H', 'G', 'F', 'D', 'X'], // Linha 2 
-        ['R', 'J', 'B', 'Z', 'N', 'M', 'I', 'X', 'D', 'G', 'U', 'M', 'A', 'Z', 'I'], // Linha 3 
-        ['O', 'K', 'A', 'Q', 'A', 'E', 'L', 'A', 'R', 'A', 'N', 'J', 'A', 'R', 'T'], // Linha 4 (LARANJA correta)
-        ['X', 'L', 'C', 'W', 'N', 'B', 'P', 'Y', 'A', 'B', 'I', 'Q', 'C', 'A', 'A'], // Linha 5 
-        ['C', 'E', 'N', 'O', 'U', 'R', 'A', 'T', 'H', 'M', 'K', 'J', 'A', 'N', 'M'], // Linha 6 (CENOURA)
-        ['Y', 'M', 'X', 'P', 'L', 'O', 'Ñ', 'U', 'J', 'B', 'I', 'H', 'X', 'J', 'I'], // Linha 7 
-        ['A', 'D', 'A', 'F', 'A', 'Q', 'I', 'Q', 'P', 'E', 'R', 'T', 'Y', 'U', 'N'], // Linha 8 
-        ['A', 'N', 'B', 'R', 'I', 'C', 'O', 'A', 'I', 'S', 'Q', 'N', 'A', 'K', 'A'], // Linha 9: ABACAXI (letra 'A' na [9][0]) / BANANA (letra 'A' na [9][7])
-        ['B', 'O', 'V', 'O', 'U', 'B', 'L', 'V', 'N', 'T', 'A', 'N', 'B', 'N', 'X'], // Linha 10: ABACAXI (letra 'B' na [10][0]) / BANANA (letra 'N' na [10][8])
-        ['A', 'P', 'C', 'L', 'R', 'S', 'G', 'B', 'N', 'A', 'R', 'E', 'A', 'P', 'A'], // Linha 11: ABACAXI (letra 'A' na [11][0]) / BANANA (letra 'A' na [11][9])
-        ['C', 'Q', 'D', 'K', 'A', 'J', 'U', 'V', 'A', 'Y', 'N', 'D', 'N', 'M', 'C'], // Linha 12: ABACAXI (letra 'C' na [12][0]) / BANANA (letra 'N' na [12][10])
-        ['A', 'R', 'E', 'J', 'N', 'N', 'B', 'E', 'R', 'Ç', 'A', 'A', 'A', 'Q', 'L'], // Linha 13: ABACAXI (letra 'A' na [13][0]) / BANANA (letra 'A' na [13][11])
-        ['X', 'S', 'F', 'I', 'A', 'O', 'P', 'R', 'S', 'W', 'D', 'B', 'B', 'R', 'Q'], // Linha 14: ABACAXI (letra 'X' na [14][0]) / BANANA (letra 'B' na [14][12])
-        ['I', 'V', 'I', 'T', 'A', 'M', 'I', 'N', 'A', 'O', 'P', 'A', 'A', 'T', 'Z']  // Linha 15: ABACAXI (letra 'I' na [15][0]) / VITAMINA correta
+        ['F', 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'C', 'A', 'L', 'C', 'I', 'O', 'P'], 
+        ['E', 'G', 'Z', 'X', 'C', 'P', 'R', 'O', 'T', 'E', 'I', 'N', 'A', 'K', 'R'], 
+        ['R', 'H', 'A', 'M', 'V', 'B', 'N', 'M', 'K', 'J', 'H', 'G', 'F', 'D', 'X'], 
+        ['R', 'J', 'B', 'Z', 'N', 'M', 'I', 'X', 'D', 'G', 'U', 'M', 'A', 'Z', 'I'], 
+        ['O', 'K', 'A', 'Q', 'A', 'E', 'L', 'A', 'R', 'A', 'N', 'J', 'A', 'R', 'T'], 
+        ['X', 'L', 'C', 'W', 'N', 'B', 'P', 'Y', 'A', 'B', 'I', 'Q', 'C', 'A', 'A'], 
+        ['C', 'E', 'N', 'O', 'U', 'R', 'A', 'T', 'H', 'M', 'K', 'J', 'A', 'N', 'M'], 
+        ['Y', 'M', 'X', 'P', 'L', 'O', 'Ñ', 'U', 'J', 'B', 'I', 'H', 'X', 'J', 'I'], 
+        ['A', 'D', 'A', 'F', 'A', 'Q', 'I', 'Q', 'P', 'E', 'R', 'T', 'Y', 'U', 'N'], 
+        ['A', 'N', 'B', 'R', 'I', 'C', 'O', 'A', 'I', 'S', 'Q', 'N', 'A', 'K', 'A'], 
+        ['B', 'O', 'V', 'O', 'U', 'B', 'L', 'V', 'N', 'T', 'A', 'N', 'B', 'N', 'X'], 
+        ['A', 'P', 'C', 'L', 'R', 'S', 'G', 'B', 'N', 'A', 'R', 'E', 'A', 'P', 'A'], 
+        ['C', 'Q', 'D', 'K', 'A', 'J', 'U', 'V', 'A', 'Y', 'N', 'D', 'N', 'M', 'C'], 
+        ['A', 'R', 'E', 'J', 'N', 'N', 'B', 'E', 'R', 'Ç', 'A', 'A', 'A', 'Q', 'L'], 
+        ['X', 'S', 'F', 'I', 'A', 'O', 'P', 'R', 'S', 'W', 'D', 'B', 'B', 'R', 'Q'], 
+        ['I', 'V', 'I', 'T', 'A', 'M', 'I', 'N', 'A', 'O', 'P', 'A', 'A', 'T', 'Z']  
     ],
 
     wordList: [
