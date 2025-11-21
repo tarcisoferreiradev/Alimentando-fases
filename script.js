@@ -265,6 +265,12 @@ function navigateTo(pageId, anchorId = null) {
     else if (pageId === 'origem-alimentar') {
         setupOriginMap();
     }
+    // LÓGICA PARA ATIVAR O MURAL DE DESEJOS (FIREBASE)
+    else if (pageId === 'mural-natal') { 
+        if (typeof setupWishMural !== 'undefined') {
+            setTimeout(() => { setupWishMural(); }, 100);
+        }
+    }
 
     if (anchorId) {
         const targetElement = document.querySelector(anchorId); 
@@ -453,7 +459,7 @@ navLinks.forEach(link => {
 
 
 // =======================================================
-// ✅ NOVA LÓGICA DO CARROSSEL DO HERO
+// ✅ LÓGICA DO CARROSSEL DO HERO
 // =======================================================
 function setupHeroCarousel() {
     const slides = document.querySelectorAll('.hero-slide');
@@ -1526,57 +1532,60 @@ if (dedicationBox && typeof triggerConfetti !== 'undefined') {
 }
 
 /* =======================================================
- * LÓGICA CHATBOT (CORRIGIDA - SEM TRAVAR TELA E FECHAR AO CLICAR FORA)
+ * LÓGICA CHATBOT (CORRIGIDA - CLIQUE INTERNO SEGURO)
  * ======================================================= */
-
 function setupChatbotToggle() {
     const toggleBtn = document.getElementById('chatbot-toggle-btn');
     const closeBtn = document.getElementById('chatbot-close-btn');
     const chatWindow = document.getElementById('chatbot-window');
 
-    // Verifica se os elementos existem para evitar erros
-    if (!toggleBtn || !chatWindow || !closeBtn) {
-        return;
-    }
+    if (!toggleBtn || !chatWindow || !closeBtn) return;
 
     function toggleChatbot() {
         const isHidden = chatWindow.classList.contains('hidden');
-
-        // 1. Alterna a visibilidade da janela e do botão
         chatWindow.classList.toggle('hidden');
         toggleBtn.classList.toggle('hidden');
 
-        // 2. (CORREÇÃO: REMOVIDO O BLOQUEIO DE SCROLL)
-        // document.body.classList.toggle('game-modal-open', isHidden); 
-        
-        // 3. Se abriu, fecha o calendário se ele estiver aberto (para não sobrepor)
         if (isHidden) {
+            // Se abriu, fecha o calendário se estiver aberto
             const calendarPopup = document.getElementById('calendar-popup');
             if (calendarPopup && !calendarPopup.classList.contains('hidden')) {
-                // Fecha o calendário visualmente e remove a classe do body
-                calendarPopup.classList.add('hidden');
-                document.body.classList.remove('calendar-open');
+                 // Usa a função de fechar do calendário para garantir a limpeza do body
+                 if (typeof MiniCalendar !== 'undefined' && MiniCalendar.close) {
+                    MiniCalendar.close();
+                 } else {
+                    calendarPopup.classList.add('hidden');
+                    document.body.classList.remove('calendar-open');
+                 }
             }
-
-            // Foca no input para digitar logo
+            // Foca no input
             const input = document.getElementById('chatbot-input');
-            if (input) {
-                setTimeout(() => input.focus(), 400);
-            }
+            if (input) setTimeout(() => input.focus(), 400);
         }
     }
 
-    toggleBtn.addEventListener('click', toggleChatbot);
-    closeBtn.addEventListener('click', toggleChatbot);
+    toggleBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Impede que o clique no botão feche imediatamente
+        toggleChatbot();
+    });
 
-    // 👇 NOVO: FECHAR AO CLICAR FORA
+    closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleChatbot();
+    });
+
+    // --- CORREÇÃO PRINCIPAL ---
+    // Impede que cliques DENTRO do chat propaguem para o document e fechem a janela
+    chatWindow.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Fecha ao clicar FORA (no document)
     document.addEventListener('click', (event) => {
-        // Se o chat está ABERTO...
+        // Se a janela NÃO tem a classe 'hidden', significa que ela está aberta
         if (!chatWindow.classList.contains('hidden')) {
-            // ...e o clique NÃO foi dentro da janela do chat...
-            // ...e o clique NÃO foi no botão que abre o chat...
-            if (!chatWindow.contains(event.target) && !toggleBtn.contains(event.target)) {
-                // Fecha o Chatbot
+            // Se o clique NÃO foi no botão que abre/fecha, feche a janela
+            if (!toggleBtn.contains(event.target)) {
                 chatWindow.classList.add('hidden');
                 toggleBtn.classList.remove('hidden');
             }
@@ -1620,21 +1629,11 @@ const MiniCalendar = {
 
         // 1. Abrir/Fechar
         const toggleCal = () => {
-            // Alterna a visibilidade
-            const isHidden = popup.classList.toggle('hidden');
-            
-            // SE o calendário ABRIU (não está hidden), adiciona classe no body
-            if (!isHidden) {
-                document.body.classList.add('calendar-open');
-                // Fecha o chatbot se estiver aberto para não sobrepor
-                const chatWindow = document.getElementById('chatbot-window');
-                if(chatWindow && !chatWindow.classList.contains('hidden')) {
-                    chatWindow.classList.add('hidden');
-                    document.getElementById('chatbot-toggle-btn')?.classList.remove('hidden');
-                }
+            const isHidden = popup.classList.contains('hidden');
+            if(isHidden) {
+                this.open();
             } else {
-                // SE FECHOU, remove a classe
-                document.body.classList.remove('calendar-open');
+                this.close();
             }
         };
 
@@ -1648,8 +1647,7 @@ const MiniCalendar = {
                 // ...e o clique NÃO foi dentro do calendário...
                 // ...e o clique NÃO foi no botão que abre o calendário...
                 if (!popup.contains(event.target) && !toggleBtn.contains(event.target)) {
-                    popup.classList.add('hidden');
-                    document.body.classList.remove('calendar-open');
+                    this.close();
                 }
             }
         });
@@ -1665,6 +1663,31 @@ const MiniCalendar = {
         });
 
         this.render();
+    },
+    
+    open: function() {
+        const popup = document.getElementById('calendar-popup');
+        if (!popup) return;
+        
+        popup.classList.remove('hidden');
+        document.body.classList.add('calendar-open');
+        
+        // Fecha o chatbot se estiver aberto
+        const chatWindow = document.getElementById('chatbot-window');
+        const chatToggleBtn = document.getElementById('chatbot-toggle-btn');
+        
+        if(chatWindow && !chatWindow.classList.contains('hidden')) {
+            chatWindow.classList.add('hidden');
+            if(chatToggleBtn) chatToggleBtn.classList.remove('hidden');
+        }
+    },
+    
+    close: function() {
+        const popup = document.getElementById('calendar-popup');
+        if (!popup) return;
+        
+        popup.classList.add('hidden');
+        document.body.classList.remove('calendar-open');
     },
 
     render: function() {
@@ -1770,17 +1793,474 @@ const MiniCalendar = {
 
 
 /* =======================================================
- * CHAMADAS GERAIS (Roda APÓS A DEFINIÇÃO das funções)
+ * 1. Configuração da Caça aos Presentes (COM ANIMAÇÃO FINAL)
  * ======================================================= */
+const giftHuntGame = {
+    totalGifts: 3,
+    foundGifts: 0,
+    foundIds: [],
+
+    init: function() {
+        const gifts = document.querySelectorAll('.hidden-gift');
+        const toast = document.getElementById('gift-hunt-toast');
+        
+        // Se o elemento contador existir dentro do toast, pegamos ele, senão o próprio toast
+        const countSpan = document.getElementById('gift-count');
+        
+        if (!toast || gifts.length === 0) return;
+
+        // NOTA: Removi o setTimeout que mostrava o toast automaticamente.
+        // Agora ele começa invisível.
+
+        gifts.forEach((gift, index) => {
+            gift.addEventListener('click', (e) => {
+                e.stopPropagation();
+                
+                if (!this.foundIds.includes(index)) {
+                    this.foundIds.push(index);
+                    this.foundGifts++;
+                    
+                    // Marca o presente como encontrado
+                    gift.classList.add('found');
+                    
+                    // --- MUDANÇA VISUAL: TEXTO CURTO ---
+                    // Atualiza o texto para ser apenas "1/3", "2/3"
+                    if(countSpan) {
+                        // Se tiver o span específico, atualiza ele
+                        countSpan.textContent = `${this.foundGifts}/${this.totalGifts}`;
+                        // Remove o texto "Ache os presentes" para ficar minimalista
+                        toast.innerHTML = `<i class="fa-solid fa-gift"></i> ${this.foundGifts} / ${this.totalGifts}`;
+                    }
+                    
+                    // Mostra o Mini HUD apenas ao achar o primeiro
+                    if (this.foundGifts === 1) {
+                        toast.classList.add('visible');
+                    }
+
+                    // Efeito de "Pulo" no placar para chamar atenção quando atualiza
+                    toast.style.transform = "translateX(-50%) scale(1.1)";
+                    setTimeout(() => {
+                        toast.style.transform = "translateX(-50%) scale(1)";
+                    }, 200);
+
+                    // Confete
+                    if(typeof confetti === 'function') {
+                        confetti({ particleCount: 50, spread: 60, origin: { x: e.clientX / window.innerWidth, y: e.clientY / window.innerHeight } });
+                    }
+
+                    // VITÓRIA
+                    if (this.foundGifts === this.totalGifts) {
+                        toast.style.backgroundColor = "#f0fdf4";
+                        toast.style.borderColor = "#3D7938";
+                        toast.innerHTML = '<i class="fa-solid fa-check"></i> Completo!';
+                        
+                        setTimeout(() => {
+                           this.triggerVictoryAnimation();
+                        }, 800);
+                    }
+                }
+            });
+        });
+    },
+
+    triggerVictoryAnimation: function() {
+        const modal = document.getElementById('gift-reveal-modal');
+        if(modal) {
+            modal.classList.remove('hidden');
+            setTimeout(() => { modal.classList.add('active'); }, 10);
+             if(typeof confetti === 'function') {
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 11001 };
+                function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+                var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+                }, 250);
+            }
+        }
+    }
+};
+
+// Função global para fechar o modal de presente
+function closeGiftModal() {
+    const modal = document.getElementById('gift-reveal-modal');
+    if(modal) {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.classList.add('hidden');
+        }, 500); // Espera a animação de fade-out terminar
+    }
+}
+
+// =======================================================
+// LÓGICA DO MURAL DE DESEJOS (FIREBASE)
+// =======================================================
+
+// Funções para controle do Modal de Leitura (Nova funcionalidade)
+function closeLetterModal() {
+    const modal = document.getElementById('letter-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.classList.remove('game-modal-open');
+    }
+}
+
+function openLetterModal(messageText) {
+    const modal = document.getElementById('letter-modal');
+    const content = document.getElementById('letter-text-content');
+    
+    if (modal && content) {
+        // Usa textContent para segurança contra XSS
+        content.textContent = messageText; 
+        modal.classList.add('active');
+        document.body.classList.add('game-modal-open');
+    }
+}
+
+
+// Função para gerar uma posição e rotação aleatória para o presente na árvore
+function generateRandomPosition() {
+    const minX = 15; 
+    const maxX = 85; 
+    const minY = 10; 
+    const maxY = 90; 
+    
+    const x = Math.floor(Math.random() * (maxX - minX + 1)) + minX;
+    const y = Math.floor(Math.random() * (maxY - minY + 1)) + minY;
+    // Rotação aleatória (entre -10 e 10 graus)
+    const rotation = Math.floor(Math.random() * 21) - 10; 
+    
+    return { top: y + '%', left: x + '%', rotation: rotation };
+}
+
+// Lista de Paletas de Cores (Papel / Fita)
+const giftPalettes = [
+    { papel: '#fcf8f0', fita: '#d92d2d' }, // Clássico: Creme e Vermelho
+    { papel: '#d92d2d', fita: '#FFD700' }, // Vermelho e Dourado
+    { papel: '#3D7938', fita: '#fcf8f0' }, // Verde e Creme
+    { papel: '#FFD700', fita: '#d92d2d' }, // Dourado e Vermelho
+    { papel: '#ffffff', fita: '#3D7938' }, // Branco e Verde
+    { papel: '#8B0000', fita: '#00FF00' }, // Vinho e Verde Neon
+    { papel: '#191970', fita: '#C0C0C0' }  // Azul Noite e Prata
+];
+
+// Função para renderizar as mensagens (CORRIGIDA: Cores Fixas por Mensagem)
+function renderWishes(wishes) {
+    const displayArea = document.getElementById('wish-display-area');
+    const noWishes = document.getElementById('no-wishes-yet');
+    if (!displayArea) return;
+
+    displayArea.innerHTML = '';
+
+    if (wishes.length === 0) {
+        if (noWishes) noWishes.style.display = 'block';
+        return;
+    }
+    if (noWishes) noWishes.style.display = 'none';
+
+    wishes.forEach(wish => {
+        const gift = document.createElement('div');
+        gift.classList.add('christmas-gift-box');
+        
+        // 1. Gera posição aleatória (Mantemos a posição aleatória para espalhar)
+        const position = generateRandomPosition();
+        gift.style.top = position.top;
+        gift.style.left = position.left;
+        gift.style.setProperty('--random-rotation', position.rotation);
+        
+        // =====================================================
+        // 2. CORREÇÃO: ESCOLHA DE COR BASEADA NA MENSAGEM
+        // =====================================================
+        // Em vez de sortear, somamos os códigos das letras da mensagem
+        // Isso garante que a mesma mensagem sempre gere o mesmo número.
+        let colorIndex = 0;
+        if (wish.message) {
+            for (let i = 0; i < wish.message.length; i++) {
+                colorIndex += wish.message.charCodeAt(i);
+            }
+        }
+        
+        // Pega o resto da divisão para escolher uma paleta válida
+        const safeIndex = colorIndex % giftPalettes.length;
+        const palette = giftPalettes[safeIndex];
+        
+        // 3. APLICA AS CORES FIXAS
+        gift.style.setProperty('--cor-papel', palette.papel);
+        gift.style.setProperty('--cor-fita', palette.fita);
+        
+        // Evento de clique
+        gift.addEventListener('click', () => {
+            openLetterModal(wish.message); 
+        });
+
+        // HTML Interno
+        gift.innerHTML = `
+            <div class="gift-ribbon"></div> 
+            <div class="gift-message-content">
+                <p class="gift-message-text">${wish.message.substring(0, 15)}...</p> 
+            </div>
+        `;
+        displayArea.appendChild(gift);
+    });
+}
+
+// Função para escutar mudanças em tempo real (Leitura)
+function listenForWishes() {
+    // A variável 'db' é inicializada no index.html (onde o SDK do Firebase está)
+    if (!db) return;
+
+    db.collection('desejosNatal')
+      // Ordena as mensagens pelas mais recentes
+      .orderBy('timestamp', 'desc') 
+      .limit(30)
+      .onSnapshot(snapshot => {
+        const wishes = [];
+        snapshot.forEach(doc => {
+            // Garante que a mensagem tenha sido salva corretamente no servidor
+            if (doc.data().timestamp) { 
+                wishes.push(doc.data()); 
+            }
+        });
+        renderWishes(wishes); 
+      }, error => {
+        console.error("Erro ao escutar mensagens:", error);
+      });
+}
+
+// Função para enviar a mensagem (Escrita - Anônima)
+function sendWish(message, form) {
+    const statusEl = document.getElementById('wish-status');
+    if (!db) {
+         statusEl.textContent = 'Erro: Banco de dados não inicializado.';
+         statusEl.style.color = '#d92d2d';
+         statusEl.style.display = 'block';
+         return;
+    }
+
+    db.collection('desejosNatal').add({
+        // Apenas a mensagem, para garantir o anonimato
+        message: message,
+        // Usa o carimbo de data/hora do servidor do Firebase
+        timestamp: firebase.firestore.FieldValue.serverTimestamp() 
+    })
+    .then(() => {
+        statusEl.textContent = 'Presente pendurado com sucesso!';
+        statusEl.style.color = 'var(--color-primary)';
+        form.reset();
+    })
+    .catch((error) => {
+        statusEl.textContent = `Erro ao pendurar presente: ${error.message}`;
+        statusEl.style.color = '#d92d2d';
+    })
+    .finally(() => {
+        statusEl.style.display = 'block';
+        setTimeout(() => { statusEl.style.display = 'none'; }, 3000);
+    });
+}
+
+// Setup da Lógica Principal do Mural (Inicializa Listeners)
+function setupWishMural() {
+    const form = document.getElementById('wish-form');
+    const statusEl = document.getElementById('wish-status');
+
+    if (!form || !statusEl) return;
+
+    form.removeEventListener('submit', handleMuralSubmit);
+    form.addEventListener('submit', handleMuralSubmit);
+    
+    listenForWishes();
+    
+    function handleMuralSubmit(e) {
+        e.preventDefault();
+        
+        const message = document.getElementById('wish-message').value.trim();
+
+        if (!message) {
+            statusEl.textContent = 'Por favor, escreva uma mensagem.';
+            statusEl.style.color = '#d97706';
+            statusEl.style.display = 'block';
+            return;
+        }
+        
+        statusEl.textContent = 'Pendurando...';
+        statusEl.style.color = '#d92d2d';
+        // Fecha o modal de leitura, caso esteja aberto
+        closeLetterModal(); 
+        statusEl.style.display = 'block';
+        
+        sendWish(message, form);
+    }
+}
+
+
+// =======================================================
+// CHAMADAS GERAIS (Roda APÓS A DEFINIÇÃO das funções)
+// =======================================================
 
 setupHeroCarousel();
 
 document.addEventListener('DOMContentLoaded', () => {
-    setupChatbotToggle();
-    setupTextToSpeech();
+    // A ordem de inicialização é importante
     
-    // 👇 Inicializa o novo calendário
+    // 1. Inicializa o toggle do Chatbot
+    setupChatbotToggle();
+    
+    // 2. Inicializa o Calendário
     if(typeof MiniCalendar !== 'undefined') {
         MiniCalendar.init();
     }
+    
+    // 3. Demais inicializações
+    setupTextToSpeech();
+    giftHuntGame.init();
+    
+    // --- NOVO: FECHAR PRESENTE CLICANDO FORA ---
+    const giftModal = document.getElementById('gift-reveal-modal');
+    if (giftModal) {
+        giftModal.addEventListener('click', (e) => {
+            // Verifica se o clique foi EXATAMENTE no fundo escuro (overlay)
+            // OU no wrapper de conteúdo (que agora ocupa 100%)
+            // MAS NÃO se foi num elemento filho (como o botão ou a caixa)
+            
+            if (!e.target.closest('.gift-container') && !e.target.closest('.close-modal')) {
+                 closeGiftModal();
+            }
+        });
+    }
+    
+    // 4. Fechar Modal de Carta ao clicar fora (nova função)
+    const letterModal = document.getElementById('letter-modal');
+    if (letterModal) {
+        letterModal.addEventListener('click', (e) => {
+            if (e.target === letterModal) {
+                closeLetterModal();
+            }
+        });
+    }
+
+    // Garante que as funções de música rodem após o carregamento inicial
+    setupMusicToggle();
+
 });
+
+/* =======================================================
+ * LÓGICA DO PLAYER DE MÚSICA (MOVIDO/CORRIGIDO)
+ * ======================================================= */
+
+function setupMusicToggle() {
+    const musicBtn = document.getElementById('music-toggle');
+    const audio = document.getElementById('xmas-bgm');
+    
+    if(musicBtn && audio) {
+        audio.volume = 0.3; // Volume agradável (30%)
+        
+        musicBtn.addEventListener('click', () => {
+            if (audio.paused) {
+                // Tocar
+                audio.play().catch(error => {
+                    console.log("Autoplay bloqueado pelo navegador: ", error);
+                });
+                musicBtn.classList.add('playing');
+                // Troca ícone para ondas sonoras
+                musicBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>'; 
+            } else {
+                // Pausar
+                audio.pause();
+                musicBtn.classList.remove('playing');
+                // Volta ícone de nota musical
+                musicBtn.innerHTML = '<i class="fa-solid fa-music"></i>'; 
+            }
+        });
+    }
+}
+
+/* =======================================================
+ * ✨ EFEITO DO CURSOR PÓ MÁGICO (ESTRELAS)
+ * ======================================================= */
+document.addEventListener('mousemove', function(e) {
+    // Frequência: 30% dos movimentos criam uma estrela
+    if (Math.random() < 0.3) { 
+        const dust = document.createElement('div');
+        dust.classList.add('magic-dust');
+        
+        // Posição
+        dust.style.left = e.pageX + 'px';
+        dust.style.top = e.pageY + 'px';
+        
+        // --- TAMANHO AUMENTADO PARA ESTRELAS ---
+        // Agora varia entre 10px e 20px para ficarem nítidas
+        const size = Math.random() * 10 + 10;
+        dust.style.width = size + 'px';
+        dust.style.height = size + 'px';
+        
+        // Cores de Natal
+        const colors = ['#d92d2d', '#3D7938', '#FFD700', '#c0392b'];
+        dust.style.background = colors[Math.floor(Math.random() * colors.length)];
+        
+        document.body.appendChild(dust);
+        
+        setTimeout(() => {
+            dust.remove();
+        }, 1200);
+    }
+});
+
+/* =======================================================
+ * LÓGICA DA CONTAGEM REGRESSIVA
+ * ======================================================= */
+function updateChristmasCountdown() {
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    let xmasDate = new Date(currentYear, 11, 25, 0, 0, 0); 
+
+    if (now > xmasDate) {
+        xmasDate.setFullYear(currentYear + 1);
+    }
+
+    const diff = xmasDate - now;
+
+    const daysTotal = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+    const minutes = Math.floor((diff / 1000 / 60) % 60);
+    const seconds = Math.floor((diff / 1000) % 60);
+
+    const months = Math.floor(daysTotal / 30);
+    const days = daysTotal % 30;
+
+    // Elementos
+    const elMonths = document.getElementById('cd-months');
+    const elBoxMonths = document.getElementById('box-months'); // A caixa inteira do mês
+    const elLabelMonths = document.getElementById('lbl-months'); // O texto "mês/meses"
+    
+    const elDays = document.getElementById('cd-days');
+    const elHours = document.getElementById('cd-hours');
+    const elMinutes = document.getElementById('cd-minutes');
+    const elSeconds = document.getElementById('cd-seconds');
+
+    if (elSeconds) { 
+        // Lógica do Mês (Ocultar a caixa se for 0)
+        if (months > 0) {
+            elMonths.innerText = months;
+            if(elBoxMonths) elBoxMonths.style.display = 'flex'; // Mostra a caixa
+            
+            // Singular/Plural
+            if(elLabelMonths) elLabelMonths.innerText = (months === 1) ? 'mês' : 'meses';
+        } else {
+            if(elBoxMonths) elBoxMonths.style.display = 'none'; // Esconde a caixa inteira
+        }
+
+        // Formatação com zero à esquerda (01, 05, 10)
+        if(elDays) elDays.innerText = days < 10 ? '0' + days : days;
+        if(elHours) elHours.innerText = hours < 10 ? '0' + hours : hours;
+        if(elMinutes) elMinutes.innerText = minutes < 10 ? '0' + minutes : minutes;
+        if(elSeconds) elSeconds.innerText = seconds < 10 ? '0' + seconds : seconds;
+    }
+}
+
+// Inicia o relógio
+setInterval(updateChristmasCountdown, 1000); 
+updateChristmasCountdown();

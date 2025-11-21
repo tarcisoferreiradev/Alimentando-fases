@@ -14,14 +14,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Lato:wght@400;700&family=Roboto:wght@400;700&family=Roboto+Slab:wght@700&display=swap"
-        rel="stylesheet">
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&family=Lato:wght@400;700&family=Roboto:wght@400;700&family=Roboto+Slab:wght@700&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="style.css?v=12"> 
 
 </head>
 
-<body>
+<body class="tema-natal">
 
     <div vw class="enabled">
         <div vw-access-button class="active"></div>
@@ -35,7 +35,7 @@
     <header class="main-header">
         <div class="main-header__wrapper">
             <a href="#" class="main-header__logo nav-link" data-page="home">
-                <img src="Imagens/logo1.webp" alt="Logotipo Alimentando Fases">
+                <img src="Imagens/Alimentando Fases Natal.png" alt="Logotipo Alimentando Fases">
                 <div class="site-title-wrapper">
                     <h1 class="site-title">
                         ALIMENTANDO <span class="title-highlight">FASES</span>
@@ -334,7 +334,19 @@
                                                         stroke-linecap="round" stroke-linejoin="round" />
                                                 </svg>
                                             </a>
-                                        </li>                               
+                                        </li>
+
+                                        <li class="submenu-list__item has-submenu">
+                                            <a href="#" class="submenu-list__item-wrapper nav-link" data-page="receitas" role="button" onclick="setTimeout(() => { const btn = document.querySelector('[data-filter=\'sazonal\']'); if(btn) btn.click(); }, 600)">
+                                                <div class="submenu-list__item-link">
+                                                    <span class="submenu-list__item-title" style="color: #992d2d;">Receitas Sazonais</span>
+                                                    <span class="submenu-list__item-subtile">Festas e datas especiais</span>
+                                                </div>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14" viewBox="0 0 16 14">
+                                                    <path d="M0.5 6.99996H15.5M15.5 6.99996L9.66667 1.16663M15.5 6.99996L9.66667 12.8333" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </a>
+                                        </li>
                                         
                                         <li class="submenu-list__item has-submenu">
                                             <a href="#" class="submenu-list__item-wrapper nav-link" data-page="higiene"
@@ -368,6 +380,21 @@
                                                 </svg>
                                             </a>
                                         </li>
+                                        <li class="submenu-list__item has-submenu">
+    <a href="#" class="submenu-list__item-wrapper nav-link" data-page="mural-natal"
+        role="button">
+        <div class="submenu-list__item-link">
+            <span class="submenu-list__item-title" style="color: #d92d2d;">Mural de Desejos</span>
+            <span class="submenu-list__item-subtile">Recado de Natal para a comunidade</span>
+        </div>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="14"
+            viewBox="0 0 16 14">
+            <path
+                d="M0.5 6.99996H15.5M15.5 6.99996L9.66667 1.16663M15.5 6.99996L9.66667 12.8333"
+                stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+    </a>
+</li>
                                     </ul>
                                     <div class="submenu-content__column">
 
@@ -520,12 +547,16 @@
                                                         <div class="submenu-content__link-text">Como interpretar as
                                                             porções e o percentual de Valor Diário (%VD).</div>
                                                     </a></li>
+
                                             </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </li>
+                        
+                        
+            
 
                         <li class="main-header__list-item">
                             <a href="#" class="nav-link" data-page="acoes" role="button">Ações</a>
@@ -540,49 +571,120 @@
             <div class="main-header__burger"><i></i><i></i><i></i></div>
         </div>
     </header>
+
     <main id="app-container">
+        <section id="mural-natal" class="page-content mural-page">
+    <section class="content-section mural-header-content">
 
+        <div class="video-overlay"></div>
+    </div>
+    <div class="mural-container">
+        <div class="section-header">
+        
+        <h2 class="section-title mural-title">
+            <i class="fa-solid fa-tree"></i> Árvore de Desejos de Natal!
+        </h2>
+        
+        <p class="section-description mural-subtitle">Que tal espalhar luz? Compartilhe um desejo de esperança ou aquele segredo saudável que você adora. Sua mensagem vai virar um lindo Presente pendurado aqui!</p>
 
-        <section id="home" class="page-content active">
-            <div class="hero-section">
-
-                <div class="hero-slides-container">
-                    <div class="hero-slide active" style="background-image: url('Imagens/background1.jpg');"></div>
-                    <div class="hero-slide" style="background-image: url('Imagens/fasesdavida.webp');"></div>
-                    <div class="hero-slide" style="background-image: url('Imagens/comida-de-verdade.webp');"></div>
-                    <div class="hero-slide" style="background-image: url('Imagens/ancestralidade.jpg');"></div>
-                    <div class="hero-slide" style="background-image: url('Imagens/Infancia_Inicio.webp');"></div>
-
+        <div id="christmas-wishes-app" class="mural-app-container">
+            
+            <div class="wish-form-container gs_reveal mural-form-card">
+                <div class="card-header-festive">
+                    <h3 class="card-title">Envie seu Desejo Anônimo</h3>
                 </div>
-
-                <button class="carousel-nav prev" aria-label="Slide anterior">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M15 6L9 12L15 18" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-                <button class="carousel-nav next" aria-label="Próximo slide">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M9 18L15 12L9 6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
-
-                <div class="hero-content">
-                    <h2>NUTRIÇÃO, ANCESTRALIDADE E SAÚDE PARA TODAS AS FASES DA VIDA.</h2>
-                    <p>Orientação alimentar baseada em evidências científicas e no Guia Alimentar para a População
-                        Brasileira, valorizando nossas origens e a sustentabilidade.</p>
-                    <a href="#" data-page="infancia" class="cta-button nav-link">Navegue pelas Fases da Vida</a>
-                </div>
-
-                <div class="carousel-dots">
-                    <button class="active" aria-label="Ir para o slide 1"></button>
-                    <button aria-label="Ir para o slide 2"></button>
-                    <button aria-label="Ir para o slide 3"></button>
-                    <button aria-label="Ir para o slide 4"></button> <button aria-label="Ir para o slide 5"></button>
-                </div>
-
+                
+                <form id="wish-form" class="mural-form-flex">
+                    <textarea id="wish-message" placeholder="Sua mensagem de Natal (máx. 150 caracteres)" maxlength="150" required class="mural-input mural-textarea"></textarea>
+                    
+                    <button type="submit" class="cta-button mural-submit-btn mural-submit-festive">
+                        <i class="fa-solid fa-gift"></i> Pendurar Presente!
+                    </button>
+                    
+                    <p id="wish-status" class="mural-status-msg"></p>
+                </form>
             </div>
 
-            <section id="pilares" class="content-section calls-to-action">
+            <div class="christmas-tree-wrapper">
+                <div id="wish-display-area" class="mural-display-area">
+                    <p id="no-wishes-yet" class="mural-no-wishes"></p>
+                </div>
+                <img src="Imagens/arvoredenatal.png" alt="Árvore de Natal decorada" class="christmas-tree-img">
+            </div>
+            
+        </div>
+    </section>
+</section>
+
+    <section id="home" class="page-content active">
+        <div class="hero-section">
+
+            <div class="hero-slides-container">
+                <div class="hero-slide active" style="background-image: url('Imagens/background1.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('Imagens/fasesdavida.webp');"></div>
+                <div class="hero-slide" style="background-image: url('Imagens/comida-de-verdade.webp');"></div>
+                <div class="hero-slide" style="background-image: url('Imagens/ancestralidade.jpg');"></div>
+                <div class="hero-slide" style="background-image: url('Imagens/Infancia_Inicio.webp');"></div>
+            </div>
+
+            <div class="christmas-stripe">
+                <div class="christmas-countdown">
+                    <div class="countdown-header">
+                        <i class="fa-solid fa-sleigh"></i> O NATAL CHEGA EM:
+                    </div>
+                    
+                    <div class="countdown-timer">
+                        <div class="time-box" id="box-months">
+                            <span class="number" id="cd-months">0</span>
+                            <span class="label" id="lbl-months">mês</span>
+                        </div>
+                        <div class="time-box">
+                            <span class="number" id="cd-days">00</span>
+                            <span class="label">dias</span>
+                        </div>
+                        <div class="time-box">
+                            <span class="number" id="cd-hours">00</span>
+                            <span class="label">horas</span>
+                        </div>
+                        <div class="time-box">
+                            <span class="number" id="cd-minutes">00</span>
+                            <span class="label">min</span>
+                        </div>
+                        <div class="time-box">
+                            <span class="number" id="cd-seconds">00</span>
+                            <span class="label">seg</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button class="carousel-nav prev" aria-label="Slide anterior">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M15 18l-6-6 6-6"/>
+                </svg>
+            </button>
+            <button class="carousel-nav next" aria-label="Próximo slide">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 18l6-6-6-6"/>
+                </svg>
+            </button>
+
+            <div class="hero-content">
+                <h2>NUTRIÇÃO, ANCESTRALIDADE E SAÚDE PARA TODAS AS FASES DA VIDA.</h2>
+                <p>Orientação alimentar baseada em evidências científicas e no Guia Alimentar para a População
+                    Brasileira, valorizando nossas origens e a sustentabilidade.</p>
+                <a href="#" data-page="infancia" class="cta-button nav-link">Navegue pelas Fases da Vida</a>
+            </div>
+
+            <div class="carousel-dots">
+                <button class="active"></button>
+                <button></button>
+                <button></button>
+                <button></button>
+                <button></button>
+            </div>
+
+        </div> <section id="pilares" class="content-section calls-to-action">
                 <h2 class="section-title">Explore Nossos Pilares</h2>
                 <div class="grid-container-3d gs_reveal gs_reveal_fromLeft">
                     <div class="card-3d">
@@ -756,6 +858,9 @@
                                     class="about-simple-image">
 
                                 <div class="class-dedication-box" id="class-dedication">
+                                    <div style="position: absolute; top: 10px; right: 10px;">
+                                            <div class="hidden-gift"><i class="fa-solid fa-gift"></i></div>
+                                        </div>
                                     <p>
                                         DEDICATÓRIA DA TURMA DE TEC. NUTRIÇÃO
                                     </p>
@@ -1381,7 +1486,10 @@
                     <h4>Vamos Praticar!</h4>
                 </div>
                 <div class="topic-content">
-                    
+                    <div style="text-align: center; margin: 10px 0;">
+                      <div class="hidden-gift"><i class="fa-solid fa-gift"></i></div>
+                  </div>
+                                      
                     <p>Agora que você sabe os desafios e os mitos, que tal praticar? Arraste os alimentos para as caixas corretas e ensine os pequenos a diferenciar "comida de verdade" de ultraprocessados!</p>
                     
                     <p class="mobile-only-instruction">
@@ -3369,22 +3477,25 @@
                 <p class="section-description">Todas as receitas do site, separadas por categorias para facilitar sua
                     busca. Encontre pratos veganos, sem glúten e de aproveitamento integral.</p>
 
-                    <div class="filter-bar">
-    <button class="filter-btn active" data-filter="todos">
-        <i class="fa-solid fa-utensils"></i> Todos (12)
-    </button>
-    <button class="filter-btn" data-filter="vegano">
-        <i class="fa-solid fa-seedling"></i> Vegano (6)
-    </button>
-    <button class="filter-btn" data-filter="sem-gluten">
-        <i class="fa-solid fa-wheat-awn-circle-exclamation"></i> Sem Glúten (7)
-    </button>
-
-    <button class="filter-btn" data-filter="integral">
-        <i class="fa-solid fa-recycle"></i> Aproveitamento Integral (5)
-    </button>
-</div>
-
+                <div class="filter-bar">
+                    <button class="filter-btn active" data-filter="todos">
+                        <i class="fa-solid fa-utensils"></i> Todos (12)
+                    </button>
+                    <button class="filter-btn" data-filter="vegano">
+                        <i class="fa-solid fa-seedling"></i> Vegano (6)
+                    </button>
+                    <button class="filter-btn" data-filter="sem-gluten">
+                        <i class="fa-solid fa-wheat-awn-circle-exclamation"></i> Sem Glúten (7)
+                    </button>
+                
+                    <button class="filter-btn" data-filter="sazonal">
+                        <i class="fa-solid fa-gift"></i> Sazonal (3)
+                    </button>
+                    <button class="filter-btn" data-filter="integral">
+                        <i class="fa-solid fa-recycle"></i> Aproveitamento Integral (5)
+                    </button>
+                </div>
+                
                 <div class="main">
                     <ul class="cards" id="recipe-grid">
 
@@ -3743,14 +3854,121 @@
                                 <span class="tag tag-vegan" title="Vegano"><i class="fas fa-seedling"></i> Vegano</span>
                             </div>
                         </li>
+                        <li class="cards_item" data-category="sazonal integral vegano">
+    <div class="card">
+        <div class="card_image">
+            <img src="Imagens/Farofa Festiva.webp" alt="Farofa Natalina com Talos e Castanhas" />
+        </div>
+        <div class="recipe-meta">
+            <div><i class="fa-solid fa-clock"></i><strong>Preparo</strong> 20 min</div>
+            <div><i class="fa-solid fa-utensils"></i><strong>Rende</strong> 6 porções</div>
+            <div><i class="fa-solid fa-leaf"></i> <strong>Nível</strong> Fácil</div>
+        </div>
+        <div class="card_content">
+            <h2 class="card_title card_title--with-tags">Farofa Festiva de Talos e Castanhas</h2>
+            <div class="card_text">
+                <h5>Ingredientes:</h5>
+                <ul class="recipe-list">
+                    <li>2 xícaras de farinha de mandioca torrada</li>
+                    <li>1 xícara de talos picados (agrião, beterraba, brócolis)</li>
+                    <li>½ xícara de castanha-do-pará ou nozes picadas</li>
+                    <li>1 cebola roxa picada</li>
+                    <li>½ xícara de uvas passas (opcional)</li>
+                    <li>Azeite, sal e cheiro-verde a gosto</li>
+                </ul>
+                <hr />
+                <h5>Modo de preparo:</h5>
+                <ol class="recipe-list">
+                    <li>Refogue a cebola no azeite até dourar.</li>
+                    <li>Adicione os talos picados e refogue por 3 minutos (para ficarem crocantes).</li>
+                    <li>Acrescente a farinha de mandioca e mexa bem até incorporar.</li>
+                    <li>Desligue o fogo e adicione as castanhas, as passas e o cheiro-verde.</li>
+                    <li>Acerte o sal e sirva como acompanhamento da ceia.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="recipe-inline-tags">
+        <span class="tag tag-vegan" title="Vegano"><i class="fas fa-seedling"></i> Vegano</span>
+    </div>
+</li>
 
-
-
+<li class="cards_item" data-category="sazonal integral">
+    <div class="card">
+        <div class="card_image">
+            <img src="Imagens/Rabanada de Forno.webp" alt="Rabanada de Forno Saudável" />
+        </div>
+        <div class="recipe-meta">
+            <div><i class="fa-solid fa-clock"></i><strong>Preparo</strong> 30 min</div>
+            <div><i class="fa-solid fa-utensils"></i><strong>Rende</strong> 8 fatias</div>
+            <div><i class="fa-solid fa-leaf"></i> <strong>Nível</strong> Médio</div>
+        </div>
+        <div class="card_content">
+            <h2 class="card_title card_title--with-tags">Rabanada de Forno (Sem Fritura)</h2>
+            <div class="card_text">
+                <h5>Ingredientes:</h5>
+                <ul class="recipe-list">
+                    <li>4 pães franceses amanhecidos (integrais de preferência)</li>
+                    <li>2 xícaras de leite (ou leite vegetal)</li>
+                    <li>2 ovos batidos</li>
+                    <li>1 colher (chá) de essência de baunilha</li>
+                    <li>Açúcar demerara e canela para polvilhar</li>
+                </ul>
+                <hr />
+                <h5>Modo de preparo:</h5>
+                <ol class="recipe-list">
+                    <li>Corte os pães em fatias grossas (2cm).</li>
+                    <li>Misture o leite com a baunilha em um prato. Em outro, bata os ovos.</li>
+                    <li>Passe as fatias rapidamente no leite e depois nos ovos.</li>
+                    <li>Coloque em uma assadeira untada e leve ao forno (200°C) por 15 min.</li>
+                    <li>Vire as fatias e asse por mais 5 min até dourar.</li>
+                    <li>Passe na mistura de açúcar e canela ainda quentes.</li>
                 </ol>
             </div>
         </div>
     </div>
 </li>
+
+<li class="cards_item" data-category="sazonal vegano sem-gluten integral">
+    <div class="card">
+        <div class="card_image">
+            <img src="Imagens/Arroz Festivo.webp" alt="Arroz Amarelo com Castanhas" />
+        </div>
+        <div class="recipe-meta">
+            <div><i class="fa-solid fa-clock"></i><strong>Preparo</strong> 25 min</div>
+            <div><i class="fa-solid fa-utensils"></i><strong>Rende</strong> 5 porções</div>
+            <div><i class="fa-solid fa-leaf"></i> <strong>Nível</strong> Fácil</div>
+        </div>
+        <div class="card_content">
+            <h2 class="card_title card_title--with-tags">Arroz Festivo com Açafrão e Castanhas</h2>
+            <div class="card_text">
+                <h5>Ingredientes:</h5>
+                <ul class="recipe-list">
+                    <li>2 xícaras de arroz integral cozido</li>
+                    <li>1 colher (chá) de açafrão da terra (cúrcuma)</li>
+                    <li>½ xícara de castanha-do-pará picada (ou amêndoas)</li>
+                    <li>½ xícara de ervilhas frescas</li>
+                    <li>1 cenoura pequena em cubinhos</li>
+                    <li>Salsinha e azeite a gosto</li>
+                </ul>
+                <hr />
+                <h5>Modo de preparo:</h5>
+                <ol class="recipe-list">
+                    <li>Em uma frigideira, aqueça o azeite e refogue a cenoura e as ervilhas por 3 minutos.</li>
+                    <li>Adicione o açafrão e misture para soltar a cor e aroma.</li>
+                    <li>Acrescente o arroz cozido e mexa bem até ficar todo amarelinho.</li>
+                    <li>Desligue o fogo, misture as castanhas crocantes e a salsinha fresca.</li>
+                    <li>Sirva quente como acompanhamento principal.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    <div class="recipe-inline-tags">
+        <span class="tag tag-vegan" title="Vegano"><i class="fas fa-seedling"></i> Vegano</span>
+        <span class="tag tag-gf" title="Sem Glúten"><i class="fas fa-wheat-awn-circle-exclamation"></i> Sem Glúten</span>
+    </div>
+</li>
+
                     </ul>
                 </div>
 
@@ -4598,6 +4816,8 @@
                                 <img src="Imagens/acaoadultos1.webp"
                                     alt="Equipe realizando atendimentos nutricionais individuais.">
                                 <img src="Imagens/acaoadultos2.webp" alt="Equipe sorrindo após a ação de saúde.">
+                                <div style="position: absolute; top: 50px; right: 20px; z-index: 5;">
+        <div class="hidden-gift"><i class="fa-solid fa-gift"></i></div>
                             </div>
 
                             <p>Foi um dia incrível de conexão e cuidado, finalizado com a foto desta equipe fantástica!
@@ -4956,7 +5176,39 @@
                 });
             </script>
         </section>
+         <div id="gift-hunt-toast">
+    <i class="fa-solid fa-gift"></i> 
+    <span>Ache os presentes: <span id="gift-count">0/3</span></span>
+</div>
 
+<div id="gift-reveal-modal" class="gift-modal hidden">
+    <div class="gift-modal-content">
+        <button class="close-modal" onclick="closeGiftModal()">&times;</button>
+        
+        <div class="gift-container">
+            <div class="ebook-reveal">
+                <h3>Parabéns! Você achou tudo!</h3>
+                <p>Como recompensa, preparamos um eBook especial de Natal para você.</p>
+                <img src="Imagens/ebook natal.png" alt="Capa do Ebook" class="ebook-cover">
+                <a href="pdf/ebook natal.pdf" target="_blank" class="download-btn">
+                    <i class="fa-solid fa-download"></i> Baixar Meu Presente
+                </a>
+            </div>
+
+            <div class="animated-gift-box">
+                <div class="gift-lid">
+                    <div class="ribbon-bow-left"></div>
+                    <div class="ribbon-bow-right"></div>
+                    <div class="ribbon-horiz"></div>
+                    <div class="ribbon-vert"></div>
+                </div>
+                <div class="gift-base">
+                    <div class="ribbon-vert"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
     </main>
 
     </main>
@@ -5046,8 +5298,53 @@
         <p><a href="#">Termos de Uso</a> | <a href="#">Política de Privacidade</a></p>
     </footer>
 
+    <div id="letter-modal" class="game-modal-overlay">
+    <div class="game-modal-content letter-content-wrapper">
+        <button class="game-close-btn" onclick="closeLetterModal()" aria-label="Fechar Carta">
+            <i class="fa-solid fa-times"></i>
+        </button>
+
+        <div class="letter-display-card">
+            <div class="letter-header">
+                <i class="fa-solid fa-envelope-open" style="color: #d92d2d;"></i>
+                <h3 class="card-title">Mensagem Anônima da Comunidade</h3>
+            </div>
+            
+            <p id="letter-text-content" class="letter-text-body"></p>
+            
+            <p class="letter-signature">— Um Amigo Secreto</p>
+        </div>
+    </div>
+</div>
+
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script>
+        // 1. Objeto de Configuração COPIADO
+        const firebaseConfig = {
+          apiKey: "AIzaSyCz5ZMzBQJDV5TvbKAY6_Y1_XYDBFLAUO",
+          authDomain: "alimentando-fases.firebaseapp.com",
+          projectId: "alimentando-fases",
+          storageBucket: "alimentando-fases.appspot.com",
+          messagingSenderId: "312896864162",
+          appId: "1:312896864162:web:ee61bac2c7b19383dbcfb",
+          measurementId: "G-9865RHDBZ" // Opcional, mas pode ser incluído
+        };
+    
+        // 2. Inicializa o Firebase e o Firestore
+        if (typeof firebase !== 'undefined' && firebase.apps.length === 0) {
+            // Usa a função tradicional do SDK v8
+            firebase.initializeApp(firebaseConfig);
+        }
+        // Cria a variável global 'db' que o script.js usa para se conectar ao banco de dados
+        const db = typeof firebase !== 'undefined' ? firebase.firestore() : null; 
+    </script>
+     
+     <script src="script.js?v=" defer></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/ScrollTrigger.min.js"></script>
