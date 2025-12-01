@@ -1,0 +1,5 @@
+*.html linguist-detectable=true linguist-vendored=false linguist-generated=false linguist-documentation=false linguist-language=HTML
+
+*.js linguist-detectable=true linguist-vendored=false linguist-generated=false linguist-documentation=false linguist-language=JavaScript
+
+*.css linguist-detectable=true linguist-vendored=false linguist-generated=false linguist-documentation=false linguist-language=CSS
