@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notificações - Alimentando Fases</title>
+    <link rel="canonical" href="https://alimentandofases.com/" />
+    
+    <link rel="icon" href="../Imagens/logofavicon.webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="../style.css"> 
+    <link rel="stylesheet" href="style.css">   
+</head>
+<body class="dashboard-body">
+
+    <div class="main-layout">
+        <nav class="sidebar">
+            <div class="logo-area">
+                <img src="../Imagens/logofavicon.webp" alt="Logo" class="sidebar-logo-img">
+                <div class="brand-text">ALIMENTANDO <span>FASES</span></div>
+            </div>
+            
+            <ul class="nav-links">
+                <li><a href="../index.html"><i class="fa-solid fa-house"></i> <span>Início</span></a></li>
+                
+                <li><a href="../comunidade/index.html"><i class="fa-solid fa-earth-americas"></i> <span>Comunidade</span></a></li>
+                
+                <li><a href="#" id="btn-open-tools"><i class="fa-solid fa-screwdriver-wrench"></i> <span>Ferramentas</span></a></li>
+                
+                <li><a href="#" class="active"><i class="fa-regular fa-bell"></i> <span>Notificações</span></a></li>
+                
+                <li><a href="../mensagens/index.html"><i class="fa-solid fa-envelope"></i> <span>Mensagens</span></a></li>
+                <li><a href="../calendario.html"><i class="fa-regular fa-calendar-check"></i> <span>Calendário</span></a></li>
+                <li><a href="#" id="btn-open-settings"><i class="fa-solid fa-gear"></i> <span>Configurações</span></a></li>
+            </ul>
+
+            <div class="nav-footer">
+                <a href="../perfil/index.html" class="profile-pill-link">
+                    <img src="https://ui-avatars.com/api/?name=User" class="nav-avatar" id="nav-avatar-img"> 
+                    <div class="profile-info-mini">
+                        <span class="p-name">Meu Perfil</span>
+                    </div>
+                </a>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            
+            <div class="top-search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="global-search-input" placeholder="Pesquisar..." autocomplete="off">
+                <div id="search-results-dropdown" class="search-dropdown hidden"></div>
+            </div>
+
+            <div class="page-header">
+                <h2>Notificações</h2>
+                <button id="btn-mark-all-read" class="btn-link-action">Marcar todas como lidas</button>
+            </div>
+
+            <div id="notifications-container" class="notif-list">
+                <div class="skeleton-notif"></div>
+                <div class="skeleton-notif"></div>
+                <div class="skeleton-notif"></div>
+            </div>
+        </main>
+
+        <aside class="right-sidebar">
+            <div class="widget-card ranking-widget">
+                <div class="widget-header">
+                    <h3><i class="fa-solid fa-chart-simple"></i> Destaques</h3>
+                </div>
+                <div class="ranking-list">
+                    <div class="ranking-item">
+                        <div class="rank-avatar-wrapper"><img src="https://ui-avatars.com/api/?name=Admin&background=000&color=fff" class="rank-avatar"></div>
+                        <div class="rank-info"><h4>Novidades</h4><span class="rank-xp">Fique atento!</span></div>
+                    </div>
+                </div>
+                <div class="ranking-footer">
+                    <p style="font-size:0.8rem; color:#888; text-align:center;">Interaja para aparecer aqui.</p>
+                </div>
+            </div>
+            <div class="footer-links-mini"><p>© 2025 Alimentando Fases</p></div>
+        </aside>
+    </div>
+
+    <div id="modal-tools" class="modal-overlay">
+        <div class="modal-content-tools">
+            <div class="modal-header-tools">
+                <h3><i class="fa-solid fa-screwdriver-wrench"></i> Central de Ferramentas</h3>
+                <button id="btn-close-tools" class="btn-icon-close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon water-icon"><i class="fa-solid fa-droplet"></i></div>
+                    <h4>Calculadora de Água</h4>
+                    <p>Descubra sua meta.</p>
+                    <div class="tool-input-area">
+                        <div class="input-wrapper-calc"><input type="number" id="user-weight-water" placeholder="Peso (kg)" oninput="calculateWater()"></div>
+                        <div id="calc-result-area" class="tool-result hidden"><strong id="water-result-text">0 L</strong></div>
+                    </div>
+                </div>
+                <div class="tool-card">
+                    <div class="tool-icon imc-icon"><i class="fa-solid fa-weight-scale"></i></div>
+                    <h4>Calculadora IMC</h4>
+                    <p>Verifique seu Índice.</p>
+                    <div class="tool-input-area">
+                        <div class="input-row"><input type="number" id="imc-height" placeholder="Alt (cm)" class="mini-input"><input type="number" id="imc-weight" placeholder="Peso (kg)" class="mini-input"></div>
+                        <button class="btn-tool-action" onclick="calculateIMC()">Calcular</button>
+                        <div id="imc-result-area" class="tool-result hidden"><span>IMC: </span><strong id="imc-value">0.0</strong><div id="imc-status-badge" class="status-badge-mini"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-settings" class="modal-overlay">
+        <div class="modal-content-settings">
+            <div class="modal-header-settings"><h3>Configurações</h3><button id="btn-close-settings" class="btn-icon-close"><i class="fa-solid fa-xmark"></i></button></div>
+            <div class="settings-layout">
+                <nav class="settings-sidebar"><button class="settings-nav-btn active"><span>Sua conta</span></button><button class="settings-nav-btn"><span>Privacidade</span></button></nav>
+                <div class="settings-content-area">
+                    <div id="section-account" class="settings-section active">
+                        <h2 class="st-title">Sua conta</h2>
+                        <div class="st-form-group"><label>Usuário</label><input type="text" id="st-info-username" readonly></div>
+                        <div class="st-form-group"><label>E-mail</label><input type="text" id="st-info-email" readonly></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="script.js"></script>
+
+</body>
+</html>

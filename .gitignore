@@ -1,35 +1,51 @@
-# Ignorar configurações locais e editor
+# --- SEGURANÇA (IMPORTANTE) ---
+# Ignora o arquivo com as chaves da API do Firebase
+firebase-config.js
+# Ignora arquivos de variáveis de ambiente (caso use no futuro)
+.env
+
+# --- FIREBASE ---
+# Cache e emuladores do Firebase
+.firebase/
+firebase-debug.log
+
+# --- CONFIGURAÇÕES DE EDITOR ---
 .vscode/
 *.code-workspace
+.idea/
 
-# Ignorar arquivos temporários e caches
-*.log
-*.tmp
-*.bak
-*.DS_Store
+# --- SISTEMA OPERACIONAL ---
+.DS_Store
 Thumbs.db
+Desktop.ini
 
-# Ignorar exportações e arquivos grandes
-*.zip
-*.rar
-*.psd
-*.ai
-*.mp4
-*.mov
-*.wav
-*.avi
-*.gif
-*.tif
-
-# Ignorar pastas geradas automaticamente
+# --- DEPENDÊNCIAS E BUILD ---
 node_modules/
 dist/
 build/
 out/
+
+# --- ARQUIVOS TEMPORÁRIOS E LOGS ---
+*.log
+*.tmp
+*.bak
 temp/
 cache/
 __pycache__/
 
-# Ignorar imagens e assets pesados (se tiver cópias grandes)
+# --- ARQUIVOS GRANDES / EXPORTAÇÕES (Não versionar) ---
+*.zip
+*.rar
+*.7z
+*.psd
+*.ai
+*.mp4
+*.mov
+*.avi
+*.tif
+*.tiff
+
+# --- BACKUPS E TESTES ---
 backup/
 old/
+test/

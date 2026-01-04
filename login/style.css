@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lato:wght@400;700&display=swap');
+
+:root {
+    --color-primary: #53954a;   
+    --color-primary-hover: #3e7037;
+    --color-text-dark: #333;
+    --color-text-gray: #666;
+    --color-border: #E0E0E0;
+    --input-bg: #FAFAFA;
+    
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Lato', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: var(--font-body);
+    background-color: #fff;
+    overflow: hidden; 
+}
+
+/* Container Principal */
+.login-container {
+    display: flex;
+    width: 100%;
+    height: 100vh; 
+}
+
+/* === LADO ESQUERDO (IMAGEM) === */
+.login-image-side {
+    flex: 1.3; 
+    position: relative;
+    background-color: #f0f0f0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.cover-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.3), transparent);
+    z-index: 1;
+}
+
+/* === LADO DIREITO (FORMULÁRIO) === */
+.login-form-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 1.5rem; 
+    height: 100%;
+    position: relative;
+}
+
+.form-wrapper {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%; 
+    justify-content: center;
+}
+
+/* Cabeçalho */
+.brand-header {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Aumentei um pouco o gap */
+    margin-bottom: 25px; 
+}
+
+/* 👇 LOGO MAIOR AQUI 👇 */
+.logo-icon {
+    width: 80px; /* Aumentado de 35px para 80px */
+    height: auto;
+}
+
+.brand-name {
+    font-family: var(--font-heading);
+    font-weight: 700;
+    font-size: 1.2rem; /* Aumentei levemente a fonte do nome */
+    color: var(--color-text-dark);
+}
+
+.welcome-title {
+    font-family: var(--font-heading);
+    font-size: 1.8rem;
+    color: var(--color-text-dark);
+    margin-bottom: 5px;
+    line-height: 1.2;
+}
+
+.welcome-subtitle {
+    color: var(--color-text-gray);
+    margin-bottom: 25px; 
+    font-size: 0.9rem;
+}
+
+/* Inputs */
+.input-group {
+    margin-bottom: 15px; 
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0 15px; 
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background-color: var(--input-bg);
+    transition: all 0.3s ease;
+    height: 48px; 
+}
+
+.input-icon {
+    color: #999;
+    margin-right: 12px;
+    font-size: 1rem;
+}
+
+.input-wrapper input {
+    flex: 1; 
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 0.95rem;
+    font-family: var(--font-body);
+    color: var(--color-text-dark);
+    height: 100%;
+}
+
+.input-wrapper:focus-within {
+    border-color: var(--color-primary);
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(83, 149, 74, 0.1);
+}
+
+.input-wrapper:focus-within .input-icon {
+    color: var(--color-primary);
+}
+
+.password-type {
+    position: relative; 
+}
+.toggle-password {
+    color: #999;
+    cursor: pointer;
+    margin-left: 10px; 
+    font-size: 0.9rem;
+}
+
+/* Opções */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px; 
+    font-size: 0.85rem;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    color: var(--color-text-gray);
+}
+
+.remember-me input {
+    accent-color: var(--color-primary);
+}
+
+.forgot-link {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.forgot-link:hover { text-decoration: underline; }
+
+/* Botões */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-bottom: 12px; 
+    font-family: var(--font-heading);
+}
+
+.btn-primary:hover { background-color: var(--color-primary-hover); }
+
+.btn-google {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: var(--color-text-dark);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.3s;
+}
+
+.btn-google:hover { background-color: #f5f5f5; }
+.btn-google img { width: 18px; }
+
+/* Links de Rodapé */
+.signup-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.85rem;
+    color: var(--color-text-gray);
+}
+
+.signup-footer a {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.signup-footer a:hover { text-decoration: underline; }
+
+/* === POLÍTICA DE PRIVACIDADE === */
+.footer-links {
+    margin-top: 25px;
+    text-align: center;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.footer-links p {
+    font-size: 0.75rem;
+    color: #000;
+    line-height: 1.4;
+    margin: 0;
+    font-weight: 500;
+}
+
+.footer-links a {
+    color: var(--color-primary);
+    font-weight: 700;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.footer-links a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+/* === RESPONSIVIDADE (Mobile) === */
+@media (max-width: 900px) {
+    body {
+        overflow-y: auto; 
+    }
+    
+    .login-container {
+        flex-direction: column;
+        height: 100vh; 
+    }
+
+    .login-image-side {
+        display: none; 
+    }
+    
+    .login-form-side {
+        padding: 20px; 
+        overflow-y: auto; 
+    }
+}
+/* --- ESTADO DE LOADING NO BOTÃO --- */
+.btn-primary {
+    /* Mantém as propriedades anteriores e adiciona: */
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+/* Classe que vamos adicionar via JS quando estiver carregando */
+.btn-primary.loading {
+    background-color: #3e7037; /* Cor um pouco mais escura */
+    cursor: not-allowed;
+    pointer-events: none; /* Bloqueia novos cliques */
+    opacity: 0.9;
+}
+
+/* Esconde o texto do botão quando estiver carregando (opcional, ou mantemos o ícone ao lado) */
+.btn-primary.loading .btn-text {
+    display: none; 
+}

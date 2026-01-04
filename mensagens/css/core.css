@@ -1,0 +1,30 @@
+:root {
+    --primary-color: #53954a;
+    --primary-gradient: linear-gradient(135deg, #53954a 0%, #3e7a35 100%);
+    --bg-app: #fdfdfd;
+    --text-main: #1c1e21;
+    --text-secondary: #65676b;
+    --border-light: #f0f2f5;
+    --blue-read: #53bdeb;
+}
+
+* { box-sizing: border-box; }
+
+body, html { 
+    margin: 0; padding: 0; 
+    height: 100%; 
+    overflow: hidden !important; 
+    font-family: 'Lato', sans-serif; 
+    background-color: var(--bg-app) !important; 
+}
+
+/* --- CORREÇÃO DO BUG DA FOTO GIGANTE --- */
+/* Isso garante que nenhuma imagem estoure seu lugar */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+.hidden { display: none !important; }
+.emoji-picker-element { z-index: 10000 !important; }

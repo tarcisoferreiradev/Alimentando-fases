@@ -1,43 +1,2085 @@
-!function(){let e=EventTarget.prototype.addEventListener;EventTarget.prototype.addEventListener=function(t,a,n){("touchstart"===t||"touchmove"===t||"wheel"===t)&&("object"==typeof n?n.passive=!0:"boolean"==typeof n||(n={passive:!0})),e.call(this,t,a,n)}}(),history.scrollRestoration&&(history.scrollRestoration="manual");const preGeneratedAudios={quemsomos:"audios/quemsomos.m4a","origem-alimentar":"audios/origemalimentar.m4a",infancia:"audios/infancia.m4a",adolescencia:"audios/adolescencia.m4a",adulto:"audios/adultos.m4a",idoso:"audios/idosos.m4a",higiene:"audios/higiene.m4a",rotulagem:"audios/rotulagem.m4a",acoes:"audios/acoes.m4a"};let currentAudio=null;const burger=document.querySelector(".main-header__burger"),navWrapper=document.querySelector(".main-header__navigation-wrapper");function toggleMobileMenu(){burger&&navWrapper&&(burger.classList.toggle("active"),navWrapper.classList.toggle("open"))}function closeMobileMenu(){burger&&navWrapper&&(burger.classList.remove("active"),navWrapper.classList.remove("open"))}burger&&burger.addEventListener("click",toggleMobileMenu);const menuItems=document.querySelectorAll(".main-header__list-item.has-submenu"),mainHeader=document.querySelector(".main-header"),handleSubmenuLinkHover=e=>{let t=e.currentTarget,a=t.closest(".main-header__list-item.has-submenu");if(!a)return;let n=a.querySelectorAll(".submenu-list__item.has-submenu"),o=a.querySelectorAll(".submenu-content");n.forEach(e=>e.classList.remove("active")),o.forEach(e=>e.classList.remove("active")),t.classList.add("active");let i=t.querySelector(".submenu-list__item-title");if(i){let s=i.textContent,l=a.querySelector(`.submenu-content[data-submenu-for="${s}"]`);l&&l.classList.add("active")}};function closeMenu(e){e.classList.remove("js-hover"),e.classList.add("is-closing");let t=e.querySelectorAll(".submenu-list__item.has-submenu");t.forEach(e=>{e.removeEventListener("mouseenter",handleSubmenuLinkHover)});let a=document.querySelector(".main-header__burger");if(a&&"flex"===getComputedStyle(a).display){let n=e.querySelector(".submenu-wrapper");n&&(n.style.maxHeight=null)}}function openMenu(e){e.classList.remove("is-closing"),e.classList.add("js-hover");let t=document.querySelector(".main-header__burger");if(t&&"flex"===getComputedStyle(t).display){let a=e.querySelector(".submenu-wrapper");a&&(a.style.maxHeight=a.scrollHeight+"px")}let n=e.querySelectorAll(".submenu-list__item.has-submenu"),o=e.querySelectorAll(".submenu-content"),i=document.querySelector(".main-header__burger");i&&"none"!==getComputedStyle(i).display||setTimeout(()=>{if(n.forEach(e=>e.classList.remove("active")),o.forEach(e=>e.classList.remove("active")),n.length>0){let t=n[0];t.classList.add("active");let a=t.querySelector(".submenu-list__item-title");if(a){let i=a.textContent,s=e.querySelector(`.submenu-content[data-submenu-for="${i}"]`);s&&s.classList.add("active")}}},0),n.forEach(e=>{e.addEventListener("mouseenter",handleSubmenuLinkHover),e.addEventListener("click",t=>{let a=document.querySelector(".main-header__burger");if(a&&"flex"!==getComputedStyle(a).display){let n=e.closest(".main-header__list-item.has-submenu");n&&closeMenu(n);return}closeMobileMenu();let o=e.closest(".main-header__list-item.has-submenu");o&&closeMenu(o)})})}menuItems.forEach(e=>{let t=e.querySelector(":scope > a"),a=e.querySelector(".submenu-wrapper");if(!t||!a)return;t.addEventListener("click",t=>{t.preventDefault(),t.stopPropagation();let a=e.classList.contains("js-hover");if(menuItems.forEach(t=>{t!==e&&closeMenu(t)}),a)closeMenu(e);else{openMenu(e);let n=document.querySelector(".main-header__burger");navWrapper&&n&&"flex"===getComputedStyle(n).display&&setTimeout(()=>{let t=e.offsetTop,a=parseFloat(window.getComputedStyle(navWrapper).paddingTop)||0;navWrapper.scrollTo({top:t-a,behavior:"smooth"})},50)}}),a.addEventListener("click",e=>{e.stopPropagation()});let n=Array.from(e.querySelectorAll("a, button"));if(n.length>0){let o=n[n.length-1],i=n[0];i.addEventListener("keydown",t=>{t.shiftKey&&"Tab"===t.key&&closeMenu(e)}),o.addEventListener("keydown",t=>{t.shiftKey||"Tab"!==t.key||closeMenu(e)}),e.addEventListener("focusout",t=>{e.contains(t.relatedTarget)||closeMenu(e)})}}),document.addEventListener("click",e=>{menuItems.forEach(e=>{closeMenu(e)})});const navLinks=document.querySelectorAll(".nav-link"),pages=document.querySelectorAll(".page-content"),appContainer=document.getElementById("app-container");function navigateTo(e,t=null){window.scrollTo({top:0,behavior:"instant"}),pages.forEach(e=>e.classList.remove("active"));let a=document.getElementById(e);if(a?a.classList.add("active"):(e="home",document.getElementById("home").classList.add("active")),setupTextToSpeech(),"home"===e?setupHeroCarousel():"adolescencia"===e?"undefined"!=typeof WordSearchGame&&WordSearchGame.init&&setTimeout(()=>{WordSearchGame.init()},100):"infancia"===e?void 0!==EmbeddedClassifyGame&&EmbeddedClassifyGame.init&&setTimeout(()=>{EmbeddedClassifyGame.init()},100):"receitas"===e?void 0!==setupRecipeFilters&&setTimeout(()=>{setupRecipeFilters()},100):"adulto"===e?(setupSnackPlanner(),animateChartBars()):"idoso"===e?setupHydrationCalculator():"higiene"===e?setupHandwashGuide():"origem-alimentar"===e?setupOriginMap():"agenda"===e?setTimeout(()=>{FullPageCalendar.init()},100):"mural-natal"===e&&void 0!==setupWishMural&&setTimeout(()=>{setupWishMural()},100),t){let n=document.querySelector(t);n?setTimeout(()=>{let e=n.getBoundingClientRect().top,t=e+window.pageYOffset-90;window.scrollTo({top:t,behavior:"smooth"})},50):window.scrollTo({top:0,behavior:"smooth"})}else window.scrollTo({top:0,behavior:"smooth"});closeMobileMenu(),menuItems&&menuItems.forEach(e=>{closeMenu(e)}),"undefined"!=typeof ScrollTrigger&&window.innerWidth>1024&&setTimeout(()=>{ScrollTrigger.refresh()},10)}function generateSpeechContent(e,t){let a=document.getElementById(e);if(!a)return;let n=window.speechSynthesis;if(n.speaking){n.cancel(),t.innerHTML='<i class="fa-solid fa-volume-up"></i> Ler Conte\xfado';return}let o=a.querySelectorAll(".topic-content, .section-description, .pullquote, .quiz-pergunta, .card_content h2, .card_content h5"),i="";if(o.forEach(e=>{e.textContent.trim().length>0&&e.offsetHeight>0&&(i+=e.textContent.trim()+". ")}),i){let s=new SpeechSynthesisUtterance(i);s.lang="pt-BR",t.innerHTML='<i class="fa-solid fa-stop-circle"></i> Parar Leitura',s.onend=()=>{t.innerHTML='<i class="fa-solid fa-volume-up"></i> Ler Conte\xfado'},n.speak(s)}else alert("Nenhum texto leg\xedvel encontrado nesta se\xe7\xe3o.")}function playAudioContent(e,t){let a=window.speechSynthesis;a.speaking&&a.cancel(),currentAudio||(currentAudio=new Audio),currentAudio.src.endsWith(e)&&currentAudio.readyState>=1?currentAudio.paused?currentAudio.play():currentAudio.pause():(currentAudio.src=e,currentAudio.load(),currentAudio.play().catch(e=>console.error("Erro ao tentar reproduzir o \xe1udio:",e)));let n=()=>{currentAudio.paused||currentAudio.ended?(t.innerHTML='<i class="fa-solid fa-volume-up"></i> Ler Conte\xfado',t.classList.remove("playing")):(t.innerHTML='<i class="fa-solid fa-stop-circle"></i> Parar Leitura',t.classList.add("playing"))};currentAudio.onplay=n,currentAudio.onpause=n,currentAudio.onended=n,n()}function readPageContent(e,t){let a=preGeneratedAudios[e];a?playAudioContent(a,t):generateSpeechContent(e,t)}function setupTextToSpeech(){let e=document.querySelectorAll("#infancia, #adolescencia, #adulto, #idoso, #quemsomos, #origem-alimentar, #higiene, #rotulagem, #acoes");e.forEach(e=>{let t=e.querySelector(".content-section");if(t&&!e.querySelector(".read-aloud-button-wrapper")){let a=document.createElement("button");a.classList.add("cta-link","read-aloud-button"),a.innerHTML='<i class="fa-solid fa-volume-up"></i> Ler Conte\xfado',a.setAttribute("aria-label","Clique para ler o conte\xfado completo desta p\xe1gina");let n=document.createElement("div");n.classList.add("read-aloud-button-wrapper"),n.appendChild(a);let o=e.querySelector(".section-description")||e.querySelector(".topic-container");o&&(o.parentNode.insertBefore(n,o),a.addEventListener("click",()=>{readPageContent(e.id,a)}))}})}function setupHeroCarousel(){let e=document.querySelectorAll(".hero-slide"),t=document.querySelectorAll(".carousel-dots button"),a=document.querySelector(".carousel-nav.prev"),n=document.querySelector(".carousel-nav.next");if(e.length<=1){a&&(a.style.display="none"),n&&(n.style.display="none"),t.length>0&&(document.querySelector(".carousel-dots").style.display="none");return}let o=0,i;function s(a){a>=e.length&&(a=0),a<0&&(a=e.length-1),e.forEach(e=>e.classList.remove("active")),t.forEach(e=>e.classList.remove("active")),e[a].classList.add("active"),t[a].classList.add("active"),o=a}function l(){s(o+1)}function r(){i=setInterval(l,5e3)}function d(){clearInterval(i),r()}n&&n.addEventListener("click",()=>{l(),d()}),a&&a.addEventListener("click",()=>{s(o-1),d()}),t.forEach((e,t)=>{e.addEventListener("click",()=>{s(t),d()})}),s(0),r()}function animateChartBars(){let e=document.querySelectorAll(".interactive-chart");e.forEach(e=>{let t=e.querySelectorAll(".chart-bar");"undefined"!=typeof gsap&&window.innerWidth>1024?(gsap.set(t,{width:"0%",autoAlpha:1}),ScrollTrigger.create({trigger:e,start:"top 80%",once:!0,onEnter(){gsap.to(t,{duration:1.5,width:(e,t)=>t.dataset.value.replace(",",".")+"%",ease:"power2.out",stagger:.1})}})):t.forEach(e=>{e.style.width=e.dataset.value.replace(",",".")+"%",e.style.opacity="1"})})}if(document.addEventListener("navigateRequest",e=>{let{pageId:t,anchorId:a}=e.detail;t&&navigateTo(t,a)}),navLinks.forEach(e=>{e.addEventListener("click",t=>{let a=e.dataset.page;if(!a)return;t.preventDefault();let n=e.getAttribute("href"),o=null;n&&n.startsWith("#")&&n.length>1&&(o=n),navigateTo(a,o),closeMobileMenu(),menuItems&&menuItems.forEach(e=>{closeMenu(e)})})}),"undefined"!=typeof gsap){if(window.innerWidth<=1024){let e=document.querySelectorAll(".gs_reveal");e.forEach(e=>{e.classList.remove("gs_reveal"),e.style.opacity="1",e.style.visibility="visible",e.style.transform="none"});let t=document.querySelectorAll(".topic-block");t.forEach(e=>{e.style.opacity="1",e.style.visibility="visible",e.style.transform="none"})}else{function a(e,t=1,a=50){gsap.fromTo(e,{y:t*a,autoAlpha:0},{duration:1.25,y:0,autoAlpha:1,ease:"expo.out",overwrite:"auto"})}function n(e){gsap.set(e,{autoAlpha:0})}gsap.registerPlugin(ScrollTrigger),gsap.utils.toArray(".gs_reveal").forEach(function(e){if(n(e),e.classList.contains("gs_reveal_fromLeft")||e.classList.contains("gs_reveal_fromRight")){let t=e.classList.contains("gs_reveal_fromLeft")?-100:100;ScrollTrigger.create({trigger:e,start:"top 85%",once:!0,onEnter(){gsap.fromTo(e,{x:t,autoAlpha:0},{duration:1.25,x:0,autoAlpha:1,ease:"expo.out",overwrite:"auto"})}});return}ScrollTrigger.create({trigger:e,start:"top 85%",once:!0,onEnter:()=>a(e,1,50),markers:!1})});let o=gsap.utils.toArray("#adolescencia .topic-block");o.length>0&&(gsap.set(o,{autoAlpha:0,y:50}),ScrollTrigger.create({trigger:"#adolescencia .topic-container",start:"top 75%",end:"bottom 25%",markers:!1,onEnter(){gsap.to(o,{duration:.8,autoAlpha:1,y:0,stagger:.15,ease:"power2.out",overwrite:"auto"})},onLeaveBack(){gsap.set(o,{autoAlpha:0,y:50})}}))}}const carouselWrapperNutrients=document.querySelector("#adolescencia .carousel-wrapper"),gridNutrients=document.querySelector("#adolescencia .grid-nutrients"),cardsNutrients=document.querySelectorAll("#adolescencia .flip-card"),prevButtonNutrients=document.querySelector("#adolescencia .prev-card"),nextButtonNutrients=document.querySelector("#adolescencia .next-card");if(carouselWrapperNutrients&&gridNutrients&&cardsNutrients.length>0&&prevButtonNutrients&&nextButtonNutrients){let i=0,s=cardsNutrients.length,l=parseFloat(window.getComputedStyle(gridNutrients).gap)||30;function r(){return cardsNutrients.length>0?cardsNutrients[0].offsetWidth:0}function d(){let e=r();if(0===e){setTimeout(d,100);return}let t=carouselWrapperNutrients.clientWidth,a=Math.max(0,s-Math.max(1,Math.floor((t+l)/(e+l))));i>a&&(i=a);let n=Math.max(0,e*s+l*(s-1)-t),o=i*(e+l);o>n&&(o=n),gridNutrients.style.transform=`translateX(-${o}px)`,gridNutrients.style.transition="transform 0.5s ease-out",prevButtonNutrients.disabled=0===i,nextButtonNutrients.disabled=o>=n-1}prevButtonNutrients.addEventListener("click",()=>{i>0&&(i--,d())}),nextButtonNutrients.addEventListener("click",()=>{nextButtonNutrients.disabled||(i++,d())}),window.addEventListener("resize",()=>{gridNutrients.style.transition="none",d()}),setTimeout(d,50)}else prevButtonNutrients&&nextButtonNutrients&&(prevButtonNutrients.style.display="none",nextButtonNutrients.style.display="none");function showGameCover(){document.body.classList.remove("game-modal-open"),document.querySelectorAll(".game-container-wrapper").forEach(e=>{e.classList.remove("active")}),document.querySelectorAll(".game-modal-overlay").forEach(e=>{e.classList.remove("active")})}function launchGame(e,t){document.body.classList.add("game-modal-open"),document.querySelectorAll(".game-container-wrapper").forEach(t=>{t.id!==e&&t.classList.remove("active")});let a=document.getElementById(e);if(a){a.classList.add("active");let n=a.querySelector(".game-area");if(n&&n.classList.add("active"),t&&"function"==typeof t)try{t()}catch(o){console.error(`Erro ao inicializar o jogo ${e}:`,o),showGameCover()}}else document.body.classList.remove("game-modal-open")}function setupHydrationCalculator(){let e=document.getElementById("hydration-calculator");if(!e)return;let t=document.getElementById("btn-peso-menos"),a=document.getElementById("btn-peso-mais"),n=document.getElementById("display-peso"),o=document.querySelectorAll(".age-button"),i=document.getElementById("calcHidratacaoBtn"),s=document.getElementById("calcLitros"),l=document.getElementById("calcCopos"),r=document.getElementById("calc-disclaimer"),d=70,c=30,u=null;function m(){n&&(n.textContent=d)}t&&t.addEventListener("click",()=>{d>20&&(d--,m())}),a&&a.addEventListener("click",()=>{d<200&&(d++,m())}),o.forEach(e=>{e.addEventListener("click",()=>{o.forEach(e=>e.classList.remove("active")),e.classList.add("active"),c=parseInt(e.dataset.value,10)})}),i&&i.addEventListener("click",()=>{let e=d*c,t=e/1e3,a=Math.ceil(e/250);if("undefined"!=typeof gsap){let n={value:0};if(s&&s.textContent){let o=parseFloat(s.textContent.split(" ")[0].replace(",","."));isNaN(o)||(n.value=o)}if(u&&u.kill(),u=gsap.to(n,{duration:1.2,value:t,ease:"power2.out",onUpdate(){s&&(s.textContent=`${n.value.toFixed(2).replace(".",",")} Litros`)},onComplete(){u=null}}),l){l.innerHTML="";let i=[];if(a>0){for(let m=0;m<a;m++){let g=document.createElement("i");g.className="fa-solid fa-droplet",m<15&&(l.appendChild(g),i.push(g))}if(a>15){let f=document.createElement("span");f.textContent=` +${a-15}`,f.style.fontSize="0.7em",f.style.fontWeight="bold",f.style.marginLeft="5px",l.appendChild(f)}}gsap.fromTo(i,{opacity:0,scale:.5,y:-10},{duration:.3,opacity:1,scale:1,y:0,ease:"back.out(1.7)",stagger:.08,delay:.2})}}else if(s&&(s.textContent=`${t.toFixed(2).replace(".",",")} Litros`),l&&(l.innerHTML="",a>0))for(let p=0;p<a;p++);r&&(r.style.display="none")}),m()}function setupSnackPlanner(){let e=document.querySelectorAll(".planner-day"),t=document.getElementById("snack-selector-modal"),a=document.getElementById("snack-modal-title"),n=document.querySelectorAll(".snack-option-btn"),o=document.querySelector("#snack-selector-modal .game-close-btn"),i=document.getElementById("planner-reset-btn"),s=document.getElementById("planner-download-btn");if(0===e.length||!t||0===n.length||!i||!s)return;let l=null,r={seg:"Segunda-feira",ter:"Ter\xe7a-feira",qua:"Quarta-feira",qui:"Quinta-feira",sex:"Sexta-feira",sab:"S\xe1bado",dom:"Domingo"};function d(){t.classList.remove("active"),document.body.classList.remove("game-modal-open"),l=null}e.forEach(e=>{e.addEventListener("click",()=>{!function e(n){l=n;let o=l.dataset.day;a.textContent=`Escolha seu lanche para: ${r[o]}`,t.classList.add("active"),document.body.classList.add("game-modal-open")}(e)})}),n.forEach(e=>{e.addEventListener("click",()=>{if(l){let t=e.dataset.snack,a=l.querySelector(".planner-choice span");l.classList.remove("filled","off-day"),l.querySelector(".planner-choice i").style.display="block","Folga"===t?(a.textContent=t,l.classList.add("off-day"),l.querySelector(".planner-choice i").style.display="none"):t?(a.textContent=t,l.classList.add("filled"),l.querySelector(".planner-choice i").style.display="none"):a.textContent="Clique para escolher"}d()})}),o.addEventListener("click",d),t.addEventListener("click",e=>{e.target===t&&d()}),i.addEventListener("click",()=>{e.forEach(e=>{e.querySelector(".planner-choice span").textContent="Clique para escolher",e.querySelector(".planner-choice i").style.display="block",e.classList.remove("filled","off-day")})}),s.addEventListener("click",function t(){let a=new Date().toLocaleDateString("pt-BR"),n="=== Meu Plano Semanal de Lanches (Alimentando Fases) ===\n";n+=`Gerado em: ${a}
+document.addEventListener('DOMContentLoaded', () => {
+    /* =======================================================
+     * LÓGICA DE REDIRECIONAMENTO VIA URL (ROBUSTA)
+     * ======================================================= */
+    let hash = window.location.hash.substring(1); // Remove o '#'
+    
+    // CORREÇÃO AUTOMÁTICA DE LINKS: Se vier 'origem', muda para 'origem-alimentar'
+    if (hash === 'origem') { hash = 'origem-alimentar'; }
 
-`;let o=!0;if(e.forEach(e=>{let t=e.querySelector("h5").textContent,a=e.querySelector(".planner-choice span").textContent,i=`${t}: `;e.classList.contains("filled")?(i+=a+" (Lanche Inteligente)",o=!1):e.classList.contains("off-day")?(i+=a+" (Dia de Descanso)",o=!1):i+="N\xe3o Planejado",n+=i+"\n"}),o){alert("O plano est\xe1 vazio! Escolha suas op\xe7\xf5es antes de baixar.");return}n+="\n========================================================\n",n+="Lembre-se: Hidrata\xe7\xe3o e planejamento s\xe3o a chave para o sucesso na rotina adulta!";let i=new Blob([n],{type:"text/plain;charset=utf-8"}),s=URL.createObjectURL(i),l=document.createElement("a");l.href=s,l.download=`Plano_Lanches_Semana_${a.replace(/\//g,"-")}.txt`,document.body.appendChild(l),l.click(),document.body.removeChild(l),URL.revokeObjectURL(s)})}function triggerConfetti(e){if("function"!=typeof confetti||!e){console.warn("Biblioteca de confete n\xe3o carregada ou modal inv\xe1lido.");return}let t=e.querySelector(".win-icon");setTimeout(()=>{let e={y:.6,x:.5};if(t){let a=t.getBoundingClientRect();a.width>0&&a.height>0&&(e={x:(a.left+a.width/2)/window.innerWidth,y:(a.top+a.height/2)/window.innerHeight})}confetti({particleCount:150,spread:90,colors:["#53954a","#6e513d","#f9efd4","#FFFFFF"],origin:e,zIndex:3e3})},450)}document.querySelector("#classify-game-area-embedded .game-restart-btn")?.addEventListener("click",()=>{void 0!==EmbeddedClassifyGame&&EmbeddedClassifyGame.init&&EmbeddedClassifyGame.init()});const EmbeddedClassifyGame={foodItemsData:[{name:"Ma\xe7\xe3",imageSrc:"Imagens/maca.webp",category:"natura"},{name:"Br\xf3colis",imageSrc:"Imagens/brocolis.webp",category:"natura"},{name:"Arroz",imageSrc:"Imagens/arroz.webp",category:"natura"},{name:"P\xe3o Franc\xeas",imageSrc:"Imagens/pao.webp",category:"processado"},{name:"Queijo",imageSrc:"Imagens/queijo.webp",category:"processado"},{name:"Geleia",imageSrc:"Imagens/geleia.webp",category:"processado"},{name:"Salgadinho",imageSrc:"Imagens/salgadinho.webp",category:"ultra"},{name:"Refrigerante",imageSrc:"Imagens/refri.webp",category:"ultra"},{name:"Bolacha Recheada",imageSrc:"Imagens/bolacha.webp",category:"ultra"},{name:"Nuggets",imageSrc:"Imagens/nuggets.webp",category:"ultra"},],gameArea:null,foodBank:null,dropZones:null,scoreDisplay:null,winModal:null,remainingItems:0,draggedItemElement:null,init:function(){if(this.gameArea=document.getElementById("classify-game-area-embedded"),this.foodBank=this.gameArea?.querySelector(".classify-food-bank"),this.dropZones=this.gameArea?.querySelectorAll(".classify-zone"),this.scoreDisplay=document.getElementById("classify-score-embedded"),this.winModal=document.getElementById("classify-win-modal"),!this.gameArea||!this.foodBank||!this.dropZones||!this.scoreDisplay){console.error("Elementos do DOM do Jogo de Classificar EMBUTIDO n\xe3o encontrados.");return}this.resetGame(),this.winModal&&this.winModal.classList.remove("active"),this.foodBank.innerHTML="",this.dropZones.forEach(e=>{e.classList.remove("correct","incorrect","over"),e.removeEventListener("dragover",this.handleDragOver.bind(this)),e.removeEventListener("dragleave",this.handleDragLeave.bind(this)),e.removeEventListener("drop",this.handleDrop.bind(this))});let e=this.shuffleArray([...this.foodItemsData]);e.forEach(e=>{let t=this.createFoodItemElement(e);this.foodBank.appendChild(t)}),this.remainingItems=e.length,this.updateScore(),this.dropZones.forEach(e=>{e.addEventListener("dragover",this.handleDragOver.bind(this)),e.removeEventListener("dragleave",this.handleDragLeave.bind(this)),e.addEventListener("drop",this.handleDrop.bind(this))})},createFoodItemElement:function(e){let t=document.createElement("div");return t.classList.add("classify-food-item"),t.draggable=!0,t.dataset.name=e.name,t.innerHTML=`<img src="${e.imageSrc}" alt="${e.name}">`,t.addEventListener("dragstart",this.handleDragStart.bind(this)),t.addEventListener("dragend",this.handleDragEnd.bind(this)),t},handleDragStart:function(e){let t=e.target.closest(".classify-food-item");t&&(this.draggedItemElement=t,e.dataTransfer.setData("text/plain",t.dataset.name),setTimeout(()=>t.classList.add("dragging"),0))},handleDragEnd:function(e){let t=e.target.closest(".classify-food-item");t&&(t.classList.remove("dragging"),this.draggedItemElement=null)},handleDragOver:function(e){e.preventDefault();let t=e.target.closest(".classify-zone");t&&t.classList.add("over")},handleDragLeave:function(e){let t=e.target.closest(".classify-zone");t&&t.classList.remove("over")},handleDrop:function(e){e.preventDefault();let t=e.target.closest(".classify-zone");if(!t||!this.draggedItemElement)return;let a=e.dataTransfer.getData("text/plain"),n=t.dataset.category,o=this.foodItemsData.find(e=>e.name===a);t.classList.remove("over"),o&&o.category===n?(t.classList.add("correct"),this.draggedItemElement.classList.add("hide"),this.draggedItemElement.draggable=!1,this.remainingItems--,this.updateScore(),this.checkWinCondition(),setTimeout(()=>t.classList.remove("correct"),500)):(t.classList.add("incorrect"),setTimeout(()=>t.classList.remove("incorrect"),500)),this.draggedItemElement=null},updateScore:function(){this.scoreDisplay&&(this.scoreDisplay.textContent=`Itens restantes: ${this.remainingItems}`)},checkWinCondition:function(){0===this.remainingItems&&this.showWinModal()},showWinModal:function(){this.winModal&&(this.winModal.classList.add("active"),triggerConfetti(this.winModal))},resetGame:function(){this.remainingItems=0,this.draggedItemElement=null,this.dropZones&&this.dropZones.forEach(e=>e.classList.remove("correct","incorrect","over"))},shuffleArray:function(e){for(let t=e.length-1;t>0;t--){let a=Math.floor(Math.random()*(t+1));[e[t],e[a]]=[e[a],e[t]]}return e}};function setupHandwashGuide(){let e=[{icon:"fa-faucet",title:"Passo 1 de 5",text:"Molhe as m\xe3os com \xe1gua corrente."},{icon:"fa-pump-soap",title:"Passo 2 de 5",text:"Aplique sab\xe3o suficiente para cobrir toda a superf\xedcie das m\xe3os."},{icon:"fa-hand-sparkles",title:"Passo 3 de 5",text:"Esfregue as m\xe3os por pelo menos 20 segundos (palmas, costas, dedos, unhas e punhos)."},{icon:"fa-faucet-drip",title:"Passo 4 de 5",text:"Enx\xe1gue as m\xe3os completamente com \xe1gua corrente."},{icon:"fa-scroll",title:"Passo 5 de 5",text:"Seque as m\xe3os com uma toalha limpa ou secador de m\xe3os."}],t=document.querySelector(".handwash-guide");if(!t)return;let a=document.getElementById("btn-prev-step"),n=document.getElementById("btn-next-step"),o=document.getElementById("step-counter"),i=t.querySelector(".guide-icon i"),s=t.querySelector(".guide-step-title"),l=t.querySelector(".guide-step-text"),r=0;function d(t){let r=e[t];l.classList.add("fade-out"),i.classList.add("fade-out"),setTimeout(()=>{i.className=`fa-solid ${r.icon}`,s.textContent=r.title,l.textContent=r.text,o.textContent=`${t+1} / ${e.length}`,a.disabled=0===t,n.disabled=t===e.length-1,l.classList.remove("fade-out"),i.classList.remove("fade-out")},300)}n.addEventListener("click",()=>{r<e.length-1&&d(++r)}),a.addEventListener("click",()=>{r>0&&d(--r)})}const originMapData={indigena:{title:"Matriz Ind\xedgena",imageSrc:"Imagens/icone-indigena.webp",altText:"\xcdcone da Matriz Ind\xedgena",color:"var(--color-primary)",bgColor:"#f0fdf4",items:[{icon:"fa-seedling",text:"Mandioca (Farinha, Beiju, Polvilho)"},{icon:"fa-mortar-pestle",text:"Pa\xe7oca (Mistura original)"},{icon:"fa-apple-whole",text:"Frutos Nativos (A\xe7a\xed, Pequi, Cupua\xe7u)"},{icon:"fa-leaf",text:"Conhecimento da Terra e das Esta\xe7\xf5es"}]},portuguesa:{title:"Matriz Portuguesa",imageSrc:"Imagens/icone-portuguesa.webp",altText:"\xcdcone da Matriz Portuguesa",color:"var(--color-secondary)",bgColor:"var(--color-background)",items:[{icon:"fa-utensils",text:"Adapta\xe7\xe3o de Pratos (Ex: Feijoada)"},{icon:"fa-wheat-awn",text:"Introdu\xe7\xe3o do Arroz"},{icon:"fa-wine-bottle",text:"Azeite de Oliva, Alho e Cebola"},{icon:"fa-users",text:"H\xe1bito do Almo\xe7o de Domingo"}]},africana:{title:"Matriz Africana",imageSrc:"Imagens/icone-africana.webp",altText:"\xcdcone da Matriz Africana",color:"#d97706",bgColor:"#fffbeb",items:[{icon:"fa-oil-can",text:"Azeite de Dend\xea"},{icon:"fa-mug-hot",text:"Leite de Coco"},{icon:"fa-drumstick-bite",text:"Vatap\xe1 e Caruru"},{icon:"fa-mug-hot",text:"Adapta\xe7\xe3o da Canjica (Kanzika)"}]}};function closeOriginModal(){let e=document.getElementById("origin-modal");e&&(e.classList.remove("active"),document.body.classList.remove("game-modal-open"))}function populateOriginModal(e){let t=document.getElementById("origin-modal");if(!t)return;let a=t.querySelector(".game-modal-content"),n=document.getElementById("origin-modal-title"),o=document.getElementById("origin-modal-icon"),i=document.getElementById("origin-modal-list");n.textContent=e.title,o.src=e.imageSrc,o.alt=e.altText,i.innerHTML="",e.items.forEach(e=>{let t=document.createElement("li");t.innerHTML=`<i class="fa-solid ${e.icon}" aria-hidden="true"></i> ${e.text}`,i.appendChild(t)}),a.style.borderColor=e.color,t.classList.add("active"),document.body.classList.add("game-modal-open")}function setupOriginMap(){let e=document.querySelectorAll(".map-hotspot"),t=document.getElementById("origin-modal");if("undefined"!=typeof gsap&&e.length>0&&(window.innerWidth>1024?(gsap.set(e,{opacity:0,scale:.5}),gsap.to(e,{duration:.8,opacity:1,scale:1,ease:"back.out(1.7)",stagger:.2,scrollTrigger:{trigger:".origin-map-container",start:"top 75%",toggleActions:"play none none none"}})):e.forEach(e=>{e.style.opacity="1",e.style.transform="scale(1)"})),!e.length||!t)return;let a=t.querySelector(".game-close-btn");e.forEach(e=>{e.addEventListener("click",()=>{let t=e.dataset.matriz,a=originMapData[t];a&&populateOriginModal(a)})}),a.addEventListener("click",closeOriginModal),t.addEventListener("click",e=>{e.target===t&&closeOriginModal()})}function setupRecipeFilters(){let e=document.querySelector(".filter-bar"),t=document.getElementById("receitas");if(!e||!t||!t.classList.contains("active"))return;let a=e.querySelectorAll(".filter-btn"),n=document.querySelectorAll("#recipe-grid .cards_item"),o=e=>{n.forEach(t=>{let a=t.dataset.category;"todos"===e||a&&a.includes(e)?t.classList.remove("hidden"):t.classList.add("hidden")})};a.forEach(e=>{e.addEventListener("click",()=>{let t=e.dataset.filter;a.forEach(e=>e.classList.remove("active")),e.classList.add("active"),o(t)})});let i=sessionStorage.getItem("filtroInicial");if(i){let s=e.querySelector(`.filter-btn[data-filter="${i}"]`);s&&(a.forEach(e=>e.classList.remove("active")),s.classList.add("active"),o(i)),sessionStorage.removeItem("filtroInicial")}else{let l=e.querySelector('.filter-btn[data-filter="todos"]');l&&(a.forEach(e=>e.classList.remove("active")),l.classList.add("active"),o("todos"))}}const dedicationBox=document.getElementById("class-dedication");let confettiTimer=null;function setupChatbotToggle(){let e=document.getElementById("chatbot-toggle-btn"),t=document.getElementById("chatbot-close-btn"),a=document.getElementById("chatbot-window");function n(){let t=a.classList.contains("hidden");if(a.classList.toggle("hidden"),e.classList.toggle("hidden"),t){let n=document.getElementById("chatbot-input");n&&setTimeout(()=>n.focus(),400)}}e&&a&&t&&(e.addEventListener("click",e=>{e.stopPropagation(),n()}),t.addEventListener("click",e=>{e.stopPropagation(),n()}),a.addEventListener("click",e=>{e.stopPropagation()}),document.addEventListener("click",t=>{a.classList.contains("hidden")||e.contains(t.target)||(a.classList.add("hidden"),e.classList.remove("hidden"))}))}dedicationBox&&dedicationBox.addEventListener("mouseenter",()=>{!confettiTimer&&(triggerConfetti(dedicationBox),confettiTimer=setTimeout(()=>{confettiTimer=null},2e3))});const giftHuntGame={totalGifts:3,foundGifts:0,foundIds:[],init:function(){let e=document.querySelectorAll(".hidden-gift"),t=document.getElementById("gift-hunt-toast"),a=document.getElementById("gift-count");t&&0!==e.length&&e.forEach((e,n)=>{e.addEventListener("click",o=>{o.stopPropagation(),this.foundIds.includes(n)||(this.foundIds.push(n),this.foundGifts++,e.classList.add("found"),a&&(a.textContent=`${this.foundGifts}/${this.totalGifts}`,t.innerHTML=`<i class="fa-solid fa-gift"></i> ${this.foundGifts} / ${this.totalGifts}`),1===this.foundGifts&&t.classList.add("visible"),t.style.transform="translateX(-50%) scale(1.1)",setTimeout(()=>{t.style.transform="translateX(-50%) scale(1)"},200),"function"==typeof confetti&&confetti({particleCount:50,spread:60,origin:{x:o.clientX/window.innerWidth,y:o.clientY/window.innerHeight}}),this.foundGifts===this.totalGifts&&(t.style.backgroundColor="#f0fdf4",t.style.borderColor="#3D7938",t.innerHTML='<i class="fa-solid fa-check"></i> Completo!',setTimeout(()=>{this.triggerVictoryAnimation()},800)))})})},triggerVictoryAnimation:function(){let e=document.getElementById("gift-reveal-modal");if(e&&(e.classList.remove("hidden"),setTimeout(()=>{e.classList.add("active")},10),"function"==typeof confetti)){var t=Date.now()+3e3,a={startVelocity:30,spread:360,ticks:60,zIndex:11001};function n(e,t){return Math.random()*(t-e)+e}var o=setInterval(function(){var e=t-Date.now();if(e<=0)return clearInterval(o);var i=50*(e/3e3);confetti(Object.assign({},a,{particleCount:i,origin:{x:n(.1,.3),y:Math.random()-.2}})),confetti(Object.assign({},a,{particleCount:i,origin:{x:n(.7,.9),y:Math.random()-.2}}))},250)}}};function closeGiftModal(){let e=document.getElementById("gift-reveal-modal");e&&(e.classList.remove("active"),setTimeout(()=>{e.classList.add("hidden")},500))}function closeLetterModal(){let e=document.getElementById("letter-modal");e&&(e.classList.remove("active"),document.body.classList.remove("game-modal-open"))}function openLetterModal(e){let t=document.getElementById("letter-modal"),a=document.getElementById("letter-text-content");t&&a&&(a.textContent=e,t.classList.add("active"),document.body.classList.add("game-modal-open"))}function generateRandomPosition(){return{top:Math.floor(81*Math.random())+10+"%",left:Math.floor(71*Math.random())+15+"%",rotation:Math.floor(21*Math.random())-10}}const giftPalettes=[{papel:"#fcf8f0",fita:"#d92d2d"},{papel:"#d92d2d",fita:"#FFD700"},{papel:"#3D7938",fita:"#fcf8f0"},{papel:"#FFD700",fita:"#d92d2d"},{papel:"#ffffff",fita:"#3D7938"},{papel:"#8B0000",fita:"#00FF00"},{papel:"#191970",fita:"#C0C0C0"}];function renderWishes(e){let t=document.getElementById("wish-display-area"),a=document.getElementById("no-wishes-yet");if(t){if(t.innerHTML="",0===e.length){a&&(a.style.display="block");return}a&&(a.style.display="none"),e.forEach(e=>{let a=document.createElement("div");a.classList.add("christmas-gift-box");let n=generateRandomPosition();a.style.top=n.top,a.style.left=n.left,a.style.setProperty("--random-rotation",n.rotation);let o=0;if(e.message)for(let i=0;i<e.message.length;i++)o+=e.message.charCodeAt(i);let s=o%giftPalettes.length,l=giftPalettes[s];a.style.setProperty("--cor-papel",l.papel),a.style.setProperty("--cor-fita",l.fita),a.addEventListener("click",()=>{openLetterModal(e.message)}),a.innerHTML=`
-            <div class="gift-ribbon"></div> 
-            <div class="gift-message-content">
-                <p class="gift-message-text">${e.message.substring(0,15)}...</p> 
-            </div>
-        `,t.appendChild(a)})}}function listenForWishes(){db&&db.collection("desejosNatal").orderBy("timestamp","desc").limit(30).onSnapshot(e=>{let t=[];e.forEach(e=>{e.data().timestamp&&t.push(e.data())}),renderWishes(t)},e=>{console.error("Erro ao escutar mensagens:",e)})}function sendWish(e,t){let a=document.getElementById("wish-status");if(!db){a.textContent="Erro: Banco de dados n\xe3o inicializado.",a.style.color="#d92d2d",a.style.display="block";return}db.collection("desejosNatal").add({message:e,timestamp:firebase.firestore.FieldValue.serverTimestamp()}).then(()=>{a.textContent="Presente pendurado com sucesso!",a.style.color="var(--color-primary)",t.reset()}).catch(e=>{a.textContent=`Erro ao pendurar presente: ${e.message}`,a.style.color="#d92d2d"}).finally(()=>{a.style.display="block",setTimeout(()=>{a.style.display="none"},3e3)})}function setupWishMural(){let e=document.getElementById("wish-form"),t=document.getElementById("wish-status");function a(a){a.preventDefault();let n=document.getElementById("wish-message").value.trim();if(!n){t.textContent="Por favor, escreva uma mensagem.",t.style.color="#d97706",t.style.display="block";return}t.textContent="Pendurando...",t.style.color="#d92d2d",closeLetterModal(),t.style.display="block",sendWish(n,e)}e&&t&&(e.removeEventListener("submit",a),e.addEventListener("submit",a),listenForWishes())}const FullPageCalendar={date:new Date,today:new Date,events:[{date:"2025-10-23",title:"A\xe7\xe3o Infantil & Idosos",type:"A\xe7\xe3o",desc:"Atividades l\xfadicas e roda de conversa.",loc:"Escola Gilberto Freyre | Parque Santana",pageId:"acao-infancia-detalhe",images:["Imagens/acaoinfancia3.webp","Imagens/acaoidosos4.webp"]},{date:"2025-10-24",title:"A\xe7\xe3o Idosos (Dia 2)",type:"A\xe7\xe3o",desc:"Continua\xe7\xe3o das atividades.",loc:"Parque Santana",pageId:"acao-idoso-detalhe",images:["Imagens/acaoidosos1.webp"]},{date:"2025-11-03",title:"A\xe7\xe3o Adultos",type:"A\xe7\xe3o",desc:"Sa\xfade do trabalhador e DCNT.",loc:"CDC",pageId:"acao-adulto-detalhe",images:["Imagens/acaoadultos1.webp"]},{date:"2025-11-05",title:"A\xe7\xe3o Adultos (Dia 2)",type:"A\xe7\xe3o",desc:"Palestras e avalia\xe7\xf5es.",loc:"CDC",pageId:"acao-adulto-detalhe",images:["Imagens/acaoadultos2.webp"]},{date:"2025-12-25",title:"Natal",type:"feriado",desc:"Feriado Nacional.",loc:"Em todo lugar",time:"Dia Todo",images:["Imagens/Farofa Festiva.webp","Imagens/Rabanada de Forno.webp"]}],init:function(){let e=document.getElementById("calendar-days-full");if(!e)return;let t=document.getElementById("prev-month-full"),a=document.getElementById("next-month-full");if(t){let n=t.cloneNode(!0);t.parentNode.replaceChild(n,t),n.addEventListener("click",()=>{this.date.setMonth(this.date.getMonth()-1),this.render()})}if(a){let o=a.cloneNode(!0);a.parentNode.replaceChild(o,a),o.addEventListener("click",()=>{this.date.setMonth(this.date.getMonth()+1),this.render()})}this.render()},render:function(){let e=document.getElementById("current-month-full"),t=document.getElementById("calendar-days-full");this.date.setDate(1);let a=this.date.getMonth(),n=this.date.getFullYear(),o=new Date(n,a+1,0).getDate(),i=new Date(n,a,0).getDate(),s=this.date.getDay(),l=["Janeiro","Fevereiro","Mar\xe7o","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];e&&(e.innerText=`${l[a]} ${n}`),t&&(t.innerHTML="");for(let r=s;r>0;r--)t.innerHTML+=`<li class="inactive">${i-r+1}</li>`;for(let d=1;d<=o;d++){let c=document.createElement("li"),u=`<span>${d}</span>`,m=`${n}-${String(a+1).padStart(2,"0")}-${String(d).padStart(2,"0")}`;d===this.today.getDate()&&a===this.today.getMonth()&&n===this.today.getFullYear()&&c.classList.add("current-day");let g=this.events.find(e=>e.date===m);if(g){c.classList.add("has-event",`type-${g.type}`),c.setAttribute("data-title",g.title);let f="fa-circle";"A\xe7\xe3o"===g.type&&(f="fa-handshake"),"feriado"===g.type&&(f="fa-star"),u+=`<div class="event-icon-marker"><i class="fa-solid ${f}"></i></div>`}c.innerHTML=u,c.addEventListener("click",()=>{document.querySelectorAll(".days-full li").forEach(e=>e.classList.remove("selected-day")),c.classList.add("selected-day"),this.showDetails(d,a,l,g)}),t.appendChild(c)}if("undefined"!=typeof gsap&&window.innerWidth>1024)gsap.fromTo(".days-full li",{opacity:0,y:20,scale:.9},{duration:.4,opacity:1,y:0,scale:1,stagger:.03,ease:"back.out(1.5)"});else{let p=document.querySelectorAll(".days-full li");p.forEach(e=>{e.style.opacity=1,e.style.transform="none"})}},showDetails:function(e,t,a,n){let o=document.getElementById("event-card-display"),i=`${e} de ${a[t]}`;if(n){let s="fa-calendar-check";"A\xe7\xe3o"===n.type&&(s="fa-users"),"feriado"===n.type&&(s="fa-star");let l=n.date.replace(/-/g,"")+"T090000",r=n.date.replace(/-/g,"")+"T120000",d=`https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(n.title)}&details=${encodeURIComponent(n.desc)}&location=${encodeURIComponent(n.loc)}&dates=${l}/${r}`,c="";n.images&&n.images.length>0?(c='<div class="event-gallery-stack">',n.images.forEach(e=>{c+=`<div class="gallery-stack-item"><img src="${e}" alt="Foto do evento"></div>`}),c+="</div>"):c='<div class="event-feature-image" style="height: 50px; background: transparent; box-shadow: none;"></div>';let u="";"A\xe7\xe3o"===n.type&&n.pageId&&(u=`
-                    <a href="#" onclick="navigateTo('${n.pageId}'); return false;" class="cta-button" style="padding: 10px 20px; font-size:0.9em; flex:1; text-align:center;">
+    if (hash) {
+        // Pequeno delay (150ms) para garantir que o site carregou scripts e funções
+        setTimeout(() => {
+            // TENTATIVA 1: Usar a função oficial de navegação
+            if (typeof navigateTo === 'function') {
+                navigateTo(hash); 
+            } 
+            // TENTATIVA 2: Simular clique no menu (Mais garantido)
+            else {
+                const linkMenu = document.querySelector(`.nav-link[data-page="${hash}"]`) || 
+                                 document.querySelector(`a[href="#${hash}"]`);
+                if (linkMenu) {
+                    linkMenu.click();
+                }
+                // TENTATIVA 3: Força bruta (manipula o CSS)
+                else {
+                    const targetSection = document.getElementById(hash);
+                    const allPages = document.querySelectorAll('.page-content');
+                    
+                    if (targetSection && allPages.length > 0) {
+                        allPages.forEach(s => s.classList.remove('active'));
+                        targetSection.classList.add('active');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        
+                        // Inicializa jogos se necessário
+                        if(hash === 'infancia' && typeof EmbeddedClassifyGame !== 'undefined') EmbeddedClassifyGame.init();
+                        if(hash === 'adolescencia' && typeof WordSearchGame !== 'undefined') WordSearchGame.init();
+                        if(hash === 'origem-alimentar') setupOriginMap();
+                    }
+                }
+            }
+        }, 150);
+    }
+});
+
+// 1. OTIMIZAÇÃO DE SCROLL (Passive Listeners)
+(function() {
+    const originalAddEventListener = EventTarget.prototype.addEventListener;
+    EventTarget.prototype.addEventListener = function(type, listener, options) {
+        if (type === 'touchstart' || type === 'touchmove' || type === 'wheel') {
+            if (typeof options === 'object') {
+                options.passive = true;
+            } else if (typeof options === 'boolean') {
+                // mantém como está
+            } else {
+                options = { passive: true };
+            }
+        }
+        originalAddEventListener.call(this, type, listener, options);
+    };
+})();
+
+if (history.scrollRestoration) {
+    history.scrollRestoration = 'manual';
+}
+
+/* =======================================================
+ * MAPA DE ÁUDIOS PRÉ-GERADOS (M4A)
+ * ======================================================= */
+const preGeneratedAudios = {
+    'quemsomos': 'audios/quemsomos.m4a',
+    'origem-alimentar': 'audios/origemalimentar.m4a',
+    'infancia': 'audios/infancia.m4a',
+    'adolescencia': 'audios/adolescencia.m4a',
+    'adulto': 'audios/adultos.m4a',
+    'idoso': 'audios/idosos.m4a',
+    'higiene': 'audios/higiene.m4a',
+    'rotulagem': 'audios/rotulagem.m4a',
+    'acoes': 'audios/acoes.m4a'
+};
+
+// Variável global para controlar a reprodução do áudio
+let currentAudio = null;
+
+
+// --- 2. LÓGICA DO MENU MOBILE ---
+const burger = document.querySelector('.main-header__burger');
+const navWrapper = document.querySelector('.main-header__navigation-wrapper');
+
+function toggleMobileMenu() {
+    if (!burger || !navWrapper) return;
+    burger.classList.toggle('active');
+    navWrapper.classList.toggle('open');
+}
+
+function closeMobileMenu() {
+    if (!burger || !navWrapper) return;
+    burger.classList.remove('active');
+    navWrapper.classList.remove('open');
+}
+
+if (burger) {
+    burger.addEventListener('click', toggleMobileMenu);
+}
+
+
+// --- 3. LÓGICA DO MEGA MENU (Desktop) ---
+const menuItems = document.querySelectorAll('.main-header__list-item.has-submenu');
+const mainHeader = document.querySelector('.main-header'); 
+
+const handleSubmenuLinkHover = (event) => {
+    const subLink = event.currentTarget;
+    const parentMenuItem = subLink.closest('.main-header__list-item.has-submenu');
+    if (!parentMenuItem) return;
+
+    // CORREÇÃO: Seleciona TODOS os itens para limpar o estado ativo corretamente
+    const allSubmenuLinks = parentMenuItem.querySelectorAll('.submenu-list__item');
+    const allSubmenuContents = parentMenuItem.querySelectorAll('.submenu-content');
+
+    allSubmenuLinks.forEach(sl => sl.classList.remove('active'));
+    allSubmenuContents.forEach(sc => sc.classList.remove('active'));
+
+    // Adiciona ativo ao item atual
+    subLink.classList.add('active');
+
+    // Só tenta abrir painel lateral se tiver a classe has-submenu
+    if (subLink.classList.contains('has-submenu')) {
+        const contentKeyElement = subLink.querySelector('.submenu-list__item-title');
+        if (contentKeyElement) {
+            const firstContentKey = contentKeyElement.textContent;
+            const targetContent = parentMenuItem.querySelector(`.submenu-content[data-submenu-for="${firstContentKey}"]`);
+            if (targetContent) {
+                targetContent.classList.add('active');
+            }
+        }
+    }
+};
+
+function closeMenu(item) {
+    item.classList.remove('js-hover'); 
+    item.classList.add('is-closing'); 
+    
+    // Remove listener de todos os itens
+    const submenuLinks = item.querySelectorAll('.submenu-list__item');
+    submenuLinks.forEach((subLink) => {
+        subLink.removeEventListener('mouseenter', handleSubmenuLinkHover);
+    });
+
+    const burger = document.querySelector('.main-header__burger');
+    if (burger && getComputedStyle(burger).display === 'flex') {
+        const submenuWrapper = item.querySelector('.submenu-wrapper');
+        if (submenuWrapper) {
+            submenuWrapper.style.maxHeight = null;
+        }
+    } 
+}
+
+function openMenu(item) {
+    item.classList.remove('is-closing');
+    item.classList.add('js-hover'); 
+
+    const burger = document.querySelector('.main-header__burger');
+    if (burger && getComputedStyle(burger).display === 'flex') {
+        const submenuWrapper = item.querySelector('.submenu-wrapper');
+        if (submenuWrapper) {
+            submenuWrapper.style.maxHeight = submenuWrapper.scrollHeight + "px";
+        }
+    }
+
+    // CORREÇÃO: Seleciona todos os itens da lista
+    const submenuLinks = item.querySelectorAll('.submenu-list__item');
+    const submenuContents = item.querySelectorAll('.submenu-content');
+
+    const burgerCheck = document.querySelector('.main-header__burger');
+    if (!burgerCheck || getComputedStyle(burgerCheck).display === 'none') {
+        setTimeout(() => {
+            submenuLinks.forEach(sl => sl.classList.remove('active'));
+            submenuContents.forEach(sc => sc.classList.remove('active'));
+
+            if (submenuLinks.length > 0) {
+                const firstSubLink = submenuLinks[0];
+                firstSubLink.classList.add('active');
+                
+                // Só abre conteúdo se o primeiro item tiver submenu
+                if (firstSubLink.classList.contains('has-submenu')) {
+                    const firstContentKeyElement = firstSubLink.querySelector('.submenu-list__item-title');
+                    if (firstContentKeyElement) {
+                        const firstContentKey = firstContentKeyElement.textContent;
+                        const firstContent = item.querySelector(`.submenu-content[data-submenu-for="${firstContentKey}"]`);
+                        if (firstContent) firstContent.classList.add('active');
+                    }
+                }
+            }
+        }, 0); 
+    } 
+
+    submenuLinks.forEach((subLink) => {
+        subLink.addEventListener('mouseenter', handleSubmenuLinkHover);
+
+        subLink.addEventListener('click', (e) => {
+            const burger = document.querySelector('.main-header__burger');
+
+            if (burger && getComputedStyle(burger).display !== 'flex') {
+                const mainMenuItem = subLink.closest('.main-header__list-item.has-submenu');
+                if (mainMenuItem) {
+                    closeMenu(mainMenuItem);
+                }
+                return;
+            }
+
+            closeMobileMenu();
+
+            const mainMenuItem = subLink.closest('.main-header__list-item.has-submenu');
+            if (mainMenuItem) {
+                closeMenu(mainMenuItem);
+            }
+        });
+    });
+}
+
+menuItems.forEach(item => {
+    const link = item.querySelector(':scope > a');
+    const submenuWrapper = item.querySelector('.submenu-wrapper');
+
+    if (!link || !submenuWrapper) return;
+
+    link.addEventListener('click', (e) => {
+        e.preventDefault(); 
+        e.stopPropagation(); 
+
+        const wasOpen = item.classList.contains('js-hover');
+
+        menuItems.forEach(otherItem => {
+            if (otherItem !== item) { 
+                closeMenu(otherItem);
+            }
+        });
+
+        if (wasOpen) {
+            closeMenu(item); 
+        } else {
+            openMenu(item); 
+
+            const burger = document.querySelector('.main-header__burger');
+            if (navWrapper && burger && getComputedStyle(burger).display === 'flex') {
+                setTimeout(() => {
+                    const itemTop = item.offsetTop;
+                    const containerPaddingTop = parseFloat(window.getComputedStyle(navWrapper).paddingTop) || 0;
+
+                    navWrapper.scrollTo({
+                        top: itemTop - containerPaddingTop,
+                        behavior: 'smooth'
+                    });
+                }, 50); 
+            }
+        }
+    });
+
+    submenuWrapper.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+    });
+
+    const focusableElements = Array.from(item.querySelectorAll('a, button'));
+    if (focusableElements.length > 0) {
+        const lastElement = focusableElements[focusableElements.length - 1];
+        const firstElement = focusableElements[0];
+        firstElement.addEventListener('keydown', (e) => {
+            if (e.shiftKey && e.key === 'Tab') {
+                closeMenu(item);
+            }
+        });
+        lastElement.addEventListener('keydown', (e) => {
+            if (!e.shiftKey && e.key === 'Tab') {
+                closeMenu(item);
+            }
+        });
+        item.addEventListener('focusout', (e) => {
+            if (!item.contains(e.relatedTarget)) {
+                closeMenu(item);
+            }
+        });
+    }
+});
+
+document.addEventListener('click', (e) => {
+    menuItems.forEach(menuItem => {
+        closeMenu(menuItem);
+    });
+});
+
+
+// --- 1. LÓGICA DE NAVEGAÇÃO (SPA) ---
+const navLinks = document.querySelectorAll('.nav-link');
+const pages = document.querySelectorAll('.page-content');
+const appContainer = document.getElementById('app-container');
+
+function navigateTo(pageId, anchorId = null) { 
+    window.scrollTo({ top: 0, behavior: 'instant' });
+
+    pages.forEach(page => page.classList.remove('active'));
+
+    const targetPage = document.getElementById(pageId);
+    if (targetPage) {
+        targetPage.classList.add('active');
+    } else {
+        pageId = 'home'; 
+        document.getElementById('home').classList.add('active');
+    }
+
+    setupTextToSpeech();
+
+    if (pageId === 'home') {
+        setupHeroCarousel();
+    }
+    else if (pageId === 'adolescencia') {
+        if (typeof WordSearchGame !== 'undefined' && WordSearchGame.init) {
+            setTimeout(() => { WordSearchGame.init(); }, 100);
+        }
+    }
+    else if (pageId === 'infancia') {
+        if (typeof EmbeddedClassifyGame !== 'undefined' && EmbeddedClassifyGame.init) {
+            setTimeout(() => { EmbeddedClassifyGame.init(); }, 100);
+        }
+    }
+    else if (pageId === 'receitas') {
+        if (typeof setupRecipeFilters !== 'undefined') {
+            setTimeout(() => { setupRecipeFilters(); }, 100);
+        }
+    }
+    else if (pageId === 'adulto') {
+        setupSnackPlanner();
+        animateChartBars();
+    }
+    else if (pageId === 'idoso') {
+        setupHydrationCalculator();
+    }
+    else if (pageId === 'higiene') {
+        setupHandwashGuide();
+    }
+    else if (pageId === 'origem-alimentar') {
+        setupOriginMap();
+    }
+    else if (pageId === 'agenda') {
+        setTimeout(() => { FullPageCalendar.init(); }, 100);
+    }
+
+    if (anchorId) {
+        const targetElement = document.querySelector(anchorId); 
+        if (targetElement) {
+            setTimeout(() => {
+                const headerOffset = 90;
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }, 50); 
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    } else {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    closeMobileMenu();
+
+    if (menuItems && typeof closeMenu === 'function') {
+        menuItems.forEach(menuItem => {
+            closeMenu(menuItem);
+        });
+    }
+
+    if (typeof ScrollTrigger !== 'undefined' && window.innerWidth > 1024) {
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 10);
+    }
+}
+
+/* =======================================================
+ * LÓGICA DE LEITURA DE TELA (TTS)
+ * ======================================================= */
+function generateSpeechContent(pageId, button) {
+    const pageElement = document.getElementById(pageId);
+    if (!pageElement) return;
+
+    const synth = window.speechSynthesis;
+
+    if (synth.speaking) {
+        synth.cancel();
+        button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+        return;
+    }
+    
+    const readableElements = pageElement.querySelectorAll('.topic-content, .section-description, .pullquote, .quiz-pergunta, .card_content h2, .card_content h5');
+    
+    let textToRead = '';
+    readableElements.forEach(el => {
+        if (el.textContent.trim().length > 0 && el.offsetHeight > 0) {
+             textToRead += el.textContent.trim() + '. '; 
+        }
+    });
+
+    if (textToRead) {
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.lang = 'pt-BR';
+        
+        button.innerHTML = '<i class="fa-solid fa-stop-circle"></i> Parar Leitura';
+
+        utterance.onend = () => {
+            button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+        };
+        synth.speak(utterance);
+    } else {
+        alert('Nenhum texto legível encontrado nesta seção.');
+    }
+}
+
+function playAudioContent(audioPath, button) {
+    const synth = window.speechSynthesis;
+    if (synth.speaking) {
+        synth.cancel();
+    }
+
+    if (!currentAudio) {
+        currentAudio = new Audio();
+    }
+    
+    if (currentAudio.src.endsWith(audioPath) && currentAudio.readyState >= 1) {
+        if (currentAudio.paused) {
+            currentAudio.play();
+        } else {
+            currentAudio.pause();
+        }
+    } else {
+        currentAudio.src = audioPath;
+        currentAudio.load();
+        currentAudio.play().catch(e => console.error("Erro ao tentar reproduzir o áudio:", e));
+    }
+
+    const updateButton = () => {
+        if (currentAudio.paused || currentAudio.ended) {
+            button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+            button.classList.remove('playing');
+        } else {
+            button.innerHTML = '<i class="fa-solid fa-stop-circle"></i> Parar Leitura';
+            button.classList.add('playing');
+        }
+    };
+    
+    currentAudio.onplay = updateButton;
+    currentAudio.onpause = updateButton;
+    currentAudio.onended = updateButton;
+    updateButton(); 
+}
+
+function readPageContent(pageId, button) {
+    const audioPath = preGeneratedAudios[pageId];
+
+    if (audioPath) {
+        playAudioContent(audioPath, button);
+    } else {
+        generateSpeechContent(pageId, button);
+    }
+}
+
+function setupTextToSpeech() {
+    const pagesWithContent = document.querySelectorAll('#infancia, #adolescencia, #adulto, #idoso, #quemsomos, #origem-alimentar, #higiene, #rotulagem, #acoes');
+    
+    pagesWithContent.forEach(page => {
+        const contentSection = page.querySelector('.content-section');
+        
+        if (contentSection && !page.querySelector('.read-aloud-button-wrapper')) {
+            
+            const button = document.createElement('button');
+            button.classList.add('cta-link', 'read-aloud-button');
+            button.innerHTML = '<i class="fa-solid fa-volume-up"></i> Ler Conteúdo';
+            button.setAttribute('aria-label', 'Clique para ler o conteúdo completo desta página');
+            
+            const wrapper = document.createElement('div');
+            wrapper.classList.add('read-aloud-button-wrapper'); 
+            wrapper.appendChild(button);
+
+            const firstContentElement = page.querySelector('.section-description') || page.querySelector('.topic-container');
+            
+            if (firstContentElement) {
+                firstContentElement.parentNode.insertBefore(wrapper, firstContentElement);
+
+                button.addEventListener('click', () => {
+                    readPageContent(page.id, button);
+                });
+            }
+        }
+    });
+}
+
+document.addEventListener('navigateRequest', (e) => {
+    const { pageId, anchorId } = e.detail;
+    if (pageId) {
+        navigateTo(pageId, anchorId);
+    }
+});
+
+navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        const pageId = link.dataset.page;
+        if (!pageId) return; 
+
+        e.preventDefault(); 
+
+        const href = link.getAttribute('href');
+        let anchorId = null;
+
+        if (href && href.startsWith('#') && href.length > 1) {
+            anchorId = href;
+        }
+
+        navigateTo(pageId, anchorId); 
+
+        closeMobileMenu();
+
+        if (menuItems && typeof closeMenu === 'function') {
+            menuItems.forEach(menuItem => {
+                closeMenu(menuItem);
+            });
+        }
+    });
+});
+
+
+// =======================================================
+// ✅ LÓGICA DO CARROSSEL DO HERO
+// =======================================================
+function setupHeroCarousel() {
+    const slides = document.querySelectorAll('.hero-slide');
+    const dots = document.querySelectorAll('.carousel-dots button');
+    const prevBtn = document.querySelector('.carousel-nav.prev');
+    const nextBtn = document.querySelector('.carousel-nav.next');
+
+    if (slides.length <= 1) { 
+        if (prevBtn) prevBtn.style.display = 'none';
+        if (nextBtn) nextBtn.style.display = 'none';
+        if (dots.length > 0) document.querySelector('.carousel-dots').style.display = 'none';
+        return;
+    }
+
+    let currentSlide = 0;
+    let slideInterval;
+
+    function showSlide(n) {
+        if (n >= slides.length) { n = 0; }
+        if (n < 0) { n = slides.length - 1; }
+
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        slides[n].classList.add('active');
+        dots[n].classList.add('active');
+
+        currentSlide = n;
+    }
+
+    function nextSlide() {
+        showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+        showSlide(currentSlide - 1);
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            resetInterval();
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            resetInterval();
+        });
+    }
+
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            showSlide(index);
+            resetInterval();
+        });
+    });
+
+    function startInterval() {
+        slideInterval = setInterval(nextSlide, 5000); 
+    }
+
+    function resetInterval() {
+        clearInterval(slideInterval);
+        startInterval();
+    }
+
+    showSlide(0); 
+    startInterval(); 
+}
+
+// =======================================================
+// GRÁFICO DE BARRAS (SEÇÃO ADULTO)
+// =======================================================
+function animateChartBars() {
+    const charts = document.querySelectorAll('.interactive-chart');
+
+    charts.forEach(chart => {
+        const bars = chart.querySelectorAll('.chart-bar');
+
+        if (typeof gsap !== 'undefined' && window.innerWidth > 1024) {
+            gsap.set(bars, {
+                width: "0%",
+                autoAlpha: 1
+            });
+
+            ScrollTrigger.create({
+                trigger: chart, 
+                start: "top 80%", 
+                once: true, 
+                onEnter: () => {
+                    gsap.to(bars, {
+                        duration: 1.5, 
+                        width: (i, target) => target.dataset.value.replace(',', '.') + "%",
+                        ease: "power2.out", 
+                        stagger: 0.1 
+                    });
+                }
+            });
+        } else {
+            // Mobile: mostra barras cheias direto
+            bars.forEach(bar => {
+                bar.style.width = bar.dataset.value.replace(',', '.') + "%";
+                bar.style.opacity = "1";
+            });
+        }
+    });
+}
+
+// --- 5. LÓGICA DE ANIMAÇÃO (GSAP) - OTIMIZADA E SEGURA ---
+if (typeof gsap !== 'undefined') {
+    
+    // SE FOR MOBILE (Telas menores que 1024px):
+    if (window.innerWidth <= 1024) {
+        const hiddenElements = document.querySelectorAll(".gs_reveal");
+        hiddenElements.forEach(el => {
+            el.classList.remove("gs_reveal");
+            el.style.opacity = "1";
+            el.style.visibility = "visible";
+            el.style.transform = "none";
+        });
+        
+        const topicBlocks = document.querySelectorAll('.topic-block');
+        topicBlocks.forEach(el => {
+            el.style.opacity = "1";
+            el.style.visibility = "visible";
+            el.style.transform = "none";
+        });
+    } 
+    // SE FOR DESKTOP:
+    else {
+        gsap.registerPlugin(ScrollTrigger);
+
+        function animateFrom(elem, direction = 1, distance = 50) {
+            let y = direction * distance;
+            gsap.fromTo(elem, { y: y, autoAlpha: 0 }, {
+                duration: 1.25,
+                y: 0,
+                autoAlpha: 1,
+                ease: "expo.out",
+                overwrite: "auto"
+            });
+        }
+
+        function hide(elem) {
+            gsap.set(elem, { autoAlpha: 0 });
+        }
+
+        gsap.utils.toArray(".gs_reveal").forEach(function (elem) {
+            hide(elem); 
+
+            let direction = 1; 
+            let distance = 50;
+
+            if (elem.classList.contains('gs_reveal_fromLeft') || elem.classList.contains('gs_reveal_fromRight')) {
+                const xDistance = elem.classList.contains('gs_reveal_fromLeft') ? -100 : 100;
+                ScrollTrigger.create({
+                    trigger: elem,
+                    start: "top 85%",
+                    once: true,
+                    onEnter: () => {
+                        gsap.fromTo(elem, { x: xDistance, autoAlpha: 0 }, {
+                            duration: 1.25,
+                            x: 0,
+                            autoAlpha: 1,
+                            ease: "expo.out",
+                            overwrite: "auto"
+                        });
+                    }
+                });
+                return; 
+            }
+
+            ScrollTrigger.create({
+                trigger: elem,
+                start: "top 85%",
+                once: true,
+                onEnter: () => animateFrom(elem, direction, distance),
+                markers: false
+            });
+        });
+
+        // Animação dos blocos de texto (Tópicos)
+        const topicBlocks = gsap.utils.toArray('#adolescencia .topic-block');
+        if (topicBlocks.length > 0) {
+            gsap.set(topicBlocks, { autoAlpha: 0, y: 50 });
+
+            ScrollTrigger.create({
+                trigger: "#adolescencia .topic-container",
+                start: "top 75%",
+                end: "bottom 25%",
+                markers: false,
+                onEnter: () => {
+                    gsap.to(topicBlocks, {
+                        duration: 0.8,
+                        autoAlpha: 1,
+                        y: 0,
+                        stagger: 0.15,
+                        ease: "power2.out",
+                        overwrite: "auto"
+                    });
+                },
+                onLeaveBack: () => {
+                    gsap.set(topicBlocks, { autoAlpha: 0, y: 50 });
+                }
+            });
+        }
+    }
+}
+
+// --- 6. LÓGICA DO CARROSSEL 3D (NUTRIENTES) ---
+const carouselWrapperNutrients = document.querySelector('#adolescencia .carousel-wrapper');
+const gridNutrients = document.querySelector('#adolescencia .grid-nutrients');
+const cardsNutrients = document.querySelectorAll('#adolescencia .flip-card');
+const prevButtonNutrients = document.querySelector('#adolescencia .prev-card');
+const nextButtonNutrients = document.querySelector('#adolescencia .next-card');
+
+if (carouselWrapperNutrients && gridNutrients && cardsNutrients.length > 0 && prevButtonNutrients && nextButtonNutrients) {
+    let currentIndexNutrients = 0;
+    const totalCardsNutrients = cardsNutrients.length;
+    const gapNutrients = parseFloat(window.getComputedStyle(gridNutrients).gap) || 30;
+
+    function getCardWidth() {
+        if (cardsNutrients.length > 0) {
+            return cardsNutrients[0].offsetWidth;
+        }
+        return 0;
+    }
+
+    function updateNutrientsCarousel() {
+        const cardWidth = getCardWidth();
+        if (cardWidth === 0) {
+            setTimeout(updateNutrientsCarousel, 100);
+            return;
+        }
+
+        const wrapperWidth = carouselWrapperNutrients.clientWidth;
+        const visibleCards = Math.max(1, Math.floor((wrapperWidth + gapNutrients) / (cardWidth + gapNutrients)));
+        const maxIndex = Math.max(0, totalCardsNutrients - visibleCards);
+
+        if (currentIndexNutrients > maxIndex) {
+            currentIndexNutrients = maxIndex;
+        }
+
+        const totalGridWidth = (cardWidth * totalCardsNutrients) + (gapNutrients * (totalCardsNutrients - 1));
+        const maxScroll = Math.max(0, totalGridWidth - wrapperWidth);
+        let targetOffset = currentIndexNutrients * (cardWidth + gapNutrients);
+
+        if (targetOffset > maxScroll) {
+            targetOffset = maxScroll;
+        }
+
+        gridNutrients.style.transform = `translateX(-${targetOffset}px)`;
+        gridNutrients.style.transition = 'transform 0.5s ease-out';
+
+        prevButtonNutrients.disabled = currentIndexNutrients === 0;
+        nextButtonNutrients.disabled = targetOffset >= (maxScroll - 1);
+    }
+
+    prevButtonNutrients.addEventListener('click', () => {
+        if (currentIndexNutrients > 0) {
+            currentIndexNutrients--;
+            updateNutrientsCarousel();
+        }
+    });
+
+    nextButtonNutrients.addEventListener('click', () => {
+        if (!nextButtonNutrients.disabled) {
+            currentIndexNutrients++;
+            updateNutrientsCarousel();
+        }
+    });
+
+    window.addEventListener('resize', () => {
+        gridNutrients.style.transition = 'none';
+        updateNutrientsCarousel();
+    });
+
+    setTimeout(updateNutrientsCarousel, 50);
+
+} else if (prevButtonNutrients && nextButtonNutrients) {
+    prevButtonNutrients.style.display = 'none';
+    nextButtonNutrients.style.display = 'none';
+}
+
+
+/* =======================================================
+ * CONTROLE GERAL DOS JOGOS
+ * ======================================================= */
+
+function showGameCover() {
+    document.body.classList.remove('game-modal-open');
+    document.querySelectorAll('.game-container-wrapper').forEach(container => {
+        container.classList.remove('active');
+    });
+    document.querySelectorAll('.game-modal-overlay').forEach(modal => {
+        modal.classList.remove('active');
+    });
+}
+
+function launchGame(containerId, gameInitializerFunction) {
+    document.body.classList.add('game-modal-open');
+
+    document.querySelectorAll('.game-container-wrapper').forEach(container => {
+        if (container.id !== containerId) {
+            container.classList.remove('active');
+        }
+    });
+
+    const gameContainer = document.getElementById(containerId);
+    if (gameContainer) {
+        gameContainer.classList.add('active');
+
+        const gameArea = gameContainer.querySelector('.game-area');
+        if (gameArea) {
+            gameArea.classList.add('active');
+        } 
+
+        if (gameInitializerFunction && typeof gameInitializerFunction === 'function') {
+            try {
+                gameInitializerFunction();
+            } catch (error) {
+                console.error(`Erro ao inicializar o jogo ${containerId}:`, error);
+                showGameCover();
+            }
+        } 
+
+    } else {
+        document.body.classList.remove('game-modal-open');
+    }
+}
+
+document.querySelector('#classify-game-area-embedded .game-restart-btn')?.addEventListener('click', () => {
+    if (typeof EmbeddedClassifyGame !== 'undefined' && EmbeddedClassifyGame.init) EmbeddedClassifyGame.init();
+});
+
+
+/* =======================================================
+ * LÓGICA DA CALCULADORA DE HIDRATAÇÃO (IDOSO)
+ * ======================================================= */
+function setupHydrationCalculator() {
+    const calcContainer = document.getElementById('hydration-calculator');
+    if (!calcContainer) return; 
+
+    const btnMenos = document.getElementById('btn-peso-menos');
+    const btnMais = document.getElementById('btn-peso-mais');
+    const displayPeso = document.getElementById('display-peso');
+
+    const ageButtons = document.querySelectorAll('.age-button');
+    const btnCalcular = document.getElementById('calcHidratacaoBtn');
+
+    const displayLitros = document.getElementById('calcLitros');
+    const displayCopos = document.getElementById('calcCopos');
+    const displayDisclaimer = document.getElementById('calc-disclaimer');
+
+    let currentPeso = 70;
+    let currentMlPorKg = 30; 
+    let currentAnimation = null; 
+
+    function updatePesoDisplay() {
+        if (displayPeso) displayPeso.textContent = currentPeso;
+    }
+
+    if (btnMenos) {
+        btnMenos.addEventListener('click', () => {
+            if (currentPeso > 20) { 
+                currentPeso--;
+                updatePesoDisplay();
+            }
+        });
+    }
+
+    if (btnMais) {
+        btnMais.addEventListener('click', () => {
+            if (currentPeso < 200) { 
+                currentPeso++;
+                updatePesoDisplay();
+            }
+        });
+    }
+
+    ageButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            ageButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            currentMlPorKg = parseInt(button.dataset.value, 10);
+        });
+    });
+
+    if (btnCalcular) {
+        btnCalcular.addEventListener('click', () => {
+            const totalMl = currentPeso * currentMlPorKg;
+            const totalLitros = (totalMl / 1000); 
+            const totalCopos = Math.ceil(totalMl / 250);
+
+            if (typeof gsap !== 'undefined') {
+                let counter = { value: 0 }; 
+
+                if (displayLitros && displayLitros.textContent) {
+                    let currentText = displayLitros.textContent.split(' ')[0].replace(',', '.');
+                    let currentValue = parseFloat(currentText);
+                    if (!isNaN(currentValue)) {
+                        counter.value = currentValue; 
+                    }
+                }
+
+                if (currentAnimation) {
+                    currentAnimation.kill();
+                }
+
+                currentAnimation = gsap.to(counter, {
+                    duration: 1.2, 
+                    value: totalLitros,
+                    ease: "power2.out",
+                    onUpdate: () => {
+                        if (displayLitros) {
+                            displayLitros.textContent = `${counter.value.toFixed(2).replace('.', ',')} Litros`;
+                        }
+                    },
+                    onComplete: () => {
+                        currentAnimation = null; 
+                    }
+                });
+
+                if (displayCopos) {
+                    displayCopos.innerHTML = ''; 
+                    let copoElements = []; 
+
+                    if (totalCopos > 0) {
+                        for (let i = 0; i < totalCopos; i++) {
+                            const copoIcon = document.createElement('i');
+                            copoIcon.className = 'fa-solid fa-droplet';
+
+                            if (i < 15) { 
+                                displayCopos.appendChild(copoIcon);
+                                copoElements.push(copoIcon); 
+                            }
+                        }
+                        if (totalCopos > 15) {
+                            const extraText = document.createElement('span');
+                            extraText.textContent = ` +${totalCopos - 15}`;
+                            extraText.style.fontSize = '0.7em';
+                            extraText.style.fontWeight = 'bold';
+                            extraText.style.marginLeft = '5px';
+                            displayCopos.appendChild(extraText);
+                        }
+                    }
+
+                    gsap.fromTo(copoElements, {
+                        opacity: 0,
+                        scale: 0.5,
+                        y: -10 
+                    }, {
+                        duration: 0.3, 
+                        opacity: 1,
+                        scale: 1,
+                        y: 0,
+                        ease: "back.out(1.7)",
+                        stagger: 0.08, 
+                        delay: 0.2 
+                    });
+                }
+            } else {
+                if (displayLitros) displayLitros.textContent = `${totalLitros.toFixed(2).replace('.', ',')} Litros`;
+                if (displayCopos) {
+                    displayCopos.innerHTML = ''; 
+                    if (totalCopos > 0) {
+                        for (let i = 0; i < totalCopos; i++) {
+                           
+                        }
+                    }
+                }
+            }
+
+            if (displayDisclaimer) {
+                displayDisclaimer.style.display = 'none';
+            }
+        });
+    }
+
+    updatePesoDisplay();
+}
+
+
+// ===============================================
+// ==== LÓGICA DO PLANEJADOR DE LANCHES (ADULTO) =====
+// ===============================================
+
+function setupSnackPlanner() {
+    const plannerDays = document.querySelectorAll('.planner-day');
+    const modal = document.getElementById('snack-selector-modal');
+    const modalTitle = document.getElementById('snack-modal-title');
+    const optionButtons = document.querySelectorAll('.snack-option-btn');
+    const closeModalBtn = document.querySelector('#snack-selector-modal .game-close-btn');
+    const resetBtn = document.getElementById('planner-reset-btn');
+    const downloadBtn = document.getElementById('planner-download-btn'); 
+
+    if (plannerDays.length === 0 || !modal || optionButtons.length === 0 || !resetBtn || !downloadBtn) {
+        return; 
+    }
+
+    let currentDayElement = null;
+    const weekDayNames = {
+        seg: 'Segunda-feira',
+        ter: 'Terça-feira',
+        qua: 'Quarta-feira',
+        qui: 'Quinta-feira',
+        sex: 'Sexta-feira',
+        sab: 'Sábado',
+        dom: 'Domingo'
+    };
+
+    function openModal(dayElement) {
+        currentDayElement = dayElement;
+        const dayKey = currentDayElement.dataset.day;
+        modalTitle.textContent = `Escolha seu lanche para: ${weekDayNames[dayKey]}`;
+        modal.classList.add('active');
+        document.body.classList.add('game-modal-open');
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.classList.remove('game-modal-open');
+        currentDayElement = null;
+    }
+
+    function generateDownload() {
+        const date = new Date().toLocaleDateString('pt-BR');
+        let content = "=== Meu Plano Semanal de Lanches (Alimentando Fases) ===\n";
+        content += `Gerado em: ${date}\n\n`;
+
+        let allEmpty = true;
+
+        plannerDays.forEach(day => {
+            const dayName = day.querySelector('h5').textContent;
+            const choice = day.querySelector('.planner-choice span').textContent;
+
+            let line = `${dayName}: `;
+
+            if (day.classList.contains('filled')) {
+                line += choice + " (Lanche Inteligente)";
+                allEmpty = false;
+            } else if (day.classList.contains('off-day')) {
+                line += choice + " (Dia de Descanso)";
+                allEmpty = false;
+            } else {
+                line += "Não Planejado";
+            }
+            content += line + "\n";
+        });
+
+        if (allEmpty) {
+            alert("O plano está vazio! Escolha suas opções antes de baixar.");
+            return;
+        }
+
+        content += "\n========================================================\n";
+        content += "Lembre-se: Hidratação e planejamento são a chave para o sucesso na rotina adulta!";
+
+        const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `Plano_Lanches_Semana_${date.replace(/\//g, '-')}.txt`;
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url); 
+    }
+
+    plannerDays.forEach(day => {
+        day.addEventListener('click', () => {
+            openModal(day);
+        });
+    });
+
+    optionButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            if (currentDayElement) {
+                const choiceText = button.dataset.snack;
+                const choiceSpan = currentDayElement.querySelector('.planner-choice span');
+
+                currentDayElement.classList.remove('filled', 'off-day');
+                currentDayElement.querySelector('.planner-choice i').style.display = 'block';
+
+                if (choiceText === "Folga") {
+                    choiceSpan.textContent = choiceText;
+                    currentDayElement.classList.add('off-day');
+                    currentDayElement.querySelector('.planner-choice i').style.display = 'none';
+
+                } else if (choiceText) {
+                    choiceSpan.textContent = choiceText;
+                    currentDayElement.classList.add('filled');
+                    currentDayElement.querySelector('.planner-choice i').style.display = 'none';
+
+                } else {
+                    choiceSpan.textContent = 'Clique para escolher';
+                }
+            }
+            closeModal();
+        });
+    });
+
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    resetBtn.addEventListener('click', () => {
+        plannerDays.forEach(day => {
+            day.querySelector('.planner-choice span').textContent = 'Clique para escolher';
+            day.querySelector('.planner-choice i').style.display = 'block';
+            day.classList.remove('filled', 'off-day');
+        });
+    });
+
+    downloadBtn.addEventListener('click', generateDownload);
+}
+
+
+/* =======================================================
+ * FUNÇÃO DE CONFETE
+ * ======================================================= */
+function triggerConfetti(modalElement) {
+    if (typeof confetti !== 'function' || !modalElement) {
+        console.warn('Biblioteca de confete não carregada ou modal inválido.');
+        return;
+    }
+
+    const icon = modalElement.querySelector('.win-icon');
+    setTimeout(() => {
+        let origin = { y: 0.6, x: 0.5 };
+        if (icon) {
+            const rect = icon.getBoundingClientRect();
+            if (rect.width > 0 && rect.height > 0) {
+                origin = {
+                    x: (rect.left + rect.width / 2) / window.innerWidth,
+                    y: (rect.top + rect.height / 2) / window.innerHeight
+                };
+            }
+        }
+        confetti({
+            particleCount: 150,
+            spread: 90,
+            colors: ['#53954a', '#6e513d', '#f9efd4', '#FFFFFF'],
+            origin: origin,
+            zIndex: 3000
+        });
+    }, 450);
+}
+
+
+/* =======================================================
+ * LÓGICA JOGO DE CLASSIFICAR (EMBUTIDO NA INFÂNCIA)
+ * ======================================================= */
+
+const EmbeddedClassifyGame = {
+    foodItemsData: [
+        { name: 'Maçã', imageSrc: 'Imagens/maca.webp', category: 'natura' },
+        { name: 'Brócolis', imageSrc: 'Imagens/brocolis.webp', category: 'natura' },
+        { name: 'Arroz', imageSrc: 'Imagens/arroz.webp', category: 'natura' },
+        { name: 'Pão Francês', imageSrc: 'Imagens/pao.webp', category: 'processado' }, 
+        { name: 'Queijo', imageSrc: 'Imagens/queijo.webp', category: 'processado' },
+        { name: 'Geleia', imageSrc: 'Imagens/geleia.webp', category: 'processado' },
+        { name: 'Salgadinho', imageSrc: 'Imagens/salgadinho.webp', category: 'ultra' },
+        { name: 'Refrigerante', imageSrc: 'Imagens/refri.webp', category: 'ultra' },
+        { name: 'Bolacha Recheada', imageSrc: 'Imagens/bolacha.webp', category: 'ultra' },
+        { name: 'Nuggets', imageSrc: 'Imagens/nuggets.webp', category: 'ultra' },
+    ],
+    gameArea: null,
+    foodBank: null,
+    dropZones: null,
+    scoreDisplay: null,
+    winModal: null,
+    remainingItems: 0,
+    draggedItemElement: null,
+
+    init: function () {
+        this.gameArea = document.getElementById('classify-game-area-embedded');
+        this.foodBank = this.gameArea?.querySelector('.classify-food-bank');
+        this.dropZones = this.gameArea?.querySelectorAll('.classify-zone');
+        this.scoreDisplay = document.getElementById('classify-score-embedded');
+        this.winModal = document.getElementById('classify-win-modal'); 
+
+        if (!this.gameArea || !this.foodBank || !this.dropZones || !this.scoreDisplay) {
+            // console.error("Elementos do DOM do Jogo de Classificar EMBUTIDO não encontrados.");
+            return; 
+        }
+
+        this.resetGame();
+        if (this.winModal) this.winModal.classList.remove('active');
+
+        this.foodBank.innerHTML = '';
+        this.dropZones.forEach(zone => {
+            zone.classList.remove('correct', 'incorrect', 'over');
+            zone.removeEventListener('dragover', this.handleDragOver.bind(this));
+            zone.removeEventListener('dragleave', this.handleDragLeave.bind(this));
+            zone.removeEventListener('drop', this.handleDrop.bind(this));
+        });
+
+        const shuffledItems = this.shuffleArray([...this.foodItemsData]);
+        shuffledItems.forEach(itemData => {
+            const itemElement = this.createFoodItemElement(itemData);
+            this.foodBank.appendChild(itemElement);
+        });
+        this.remainingItems = shuffledItems.length;
+        this.updateScore();
+
+        this.dropZones.forEach(zone => {
+            zone.addEventListener('dragover', this.handleDragOver.bind(this));
+            zone.removeEventListener('dragleave', this.handleDragLeave.bind(this));
+            zone.addEventListener('drop', this.handleDrop.bind(this));
+        });
+    },
+
+    createFoodItemElement: function (itemData) {
+        const item = document.createElement('div');
+        item.classList.add('classify-food-item');
+        item.draggable = true;
+        item.dataset.name = itemData.name;
+        item.innerHTML = `<img src="${itemData.imageSrc}" alt="${itemData.name}">`;
+        item.addEventListener('dragstart', this.handleDragStart.bind(this));
+        item.addEventListener('dragend', this.handleDragEnd.bind(this));
+        return item;
+    },
+
+    handleDragStart: function (event) {
+        const targetItem = event.target.closest('.classify-food-item');
+        if (!targetItem) return;
+        this.draggedItemElement = targetItem;
+        event.dataTransfer.setData('text/plain', targetItem.dataset.name);
+        setTimeout(() => targetItem.classList.add('dragging'), 0);
+    },
+
+    handleDragEnd: function (event) {
+        const targetItem = event.target.closest('.classify-food-item');
+        if (!targetItem) return;
+        targetItem.classList.remove('dragging');
+        this.draggedItemElement = null;
+    },
+
+    handleDragOver: function (event) {
+        event.preventDefault();
+        const zone = event.target.closest('.classify-zone');
+        if (zone) {
+            zone.classList.add('over');
+        }
+    },
+
+    handleDragLeave: function (event) {
+        const zone = event.target.closest('.classify-zone');
+        if (zone) {
+            zone.classList.remove('over');
+        }
+    },
+
+    handleDrop: function (event) {
+        event.preventDefault();
+        const zone = event.target.closest('.classify-zone');
+        if (!zone || !this.draggedItemElement) return;
+
+        const foodName = event.dataTransfer.getData('text/plain');
+        const targetCategory = zone.dataset.category;
+        const foodData = this.foodItemsData.find(item => item.name === foodName);
+
+        zone.classList.remove('over');
+
+        if (foodData && foodData.category === targetCategory) {
+            zone.classList.add('correct');
+            this.draggedItemElement.classList.add('hide');
+            this.draggedItemElement.draggable = false;
+            this.remainingItems--;
+            this.updateScore();
+            this.checkWinCondition();
+            setTimeout(() => zone.classList.remove('correct'), 500);
+        } else {
+            zone.classList.add('incorrect');
+            setTimeout(() => zone.classList.remove('incorrect'), 500);
+        }
+        this.draggedItemElement = null;
+    },
+
+    updateScore: function () {
+        if (this.scoreDisplay) {
+            this.scoreDisplay.textContent = `Itens restantes: ${this.remainingItems}`;
+        }
+    },
+
+    checkWinCondition: function () {
+        if (this.remainingItems === 0) {
+            this.showWinModal();
+        }
+    },
+
+    showWinModal: function () {
+        if (this.winModal) {
+            this.winModal.classList.add('active');
+            triggerConfetti(this.winModal);
+        }
+    },
+
+    resetGame: function () {
+        this.remainingItems = 0;
+        this.draggedItemElement = null;
+        if (this.dropZones) {
+            this.dropZones.forEach(zone => zone.classList.remove('correct', 'incorrect', 'over'));
+        }
+    },
+
+    shuffleArray: function (array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+};
+
+
+/* =======================================================
+ * GUIA INTERATIVO (HIGIENE DAS MÃOS)
+ * ======================================================= */
+function setupHandwashGuide() {
+    const handWashSteps = [
+        {
+            icon: 'fa-faucet',
+            title: 'Passo 1 de 5',
+            text: 'Molhe as mãos com água corrente.'
+        },
+        {
+            icon: 'fa-pump-soap',
+            title: 'Passo 2 de 5',
+            text: 'Aplique sabão suficiente para cobrir toda a superfície das mãos.'
+        },
+        {
+            icon: 'fa-hand-sparkles',
+            title: 'Passo 3 de 5',
+            text: 'Esfregue as mãos por pelo menos 20 segundos (palmas, costas, dedos, unhas e punhos).'
+        },
+        {
+            icon: 'fa-faucet-drip',
+            title: 'Passo 4 de 5',
+            text: 'Enxágue as mãos completamente com água corrente.'
+        },
+        {
+            icon: 'fa-scroll',
+            title: 'Passo 5 de 5',
+            text: 'Seque as mãos com uma toalha limpa ou secador de mãos.'
+        }
+    ];
+
+    const guide = document.querySelector('.handwash-guide');
+    if (!guide) return; 
+
+    const prevBtn = document.getElementById('btn-prev-step');
+    const nextBtn = document.getElementById('btn-next-step');
+    const stepCounter = document.getElementById('step-counter');
+
+    const iconEl = guide.querySelector('.guide-icon i');
+    const titleEl = guide.querySelector('.guide-step-title');
+    const textEl = guide.querySelector('.guide-step-text');
+
+    let currentStep = 0;
+
+    function updateStep(stepIndex) {
+        const stepData = handWashSteps[stepIndex];
+
+        textEl.classList.add('fade-out');
+        iconEl.classList.add('fade-out'); 
+
+        setTimeout(() => {
+            iconEl.className = `fa-solid ${stepData.icon}`; 
+            titleEl.textContent = stepData.title;
+            textEl.textContent = stepData.text;
+            stepCounter.textContent = `${stepIndex + 1} / ${handWashSteps.length}`;
+
+            prevBtn.disabled = (stepIndex === 0);
+            nextBtn.disabled = (stepIndex === handWashSteps.length - 1);
+
+            textEl.classList.remove('fade-out');
+            iconEl.classList.remove('fade-out');
+        }, 300); 
+    }
+
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < handWashSteps.length - 1) {
+            currentStep++;
+            updateStep(currentStep);
+        }
+    });
+
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 0) {
+            currentStep--;
+            updateStep(currentStep);
+        }
+    });
+}
+
+
+/* =======================================================
+ * LÓGICA DO MAPA INTERATIVO (JORNADA DOS SABORES)
+ * ======================================================= */
+
+const originMapData = {
+    'indigena': {
+        title: 'Matriz Indígena',
+        imageSrc: 'Imagens/icone-indigena.webp',
+        altText: 'Ícone da Matriz Indígena',
+        color: 'var(--color-primary)', 
+        bgColor: '#f0fdf4', 
+        items: [
+            { icon: 'fa-seedling', text: 'Mandioca (Farinha, Beiju, Polvilho)' },
+            { icon: 'fa-mortar-pestle', text: 'Paçoca (Mistura original)' },
+            { icon: 'fa-apple-whole', text: 'Frutos Nativos (Açaí, Pequi, Cupuaçu)' },
+            { icon: 'fa-leaf', text: 'Conhecimento da Terra e das Estações' }
+        ]
+    },
+    'portuguesa': {
+        title: 'Matriz Portuguesa',
+        imageSrc: 'Imagens/icone-portuguesa.webp',
+        altText: 'Ícone da Matriz Portuguesa',
+        color: 'var(--color-secondary)', 
+        bgColor: 'var(--color-background)', 
+        items: [
+            { icon: 'fa-utensils', text: 'Adaptação de Pratos (Ex: Feijoada)' },
+            { icon: 'fa-wheat-awn', text: 'Introdução do Arroz' },
+            { icon: 'fa-wine-bottle', text: 'Azeite de Oliva, Alho e Cebola' },
+            { icon: 'fa-users', text: 'Hábito do Almoço de Domingo' }
+        ]
+    },
+    'africana': {
+        title: 'Matriz Africana',
+        imageSrc: 'Imagens/icone-africana.webp',
+        altText: 'Ícone da Matriz Africana',
+        color: '#d97706', 
+        bgColor: '#fffbeb', 
+        items: [
+            { icon: 'fa-oil-can', text: 'Azeite de Dendê' },
+            { icon: 'fa-mug-hot', text: 'Leite de Coco' },
+            { icon: 'fa-drumstick-bite', text: 'Vatapá e Caruru' },
+            { icon: 'fa-mug-hot', text: 'Adaptação da Canjica (Kanzika)' }
+        ]
+    }
+};
+
+function closeOriginModal() {
+    const modal = document.getElementById('origin-modal');
+    if (modal) {
+        modal.classList.remove('active');
+        document.body.classList.remove('game-modal-open');
+    }
+}
+
+function populateOriginModal(data) {
+    const modal = document.getElementById('origin-modal');
+    if (!modal) return;
+
+    const modalContent = modal.querySelector('.game-modal-content');
+    const titleEl = document.getElementById('origin-modal-title');
+    const iconEl = document.getElementById('origin-modal-icon'); 
+    const listEl = document.getElementById('origin-modal-list');
+    
+    titleEl.textContent = data.title;
+    iconEl.src = data.imageSrc;
+    iconEl.alt = data.altText;
+
+    listEl.innerHTML = '';
+
+    data.items.forEach(item => {
+        const li = document.createElement('li');
+        li.innerHTML = `<i class="fa-solid ${item.icon}" aria-hidden="true"></i> ${item.text}`;
+        listEl.appendChild(li);
+    });
+
+    modalContent.style.borderColor = data.color;
+
+    modal.classList.add('active');
+    document.body.classList.add('game-modal-open');
+}
+
+function setupOriginMap() {
+    const hotspots = document.querySelectorAll('.map-hotspot');
+    const modal = document.getElementById('origin-modal');
+
+    if (typeof gsap !== 'undefined' && hotspots.length > 0) {
+        // Otimização Mobile: Se a tela for maior que 1024px, anima. Senão, mostra direto.
+        if (window.innerWidth > 1024) {
+            gsap.set(hotspots, { opacity: 0, scale: 0.5 });
+
+            gsap.to(hotspots, {
+                duration: 0.8, 
+                opacity: 1,
+                scale: 1,
+                ease: "back.out(1.7)", 
+                stagger: 0.2, 
+                scrollTrigger: {
+                    trigger: ".origin-map-container", 
+                    start: "top 75%", 
+                    toggleActions: "play none none none" 
+                }
+            });
+        } else {
+            // Mobile: Força visibilidade
+            hotspots.forEach(h => {
+                h.style.opacity = "1";
+                h.style.transform = "scale(1)";
+            });
+        }
+    }
+
+    if (!hotspots.length || !modal) return; 
+
+    const closeBtn = modal.querySelector('.game-close-btn');
+
+    hotspots.forEach(hotspot => {
+        hotspot.addEventListener('click', () => {
+            const matrizKey = hotspot.dataset.matriz;
+            const data = originMapData[matrizKey];
+            if (data) {
+                populateOriginModal(data);
+            }
+        });
+    });
+
+    closeBtn.addEventListener('click', closeOriginModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeOriginModal();
+        }
+    });
+}
+
+
+/* =======================================================
+ * LÓGICA DO FILTRO DA PÁGNA DE RECEITAS (COM MEMÓRIA)
+ * ======================================================= */
+function setupRecipeFilters() {
+    const filterContainer = document.querySelector('.filter-bar');
+    const recipePage = document.getElementById('receitas');
+
+    // Verifica se a página de receitas está ativa e se os elementos existem
+    if (!filterContainer || !recipePage || !recipePage.classList.contains('active')) {
+        return;
+    }
+
+    const filterButtons = filterContainer.querySelectorAll('.filter-btn');
+    const recipeCards = document.querySelectorAll('#recipe-grid .cards_item');
+
+    // Função que esconde/mostra os cards
+    const performFilter = (filter) => {
+        recipeCards.forEach(card => {
+            const categories = card.dataset.category; 
+            // Se for 'todos' mostra tudo, senão verifica se a categoria existe no card
+            if (filter === 'todos' || (categories && categories.includes(filter))) {
+                card.classList.remove('hidden');
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    };
+
+    // Adiciona o clique em cada botão (Lógica padrão)
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const filter = button.dataset.filter;
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            performFilter(filter);
+        });
+    });
+
+    /* === LÓGICA DE FILTRO SAZONAL (Rabanada) === */
+    // Verifica se viemos de um clique que pediu um filtro específico
+    const filtroSalvo = sessionStorage.getItem('filtroInicial');
+
+    if (filtroSalvo) {
+        // Se veio da Home clicando na Rabanada, ativa o botão correspondente (ex: Sazonal)
+        const targetBtn = filterContainer.querySelector(`.filter-btn[data-filter="${filtroSalvo}"]`);
+        
+        if (targetBtn) {
+            // Remove a classe active de todos e adiciona no alvo
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            targetBtn.classList.add('active');
+            
+            // Executa o filtro
+            performFilter(filtroSalvo);
+        }
+        
+        // Limpa a memória para não ficar preso nisso se o usuário recarregar a página depois
+        sessionStorage.removeItem('filtroInicial');
+    } else {
+        // Comportamento padrão (Se não tiver aviso, abre na aba "Todos")
+        const initialActiveButton = filterContainer.querySelector('.filter-btn[data-filter="todos"]');
+        if (initialActiveButton) {
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            initialActiveButton.classList.add('active');
+            performFilter('todos');
+        }
+    }
+}
+
+// --- LÓGICA DE CELEBRAÇÃO DA DEDICATÓRIA (FORMATURA) ---
+const dedicationBox = document.getElementById('class-dedication');
+let confettiTimer = null;
+
+if (dedicationBox && typeof triggerConfetti !== 'undefined') {
+    dedicationBox.addEventListener('mouseenter', () => {
+        if (confettiTimer) {
+            return;
+        }
+        triggerConfetti(dedicationBox);
+        confettiTimer = setTimeout(() => {
+            confettiTimer = null;
+        }, 2000);
+    });
+}
+
+/* =======================================================
+ * 📅 LÓGICA DA NOVA AGENDA (ATUALIZADA COM LINKS)
+ * ======================================================= */
+const FullPageCalendar = {
+    date: new Date(),
+    today: new Date(),
+    
+    // Lista de Eventos
+    events: [
+        { 
+            date: "2025-10-23", 
+            title: "Ação Infantil & Idosos", 
+            type: "Ação", 
+            desc: "Atividades lúdicas e roda de conversa.", 
+            loc: "Escola Gilberto Freyre | Parque Santana",
+            pageId: "acao-infancia-detalhe", 
+            images: ["Imagens/acaoinfancia3.webp", "Imagens/acaoidosos4.webp"]
+        },
+        { 
+            date: "2025-10-24", 
+            title: "Ação Idosos (Dia 2)", 
+            type: "Ação", 
+            desc: "Continuação das atividades.", 
+            loc: "Parque Santana",
+            pageId: "acao-idoso-detalhe", 
+            images: ["Imagens/acaoidosos1.webp"] 
+        },
+        { 
+            date: "2025-11-03", 
+            title: "Ação Adultos", 
+            type: "Ação", 
+            desc: "Saúde do trabalhador e DCNT.", 
+            loc: "CDC",
+            pageId: "acao-adulto-detalhe", 
+            images: ["Imagens/acaoadultos1.webp"]
+        },
+        { 
+            date: "2025-11-05", 
+            title: "Ação Adultos (Dia 2)", 
+            type: "Ação", 
+            desc: "Palestras e avaliações.", 
+            loc: "CDC",
+            pageId: "acao-adulto-detalhe", 
+            images: ["Imagens/acaoadultos2.webp"]
+        },
+        { 
+            date: "2025-12-25", 
+            title: "Natal", 
+            type: "feriado", 
+            desc: "Feriado Nacional.", 
+            loc: "Em todo lugar", 
+            time: "Dia Todo",
+            images: ["Imagens/Farofa Festiva.webp", "Imagens/Rabanada de Forno.webp"]
+        }
+    ],
+
+    // Inicialização
+    init: function() {
+        const container = document.getElementById('calendar-days-full');
+        if(!container) return;
+
+        const prevBtn = document.getElementById('prev-month-full');
+        const nextBtn = document.getElementById('next-month-full');
+
+        if(prevBtn) {
+            const newPrev = prevBtn.cloneNode(true);
+            prevBtn.parentNode.replaceChild(newPrev, prevBtn);
+            newPrev.addEventListener('click', () => { 
+                this.date.setMonth(this.date.getMonth() - 1); 
+                this.render(); 
+            });
+        }
+        
+        if(nextBtn) {
+            const newNext = nextBtn.cloneNode(true);
+            nextBtn.parentNode.replaceChild(newNext, nextBtn);
+            newNext.addEventListener('click', () => { 
+                this.date.setMonth(this.date.getMonth() + 1); 
+                this.render(); 
+            });
+        }
+
+        this.render();
+    },
+
+    // Renderiza os dias do mês
+    render: function() {
+        const monthYear = document.getElementById('current-month-full');
+        const daysContainer = document.getElementById('calendar-days-full');
+        
+        this.date.setDate(1); 
+
+        const month = this.date.getMonth();
+        const year = this.date.getFullYear();
+        
+        const lastDay = new Date(year, month + 1, 0).getDate();
+        const prevLastDay = new Date(year, month, 0).getDate();
+        const firstDayIndex = this.date.getDay();
+        
+        const months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+        
+        if(monthYear) monthYear.innerText = `${months[month]} ${year}`;
+        if(daysContainer) daysContainer.innerHTML = "";
+
+        for (let x = firstDayIndex; x > 0; x--) {
+            daysContainer.innerHTML += `<li class="inactive">${prevLastDay - x + 1}</li>`;
+        }
+
+        for (let i = 1; i <= lastDay; i++) {
+            let li = document.createElement('li');
+            let content = `<span>${i}</span>`; 
+            
+            const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+            
+            if (i === this.today.getDate() && month === this.today.getMonth() && year === this.today.getFullYear()) {
+                li.classList.add('current-day');
+            }
+
+            const event = this.events.find(e => e.date === dateStr);
+            
+            if (event) {
+                li.classList.add('has-event', `type-${event.type}`);
+                li.setAttribute('data-title', event.title); 
+                
+                let iconClass = 'fa-circle';
+                if(event.type === 'Ação') iconClass = 'fa-handshake'; 
+                if(event.type === 'feriado') iconClass = 'fa-star';   
+                
+                content += `<div class="event-icon-marker"><i class="fa-solid ${iconClass}"></i></div>`;
+            }
+
+            li.innerHTML = content;
+
+            li.addEventListener('click', () => {
+                document.querySelectorAll('.days-full li').forEach(el => el.classList.remove('selected-day'));
+                li.classList.add('selected-day');
+                this.showDetails(i, month, months, event);
+            });
+
+            daysContainer.appendChild(li);
+        }
+
+        // Seção de animação: Só roda se a tela for maior que 1024px para otimizar mobile
+        if (typeof gsap !== 'undefined' && window.innerWidth > 1024) {
+            gsap.fromTo(".days-full li", 
+                { opacity: 0, y: 20, scale: 0.9 }, 
+                { duration: 0.4, opacity: 1, y: 0, scale: 1, stagger: 0.03, ease: "back.out(1.5)" }
+            );
+        } else {
+            // No mobile, garante que esteja visível
+            const allLi = document.querySelectorAll(".days-full li");
+            allLi.forEach(li => { li.style.opacity = 1; li.style.transform = "none"; });
+        }
+    },
+
+    // Mostra os detalhes
+    showDetails: function(day, monthIndex, monthNames, event) {
+        const display = document.getElementById('event-card-display');
+        const fullDate = `${day} de ${monthNames[monthIndex]}`;
+
+        if (event) {
+            let iconClass = 'fa-calendar-check';
+            if(event.type === 'Ação') iconClass = 'fa-users';
+            if(event.type === 'feriado') iconClass = 'fa-star';
+
+            // Link do Google Agenda
+            const googleDate = event.date.replace(/-/g, '') + 'T090000';
+            const googleDateEnd = event.date.replace(/-/g, '') + 'T120000';
+            const googleUrl = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(event.title)}&details=${encodeURIComponent(event.desc)}&location=${encodeURIComponent(event.loc)}&dates=${googleDate}/${googleDateEnd}`;
+
+            let galleryHTML = '';
+            if (event.images && event.images.length > 0) {
+                galleryHTML = '<div class="event-gallery-stack">';
+                event.images.forEach(imgSrc => {
+                    galleryHTML += `<div class="gallery-stack-item"><img src="${imgSrc}" alt="Foto do evento"></div>`;
+                });
+                galleryHTML += '</div>';
+            } else {
+                galleryHTML = '<div class="event-feature-image" style="height: 50px; background: transparent; box-shadow: none;"></div>';
+            }
+
+            let actionButtonHTML = '';
+            if (event.type === 'Ação' && event.pageId) {
+                actionButtonHTML = `
+                    <a href="#" onclick="navigateTo('${event.pageId}'); return false;" class="cta-button" style="padding: 10px 20px; font-size:0.9em; flex:1; text-align:center;">
                         Ver Relato Completo
                     </a>
-                `),o.innerHTML=`
+                `;
+            }
+
+            display.innerHTML = `
                 <div class="event-card-full">
-                    ${c} <span class="date-badge">${i}</span>
-                    <h2>${n.title}</h2>
-                    <p>${n.desc}</p>
+                    ${galleryHTML} <span class="date-badge">${fullDate}</span>
+                    <h2>${event.title}</h2>
+                    <p>${event.desc}</p>
                     
                     <div class="event-meta-grid">
                         <div class="meta-item">
                             <i class="fa-solid fa-location-dot"></i>
-                            <span>${n.loc}</span>
+                            <span>${event.loc}</span>
                         </div>
                         <div class="meta-item">
-                            <i class="fa-solid ${s}"></i>
-                            <span style="text-transform: capitalize;">${n.type}</span>
+                            <i class="fa-solid ${iconClass}"></i>
+                            <span style="text-transform: capitalize;">${event.type}</span>
                         </div>
                     </div>
 
                     <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">
-                        ${u}
+                        ${actionButtonHTML}
                         
-                        <a href="${d}" target="_blank" class="cta-button" style="background: #fff; color: var(--color-primary) !important; border: 2px solid var(--color-primary); padding: 10px 20px; font-size:0.9em; flex:1; display: flex; align-items: center; justify-content: center; gap: 8px; text-align:center;">
+                        <a href="${googleUrl}" target="_blank" class="cta-button" style="background: #fff; color: var(--color-primary) !important; border: 2px solid var(--color-primary); padding: 10px 20px; font-size:0.9em; flex:1; display: flex; align-items: center; justify-content: center; gap: 8px; text-align:center;">
                             <i class="fa-solid fa-calendar-plus"></i> Salvar
                         </a>
                     </div>
                 </div>
-            `}else o.innerHTML=`
+            `;
+        } else {
+            display.innerHTML = `
                 <div class="empty-state-full">
                     <i class="fa-regular fa-calendar"></i>
-                    <h4 style="color: var(--color-secondary);">${i}</h4>
-                    <p>N\xe3o h\xe1 eventos agendados para este dia.</p>
+                    <h4 style="color: var(--color-secondary);">${fullDate}</h4>
+                    <p>Não há eventos agendados para este dia.</p>
                 </div>
-            `}};function setupMusicToggle(){let e=document.getElementById("music-toggle"),t=document.getElementById("xmas-bgm");e&&t&&(t.volume=.3,e.addEventListener("click",()=>{t.paused?(t.play().catch(e=>{console.log("Autoplay bloqueado pelo navegador: ",e)}),e.classList.add("playing"),e.innerHTML='<i class="fa-solid fa-volume-high"></i>'):(t.pause(),e.classList.remove("playing"),e.innerHTML='<i class="fa-solid fa-music"></i>')}))}function updateChristmasCountdown(){let e=new Date,t=e.getFullYear(),a=new Date(t,11,25,0,0,0);e>a&&a.setFullYear(t+1);let n=a-e,o=Math.floor(n/864e5),i=Math.floor(n/36e5%24),s=Math.floor(n/1e3/60%60),l=Math.floor(n/1e3%60),r=Math.floor(o/30),d=o%30,c=document.getElementById("cd-months"),u=document.getElementById("box-months"),m=document.getElementById("lbl-months"),g=document.getElementById("cd-days"),f=document.getElementById("cd-hours"),p=document.getElementById("cd-minutes"),h=document.getElementById("cd-seconds");h&&(r>0?(c.innerText=r,u&&(u.style.display="flex"),m&&(m.innerText=1===r?"m\xeas":"meses")):u&&(u.style.display="none"),g&&(g.innerText=d<10?"0"+d:d),f&&(f.innerText=i<10?"0"+i:i),p&&(p.innerText=s<10?"0"+s:s),h&&(h.innerText=l<10?"0"+l:l))}function setupGrinchMode(){let e=document.getElementById("grinch-btn"),t=document.body,a="ativado"===localStorage.getItem("modoGrinch");function n(t){t?(e.innerHTML='<i class="fa-solid fa-tree"></i> Restaurar Natal',e.setAttribute("aria-label","Ativar efeitos de Natal")):(e.innerHTML='<i class="fa-regular fa-face-frown"></i> Modo Grinch (Sem Natal)',e.setAttribute("aria-label","Desativar efeitos de Natal"))}a&&(t.classList.remove("tema-natal"),n(!0)),e&&e.addEventListener("click",()=>{let e=t.classList.contains("tema-natal");e?(t.classList.remove("tema-natal"),localStorage.setItem("modoGrinch","ativado"),n(!0),alert("\uD83C\uDF84 Natal pausado! O Grinch roubou os enfeites.")):(t.classList.add("tema-natal"),localStorage.setItem("modoGrinch","desativado"),n(!1))})}setupHeroCarousel(),document.addEventListener("DOMContentLoaded",()=>{setupChatbotToggle(),setupTextToSpeech(),giftHuntGame.init();let e=document.getElementById("gift-reveal-modal");e&&e.addEventListener("click",e=>{e.target.closest(".gift-container")||e.target.closest(".close-modal")||closeGiftModal()});let t=document.getElementById("letter-modal");t&&t.addEventListener("click",e=>{e.target===t&&closeLetterModal()}),setupMusicToggle()}),document.addEventListener("mousemove",function(e){if(!(window.innerWidth<=1024)&&.3>Math.random()){let t=document.createElement("div");t.classList.add("magic-dust"),t.style.left=e.pageX+"px",t.style.top=e.pageY+"px";let a=10*Math.random()+10;t.style.width=a+"px",t.style.height=a+"px";let n=["#d92d2d","#3D7938","#FFD700","#c0392b"];t.style.background=n[Math.floor(Math.random()*n.length)],document.body.appendChild(t),setTimeout(()=>{t.remove()},1200)}}),setInterval(updateChristmasCountdown,1e3),updateChristmasCountdown(),document.addEventListener("DOMContentLoaded",()=>{setupGrinchMode()});
+            `;
+        }
+    }
+};
+
+// =======================================================
+// CHAMADAS GERAIS
+// =======================================================
+
+setupHeroCarousel();
+
+document.addEventListener('DOMContentLoaded', () => {
+    setupTextToSpeech();
+});
+
+
+/* =======================================================
+ * ✅ LÓGICA DE PERFIL E COMUNIDADE (TIMELINE)
+ * ======================================================= */
+
+// 1. Função que busca e desenha os posts
+async function loadUserTimeline(targetUid) {
+    const timelineTab = document.getElementById('tab-timeline');
+    if (!timelineTab) return;
+
+    let postsContainer = document.getElementById('profile-posts-list');
+    const emptyState = timelineTab.querySelector('.empty-state-journey');
+
+    // Cria o container de posts se não existir
+    if (!postsContainer) {
+        postsContainer = document.createElement('div');
+        postsContainer.id = 'profile-posts-list';
+        postsContainer.style.marginTop = '20px';
+        postsContainer.style.display = 'flex';
+        postsContainer.style.flexDirection = 'column';
+        postsContainer.style.gap = '20px';
+        
+        if (emptyState && emptyState.parentNode) {
+            emptyState.parentNode.insertBefore(postsContainer, emptyState.nextSibling);
+        } else {
+            timelineTab.appendChild(postsContainer);
+        }
+    }
+
+    if (!targetUid) return;
+    
+    postsContainer.innerHTML = '<p style="text-align:center; color:#888; padding:20px;">Carregando publicações...</p>';
+
+    try {
+        // Busca posts deste usuário específico no Firebase
+        const db = firebase.firestore();
+        const snapshot = await db.collection('posts')
+            .where('authorId', '==', targetUid)
+            .orderBy('timestamp', 'desc')
+            .limit(20)
+            .get();
+
+        postsContainer.innerHTML = ''; 
+
+        if (snapshot.empty) {
+            if(emptyState) emptyState.style.display = 'block';
+            postsContainer.style.display = 'none';
+        } else {
+            if(emptyState) emptyState.style.display = 'none';
+            postsContainer.style.display = 'flex';
+
+            snapshot.forEach(doc => {
+                const post = doc.data();
+                const date = post.timestamp ? new Date(post.timestamp.toDate()).toLocaleDateString('pt-BR') : 'Recente';
+
+                const card = document.createElement('article');
+                card.style.cssText = `background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e6dac0; box-shadow: 0 2px 5px rgba(0,0,0,0.05);`;
+                
+                card.innerHTML = `
+                    <div style="font-size: 1rem; color: #333; margin-bottom: 10px; line-height: 1.5;">${post.content}</div>
+                    ${post.image ? `<img src="${post.image}" style="width: 100%; border-radius: 8px; margin-bottom: 15px; max-height: 300px; object-fit: cover;">` : ''}
+                    <div style="display: flex; gap: 20px; color: #888; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 10px;">
+                        <span><i class="fa-regular fa-clock"></i> ${date}</span>
+                        <span><i class="fa-solid fa-heart" style="color: ${post.likes && post.likes.length ? '#d92d2d' : '#ccc'}"></i> ${post.likes ? post.likes.length : 0}</span>
+                    </div>
+                `;
+                postsContainer.appendChild(card);
+            });
+        }
+    } catch (error) {
+        console.error("Erro timeline:", error);
+    }
+}
+
+// 2. Inicialização do Firebase e Lógica de Usuário
+document.addEventListener('DOMContentLoaded', () => {
+    
+    if (typeof firebase === 'undefined' || !firebase.auth || !firebase.firestore) {
+        console.warn("Firebase SDK ausente.");
+        return;
+    }
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    let currentUserData = null; 
+
+    // --- ABAS DO PERFIL ---
+    const tabs = document.querySelectorAll('.j-tab');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => t.classList.remove('active'));
+            tabPanes.forEach(p => { p.classList.remove('active'); p.classList.add('hidden'); });
+
+            tab.classList.add('active');
+            const targetId = tab.getAttribute('data-target');
+            const targetEl = document.getElementById(targetId);
+            if(targetEl) {
+                targetEl.classList.remove('hidden');
+                targetEl.classList.add('active');
+            }
+        });
+    });
+
+    // --- MODAL DE EDIÇÃO ---
+    const btnOpenEdit = document.getElementById('btn-open-edit');
+    const modalEdit = document.getElementById('edit-modal');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+    
+    if(btnOpenEdit) {
+        btnOpenEdit.addEventListener('click', () => {
+            if(modalEdit) {
+                modalEdit.classList.add('open');
+                if(currentUserData) {
+                    const iUser = document.getElementById('input-username');
+                    const iReal = document.getElementById('input-realname');
+                    const iBio = document.getElementById('input-bio');
+                    if(iUser) iUser.value = currentUserData.username || '';
+                    if(iReal) iReal.value = currentUserData.realname || '';
+                    if(iBio) iBio.value = currentUserData.bio || '';
+                }
+            }
+        });
+    }
+    if(btnCloseModal && modalEdit) btnCloseModal.addEventListener('click', () => modalEdit.classList.remove('open'));
+
+    // --- LOGIN ---
+    auth.onAuthStateChanged(async (user) => {
+        if (user) {
+            try {
+                const doc = await db.collection('users').doc(user.uid).get();
+                if (doc.exists) {
+                    currentUserData = doc.data();
+                    updateProfileUI(currentUserData, user.uid);
+                } else {
+                    const newData = {
+                        username: user.email.split('@')[0],
+                        realname: user.displayName || 'Viajante',
+                        photo: user.photoURL || `https://ui-avatars.com/api/?name=${user.displayName}`,
+                        achievements: ['welcome_fases'],
+                        followers: [],
+                        following: [],
+                        postsCount: 0
+                    };
+                    await db.collection('users').doc(user.uid).set(newData);
+                    currentUserData = newData;
+                    updateProfileUI(newData, user.uid);
+                }
+            } catch (err) { console.error(err); }
+        }
+    });
+
+    // Atualiza Tela
+    function updateProfileUI(data, uid) {
+        const els = {
+            username: document.getElementById('display-username'),
+            realname: document.getElementById('display-realname'),
+            bio: document.getElementById('display-bio'),
+            picMain: document.getElementById('profile-pic-main'),
+            countPosts: document.getElementById('count-posts'),
+            level: document.getElementById('user-level'),
+            xpBar: document.getElementById('xp-bar-fill'),
+            totalXp: document.getElementById('total-xp')
+        };
+
+        if(els.username) els.username.textContent = "@" + (data.username || "usuario");
+        if(els.realname) els.realname.textContent = data.realname || "Viajante";
+        if(els.bio) els.bio.textContent = data.bio || "Minha jornada...";
+        if(els.picMain) els.picMain.src = data.photo;
+        if(els.countPosts) els.countPosts.textContent = data.postsCount || 0;
+
+        if (data.achievements) {
+            const totalXp = data.achievements.length * 20; 
+            if(els.level) els.level.textContent = Math.floor(totalXp / 100) + 1;
+            if(els.totalXp) els.totalXp.textContent = totalXp;
+            if(els.xpBar) els.xpBar.style.width = `${totalXp % 100}%`;
+            
+            const ctn = document.getElementById('achievements-list-container');
+            if(ctn) {
+                ctn.innerHTML = '';
+                data.achievements.forEach(id => {
+                    ctn.innerHTML += `<div class="achievement-card unlocked"><div class="ac-icon"><i class="fa-solid fa-trophy"></i></div><div class="ac-info"><h4>${id}</h4></div></div>`;
+                });
+            }
+        }
+
+        // CARREGA A TIMELINE
+        loadUserTimeline(uid);
+    }
+});

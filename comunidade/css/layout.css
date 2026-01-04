@@ -1,0 +1,167 @@
+/* =======================================================
+ * LAYOUT GERAL (3 COLUNAS - ESTÁVEL)
+ * ======================================================= */
+
+.dashboard-body {
+    background-color: #fafafa;
+    font-family: 'Lato', sans-serif;
+    color: #050505;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+.main-layout {
+    display: grid;
+    /* Sidebar: 260px | Feed: Flexível | Widgets: 340px */
+    grid-template-columns: 260px 1fr 340px; 
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* --- SIDEBAR ESQUERDA --- */
+.sidebar {
+    background: white;
+    padding: 25px 20px;
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #dbdbdb;
+    z-index: 100;
+}
+
+.logo-area { display: flex; align-items: center; gap: 10px; margin-bottom: 25px; padding-left: 5px; }
+.sidebar-logo-img { width: 35px; }
+.brand-text { font-family: 'Montserrat', sans-serif; font-weight: 400; color: #53954a; font-size: 1.1rem; }
+.brand-text span { display: block; font-weight: 800; color: #6e513d; }
+
+.nav-links { list-style: none; padding: 0; flex: 1; }
+.nav-links li { margin-bottom: 8px; }
+.nav-links a {
+    text-decoration: none; color: #000; display: flex; align-items: center; gap: 15px;
+    padding: 12px 15px; border-radius: 8px; font-weight: 400; transition: 0.2s;
+}
+.nav-links a.active, .nav-links a:hover { background-color: #f2f2f2; font-weight: 700; }
+.nav-links a i { font-size: 1.4rem; width: 30px; }
+
+.nav-footer { margin-top: 20px; padding-top: 15px; border-top: 1px solid #efefef; }
+.profile-pill-link { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #000; padding: 10px; border-radius: 8px; }
+.profile-pill-link:hover { background-color: #f2f2f2; }
+.nav-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; }
+
+/* --- ÁREA CENTRAL (Feed + Busca) --- */
+.content-area {
+    padding: 30px 40px;
+    width: 100%;
+    margin: 0 auto;
+    /* Não precisa mais de max-width forçado aqui pois a coluna da direita segura */
+}
+
+/* Barra de Pesquisa no Topo */
+.top-search-bar {
+    background: white;
+    border: 1px solid #dbdbdb;
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    position: relative;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+.top-search-bar i { color: #8e8e8e; }
+.top-search-bar input {
+    border: none; background: transparent; outline: none;
+    width: 100%; font-size: 0.95rem; color: #262626;
+}
+
+/* Dropdown da busca */
+.search-dropdown {
+    position: absolute; top: 105%; left: 0; width: 100%;
+    background: white; border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    z-index: 100; max-height: 300px; overflow-y: auto;
+    border: 1px solid #dbdbdb; padding: 5px 0;
+}
+.search-dropdown.hidden { display: none; }
+.search-item {
+    padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+    cursor: pointer; border-bottom: 1px solid #fafafa;
+}
+.search-item:hover { background-color: #fafafa; }
+
+/* --- SIDEBAR DIREITA (Conteúdos Extras) --- */
+.right-sidebar {
+    background: white; padding: 30px 25px;
+    position: sticky; top: 0; height: 100vh;
+    border-left: 1px solid #dbdbdb;
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+}
+
+/* Headers de Widget */
+.widget-header h3 { 
+    font-size: 0.95rem; color: #8e8e8e; font-weight: 800; 
+    margin-bottom: 20px; text-transform: uppercase; letter-spacing: 0.5px;
+    display: flex; align-items: center; gap: 8px;
+}
+
+.resources-list { display: flex; flex-direction: column; gap: 20px; }
+
+/* CARD USDA PREMIUM */
+.resource-card.usda-feature {
+    background: #ffffff; border: 1px solid #e0e0e0; border-radius: 16px;
+    overflow: hidden; transition: transform 0.2s, box-shadow 0.2s;
+}
+.resource-card.usda-feature:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-color: #53954a; }
+
+.rc-cover { position: relative; height: 120px; width: 100%; overflow: hidden; }
+.rc-cover img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+.resource-card:hover .rc-cover img { transform: scale(1.05); }
+
+.rc-badge {
+    position: absolute; top: 10px; right: 10px;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);
+    color: white; font-size: 0.7rem; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+}
+
+.rc-content { padding: 15px; }
+.rc-title-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+.rc-content h4 { margin: 0; font-size: 1rem; font-weight: 800; color: #2c3e50; }
+.rc-content p { font-size: 0.85rem; color: #666; line-height: 1.4; margin: 0 0 15px 0; }
+
+.btn-resource-action {
+    width: 100%; background: #53954a; color: white; border: none;
+    padding: 10px; border-radius: 8px; font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: background 0.2s;
+}
+.btn-resource-action:hover { background: #3e7536; }
+
+/* Item Mini */
+.resource-item-mini {
+    display: flex; align-items: center; gap: 12px; padding: 12px;
+    background: #f8f9fa; border-radius: 12px; border: 1px solid #eee;
+    transition: 0.2s; cursor: pointer;
+}
+.resource-item-mini:hover { background: #fff; border-color: #53954a; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+.rim-icon-box { width: 35px; height: 35px; background: #e8f5e9; color: #53954a; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+.rim-info { flex: 1; }
+.rim-info h4 { margin: 0; font-size: 0.9rem; color: #333; font-weight: 700; }
+.rim-info span { font-size: 0.75rem; color: #888; display: block; }
+.rim-btn { background: none; border: none; color: #ccc; font-size: 0.9rem; }
+.resource-item-mini:hover .rim-btn { color: #53954a; }
+
+.footer-links-mini { font-size: 0.75rem; color: #c7c7c7; margin-top: auto; padding-top: 20px; }
+
+/* Mobile */
+@media (max-width: 992px) {
+    .right-sidebar { display: none; }
+    .main-layout { grid-template-columns: 80px 1fr; }
+    .brand-text, .nav-links span, .profile-info-mini { display: none; }
+    .sidebar { width: 80px; align-items: center; }
+}

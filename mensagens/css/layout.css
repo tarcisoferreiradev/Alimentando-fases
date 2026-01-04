@@ -1,0 +1,42 @@
+.main-layout.chat-layout { 
+    display: flex !important; 
+    flex-direction: row !important; 
+    width: 100vw !important; 
+    height: 100vh !important; 
+    max-width: none !important; 
+    margin: 0 !important; 
+    padding: 0 !important; 
+    background: #fff !important; 
+    gap: 0 !important; 
+}
+
+/* --- SIDEBAR (Menu Lateral) --- */
+.sidebar { width: 260px !important; background: #fff !important; border-right: 1px solid var(--border-light) !important; display: flex !important; flex-direction: column !important; padding: 30px 20px !important; flex-shrink: 0 !important; z-index: 100; height: 100vh !important; overflow-y: auto !important; scrollbar-width: none !important; }
+.sidebar::-webkit-scrollbar { display: none !important; }
+
+.logo-area { display: flex; align-items: center; gap: 12px; margin-bottom: 40px; padding-left: 5px; flex-shrink: 0; }
+.sidebar-logo-img { width: 40px !important; height: auto !important; }
+.brand-text { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--primary-color); font-size: 1.1rem; }
+.brand-text span { color: #6e513d; }
+
+.nav-links { list-style: none; padding: 0; margin: 0; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+.nav-links a { text-decoration: none; color: var(--text-secondary); display: flex; align-items: center; gap: 16px; padding: 12px 16px; border-radius: 12px; font-weight: 600; font-size: 0.95rem; transition: all 0.2s; position: relative; }
+.nav-links a:hover { background-color: #f7f9fa; color: var(--primary-color); transform: translateX(2px); }
+.nav-links a.active { background-color: #e8f5e9; color: #53954a; font-weight: 700; }
+
+.icon-container { position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+.nav-links a i { font-size: 1.3rem; }
+.nav-badge { position: absolute; top: -5px; right: -6px; background-color: #ff3b30; color: white; font-size: 0.6rem; font-weight: 800; min-width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid #fff; z-index: 10; }
+.nav-badge.hidden { display: none; }
+
+.nav-footer { margin-top: auto; border-top: 1px solid var(--border-light); padding-top: 20px; flex-shrink: 0; }
+.profile-pill-link { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-main); padding: 10px; border-radius: 12px; }
+.nav-avatar { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+
+/* --- PAINÉIS DO CHAT --- */
+.chat-sidebar-panel { width: 360px !important; background: #fff; border-right: 1px solid var(--border-light); display: flex; flex-direction: column; flex-shrink: 0 !important; height: 100vh; z-index: 90; }
+.chat-window-panel { flex: 1 !important; display: flex; flex-direction: column; background: #fff; height: 100vh; position: relative; min-width: 0; box-shadow: -5px 0 20px rgba(0,0,0,0.02); z-index: 1; }
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 900px) { .sidebar { width: 80px !important; align-items: center; padding: 20px 10px !important; } .brand-text, .nav-links span, .profile-info-mini { display: none; } .nav-badge { top: -2px; right: -2px; } .chat-sidebar-panel { width: 320px !important; } }
+@media (max-width: 700px) { .sidebar { display: none !important; } .chat-sidebar-panel { width: 100% !important; } .chat-sidebar-panel.hidden-mobile { display: none !important; } .chat-window-panel { display: none !important; width: 100% !important; } .chat-window-panel.active-mobile { display: flex !important; } .btn-back-mobile { display: block; } }

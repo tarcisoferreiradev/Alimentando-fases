@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Jornada - Alimentando Fases</title>
+    <link rel="canonical" href="https://alimentandofases.com/" />
+    
+    <link rel="icon" href="../Imagens/logofavicon.webp">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <link rel="stylesheet" href="../style.css"> 
+    <link rel="stylesheet" href="style.css"> 
+</head>
+<body class="dashboard-body"> 
+
+    <div class="main-layout">
+        
+        <nav class="sidebar">
+            <div class="logo-area">
+                <h1 class="brand-text">ALIMENTANDO <span style="color: #6e513d;">FASES</span></h1>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="../index.html"><i class="fa-solid fa-house"></i> <span>Início</span></a></li>
+                <li><a href="#" id="btn-open-search"><i class="fa-solid fa-magnifying-glass"></i> <span>Buscar Usuários</span></a></li>
+                <li><a href="../quem-somos.html"><i class="fa-solid fa-users"></i> <span>Quem Somos</span></a></li>
+                <li><a href="../comunidade/index.html"><i class="fa-solid fa-earth-americas"></i> <span>Comunidade</span></a></li>
+                <li><a href="../dicas.html"><i class="fa-solid fa-book-open"></i> <span>Dicas</span></a></li>
+                <li><a href="#"><i class="fa-regular fa-paper-plane"></i> <span>Mensagens</span></a></li>
+                <li><a href="../calendario.html"><i class="fa-regular fa-calendar-check"></i> <span>Calendário</span></a></li>
+                <li><a href="#" class="active"><img src="https://ui-avatars.com/api/?name=User" class="nav-avatar" id="nav-avatar-img"> <span>Minha Jornada</span></a></li>
+            </ul>
+            <div class="nav-footer">
+                <button id="btn-sair-perfil" class="btn-logout-sidebar">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> <span>Sair</span>
+                </button>
+            </div>
+        </nav>
+
+        <main class="content-area">
+            
+            <header class="journey-header">
+                <div class="journey-avatar-container">
+                    <img src="https://ui-avatars.com/api/?name=U" alt="Foto" class="journey-pic" id="profile-pic-main">
+                    
+                    <div class="phase-badge-wrapper">
+                        <div class="phase-badge"><i class="fa-solid fa-seedling"></i></div>
+                        <div class="badge-tooltip">Fase: <strong>Semente</strong><br>Iniciando hábitos.</div>
+                    </div>
+                </div>
+
+                <div class="journey-info">
+                    <div class="journey-title-row">
+                        <div>
+                            <h2 class="journey-name" id="display-realname">Carregando...</h2>
+                            <span class="journey-username" id="display-username">@usuario</span>
+                        </div>
+                        
+                        <div class="journey-actions">
+                            <button class="btn-icon-action" id="btn-open-edit" title="Ajustes do Perfil"><i class="fa-solid fa-gear"></i></button>
+                            
+                            <div id="visitor-actions" style="display: none; gap: 10px; align-items: center;">
+                                <button id="btn-follow" class="btn-follow-action">
+                                    <i class="fa-solid fa-user-plus"></i> <span>Seguir</span>
+                                </button>
+                                <button id="btn-back-profile" class="btn-back-profile">
+                                    <i class="fa-solid fa-arrow-left"></i> <span>Voltar</span>
+                                </button>
+                            </div>
+                            </div>
+                    </div>
+
+                    <ul class="profile-stats-insta">
+                        <li><span class="stat-count" id="count-posts">0</span> publicações</li>
+                        <li id="btn-view-followers" class="clickable-stat"><span class="stat-count" id="count-followers">0</span> seguidores</li>
+                        <li id="btn-view-following" class="clickable-stat"><span class="stat-count" id="count-following">0</span> seguindo</li>
+                    </ul>
+
+                    <div class="journey-bio-block">
+                        <div class="bio-text" id="display-bio"></div>
+                        <a href="#" class="bio-link" target="_blank" id="display-link"></a>
+                    </div>
+                </div>
+            </header>
+
+            <div class="journey-highlights-row" id="actions-row">
+                <div class="highlight-card primary-action" onclick="document.getElementById('modal-new-post').classList.add('open')">
+                    <div class="h-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                    <div class="h-info">
+                        <strong>Registrar hoje</strong>
+                        <span>Criar publicação</span>
+                    </div>
+                    <i class="fa-solid fa-arrow-right action-arrow"></i>
+                </div>
+
+                <div class="highlight-card secondary-action">
+                    <div class="h-icon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="h-info"><strong>Minha Fase</strong><span>Ver status</span></div>
+                </div>
+            </div>
+
+            <div class="journey-tabs">
+                <div class="j-tab active" id="tab-btn-timeline" data-target="tab-timeline"><i class="fa-solid fa-timeline"></i> Minha Linha do Tempo</div>
+                <div class="j-tab" id="tab-btn-saved" data-target="tab-saved"><i class="fa-regular fa-bookmark"></i> Salvos</div>
+                <div class="j-tab" id="tab-btn-achievements" data-target="tab-achievements">
+                    <i class="fa-solid fa-trophy"></i> Conquistas
+                    <span class="notification-dot" id="achievements-dot" style="display: none;"></span>
+                </div>
+            </div>
+
+            <div class="tab-content-wrapper">
+                <div id="tab-timeline" class="tab-pane active">
+                    
+                    <div id="empty-state-timeline" class="empty-state-journey" style="display: none;">
+                        <div class="empty-illustration"><i class="fa-solid fa-route"></i></div>
+                        <h3>Sua jornada começa com o primeiro registro.</h3>
+                        <p>Documentar sua alimentação é o segredo da constância.</p>
+                        <button class="txt-link-brand" onclick="document.getElementById('modal-new-post').classList.add('open')">✍️ Registrar meu dia agora</button>
+                    </div>
+
+                    <div id="feed-container" class="gallery-grid"></div>
+                </div>
+
+                <div id="tab-saved" class="tab-pane hidden">
+                    <div class="empty-state-journey" style="background: transparent; box-shadow: none;">
+                        <p style="color: #6e513d; opacity: 0.7;">Você ainda não salvou nenhuma publicação.</p>
+                    </div>
+                </div>
+
+                <div id="tab-achievements" class="tab-pane hidden">
+                    <div class="achievements-header">
+                        <div class="xp-info">
+                            <span>Nível <strong id="user-level">1</strong></span>
+                            <span style="font-size: 0.8rem; opacity: 0.8;">Total XP: <span id="total-xp">0</span></span>
+                        </div>
+                        <div class="xp-bar-bg"><div class="xp-bar-fill" id="xp-bar-fill" style="width: 0%"></div></div>
+                    </div>
+                    <div class="achievements-grid" id="achievements-list-container"></div>
+                </div>
+            </div> 
+        </main>
+    </div>
+
+    <button class="fab-add-post" id="btn-fab-post" title="Nova Publicação">
+        <i class="fa-solid fa-plus"></i>
+    </button>
+
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header"><h3>Ajustar Jornada</h3><button class="btn-close" id="btn-close-modal">&times;</button></div>
+            <div class="modal-body">
+                <div class="edit-user-block">
+                    <div class="user-info-left"><img src="" class="modal-avatar" id="modal-avatar-preview"><div class="user-text-info"><h4 id="modal-username-display">username</h4><span id="modal-realname-display">Nome Real</span></div></div>
+                    <button class="btn-change-photo" id="btn-trigger-file">Trocar foto</button>
+                </div>
+                <h4 class="section-label">Sobre você</h4>
+                <div class="form-group"><textarea class="form-textarea" id="input-bio" maxlength="150" placeholder="Qual seu objetivo atual?"></textarea><div class="char-count"><span id="char-counter">0</span> / 150</div></div>
+                <h4 class="section-label">Link Externo</h4><div class="form-group"><input type="text" class="form-input" id="input-link" placeholder="Site ou Rede Social"></div>
+                <h4 class="section-label">Identidade</h4>
+                <div class="form-group gender-switcher-wrapper">
+                    <div class="custom-select-container" id="gender-custom-select"><div class="custom-select-trigger"><span id="gender-display-text" class="placeholder-text">Selecione</span><i class="fa-solid fa-chevron-down"></i></div><div class="custom-options"><div class="custom-option" data-value="Prefiro não dizer">Prefiro não dizer</div><div class="custom-option" data-value="Masculino">Masculino</div><div class="custom-option" data-value="Feminino">Feminino</div><div class="custom-option" data-value="Personalizado">Personalizado</div></div></div>
+                    <div class="custom-gender-container" id="custom-gender-wrapper"><input type="text" class="form-input" id="input-gender-custom" placeholder="Como se identifica?"><button type="button" class="btn-clear-custom" id="btn-cancel-custom"><i class="fa-solid fa-times"></i></button></div><input type="hidden" id="input-gender-hidden" value="">
+                </div>
+                <h4 class="section-label">Dados de Acesso</h4><div class="form-group"><label style="font-size: 0.85rem; color: #6e513d; font-weight: 700;">Nome de Exibição</label><input type="text" class="form-input" id="input-realname"></div><div class="form-group"><label style="font-size: 0.85rem; color: #6e513d; font-weight: 700;">Nome de Usuário (@)</label><input type="text" class="form-input" id="input-username"></div>
+            </div>
+            <div class="modal-footer"><button class="btn-submit" id="btn-save-changes">Salvar Alterações</button></div>
+        </div>
+    </div>
+
+    <div class="photo-modal-overlay" id="photo-options-modal">
+        <div class="photo-options-content">
+            <h3 class="photo-modal-title">Sua Foto</h3>
+            <button class="photo-option-btn btn-upload-brand" id="btn-action-upload">Carregar nova foto</button>
+            <button class="photo-option-btn btn-remove-red" id="btn-action-remove">Remover foto atual</button>
+            <button class="photo-option-btn btn-cancel-normal" id="btn-action-cancel">Cancelar</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="search-modal">
+        <div class="modal-content" style="height: 80vh;">
+            <div class="modal-header"><h3>Explorar Comunidade</h3><button class="btn-close" id="btn-close-search">&times;</button></div>
+            <div class="modal-body"><div class="search-bar-wrapper"><i class="fa-solid fa-search search-icon"></i><input type="text" id="input-search-users" placeholder="Busque pelo username (ex: tarciso)..."></div><div id="search-results-container" class="search-results-list"><p class="search-placeholder">Digite para encontrar outros usuários.</p></div></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="list-modal">
+        <div class="modal-content" style="height: 70vh;">
+            <div class="modal-header"><h3 id="list-modal-title">Lista</h3><button class="btn-close" id="btn-close-list">&times;</button></div>
+            <div class="modal-body" id="list-modal-body" style="padding: 10px;"></div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-new-post">
+        <div class="modal-content" style="max-width: 500px;">
+            <div class="modal-header"><h3>Criar publicação</h3><button class="btn-close" id="btn-close-modal-post">&times;</button></div>
+            <div class="modal-body">
+                <textarea id="modal-post-input" class="form-textarea" placeholder="Compartilhe sua jornada..." style="height: 120px;"></textarea>
+                <div id="modal-image-preview-area" class="preview-grid hidden" style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
+            </div>
+            <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center;">
+                <button class="btn-icon-action" onclick="document.getElementById('modal-file-upload-post').click()" title="Adicionar Imagem"><i class="fa-regular fa-image"></i></button>
+                <button id="btn-submit-post" class="btn-submit" disabled>Publicar</button>
+            </div>
+        </div>
+    </div>
+    <input type="file" id="modal-file-upload-post" accept="image/*" style="display: none;">
+
+    <div class="modal-overlay" id="modal-post-detail">
+        <button class="btn-close" onclick="document.getElementById('modal-post-detail').classList.remove('open')" style="position: absolute; top: 20px; right: 20px; z-index: 3000; color: white;">&times;</button>
+        <div class="modal-instagram-container">
+            <div id="inst-left-content" style="flex: 1.5; background: black; display: flex; align-items: center; justify-content: center; overflow: hidden;"></div>
+            <div class="inst-right-side" style="flex: 1; display: flex; flex-direction: column; width: 350px;">
+                <div class="inst-header" style="padding: 15px; border-bottom: 1px solid #eee; display: flex; align-items: center; gap: 10px;">
+                    <img src="" id="inst-author-photo" style="width: 35px; height: 35px; border-radius: 50%;">
+                    <div><h4 id="inst-author-name" style="margin: 0; font-size: 0.9rem;">Nome</h4></div>
+                </div>
+                <div id="inst-comments-list" style="flex: 1; padding: 15px; overflow-y: auto;"></div>
+                <div class="inst-footer" style="padding: 15px; border-top: 1px solid #eee;">
+                    <div style="display: flex; gap: 10px; font-size: 1.5rem; margin-bottom: 10px;">
+                        <i class="fa-regular fa-heart" id="inst-btn-like" style="cursor: pointer;"></i>
+                    </div>
+                    <p style="font-weight: bold; margin-bottom: 10px;"><span id="inst-likes-number">0</span> curtidas</p>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" id="inst-comment-input" placeholder="Comente..." style="border: none; flex: 1; outline: none;">
+                        <button id="inst-btn-send" style="background: none; border: none; color: var(--color-primary); font-weight: bold; cursor: pointer;">Publicar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modal-image-editor" style="z-index: 4000;">
+        <div class="modal-content">
+             <div class="modal-header"><h3>Editar</h3><button id="btn-close-editor" class="btn-close">&times;</button></div>
+             <div class="modal-body" style="text-align: center;">
+                 <canvas id="editor-canvas" style="max-width: 100%; max-height: 50vh;"></canvas>
+                 <div style="margin-top: 20px;">
+                     <label>Brilho</label><input type="range" id="edit-brightness" min="0" max="200" value="100">
+                     <label>Contraste</label><input type="range" id="edit-contrast" min="0" max="200" value="100">
+                 </div>
+             </div>
+             <div class="modal-footer">
+                 <button id="btn-save-edit-img" class="btn-submit">Salvar</button>
+             </div>
+        </div>
+    </div>
+
+    <div id="achievement-toast" class="achievement-toast"><div class="toast-icon"><i class="fa-solid fa-trophy"></i></div><div class="toast-content"><span class="toast-title">Conquista Desbloqueada!</span><span class="toast-desc" id="toast-message-text">Nome da Conquista</span></div></div>
+
+    <input type="file" id="file-upload" accept="image/*" style="display: none;">
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-storage.js"></script>
+    
+    <script src="../firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

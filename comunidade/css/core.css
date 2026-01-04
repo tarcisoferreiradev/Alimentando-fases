@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lato:wght@400;700;900&display=swap');
+
+:root {
+    /* Cores da Marca */
+    --primary-color: #53954a;
+    --primary-hover: #3e7536;
+    
+    /* Paleta de Interface (Estilo Facebook/Moderno) */
+    --bg-color: #f0f2f5;      /* Cinza de fundo (essencial para contraste) */
+    --white: #ffffff;
+    --surface-hover: #f2f2f2; /* Cor ao passar o mouse */
+    
+    /* Texto */
+    --text-color: #050505;
+    --text-secondary: #65676b;
+    
+    /* Bordas e Sombras */
+    --border-color: #ced0d4;
+    --border-light: #e4e6eb;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+    --shadow-md: 0 1px 2px rgba(0, 0, 0, 0.2);
+    --shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Reset Básico */
+* {
+    box-sizing: border-box;
+}
+
+body.dashboard-body {
+    background-color: var(--bg-color);
+    font-family: 'Lato', sans-serif;
+    color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Evita scroll lateral acidental */
+}
+
+/* Remove estilos padrões feios */
+ul { list-style: none; padding: 0; margin: 0; }
+a { text-decoration: none; color: inherit; }
+button { font-family: inherit; cursor: pointer; outline: none; }
+input, textarea { font-family: inherit; }
+
+/* Scrollbar Personalizada (Fica mais bonito) */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+/* SweetAlert Fix (Deixa os alertas redondinhos) */
+div:where(.swal2-container) div:where(.swal2-popup) {
+    border-radius: 20px !important;
+    padding: 0 !important;
+    box-shadow: var(--shadow-lg) !important;
+    font-family: 'Lato', sans-serif !important;
+}

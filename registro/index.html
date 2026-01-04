@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Conta - Alimentando Fases</title>
+    <link rel="canonical" href="https://alimentandofases.com/" />
+    
+    <link rel="icon" href="../Imagens/logofavicon.webp">
+    <link rel="apple-touch-icon" href="../Imagens/logofavicon.webp">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="login-container">
+        
+        <div class="login-image-side">
+            <img src="../Imagens/loginsscreen.webp" alt="Pessoas em diversas fases da vida" class="cover-image">
+            <div class="image-overlay"></div>
+        </div>
+
+        <div class="login-form-side">
+            <div class="form-wrapper">
+                
+                <div class="form-header">
+                    <div class="brand-header">
+                        <img src="../Imagens/Alimentando fases (1).webp" alt="Logo" class="logo-icon">
+                        <span class="brand-name">Alimentando Fases</span>
+                    </div>
+                    
+                    <h2 class="welcome-title" id="page-title">Crie sua conta</h2>
+                    <p class="welcome-subtitle" id="page-subtitle">Passo 1 de 2: Identificação</p>
+                </div>
+
+                <form action="#" class="main-form" id="registerForm">
+                    
+                    <div class="form-step active" id="step-1">
+                        <div class="input-group">
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-user input-icon"></i>
+                                <input type="text" id="username" placeholder="Nome Completo" required>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-wrapper">
+                                <i class="fa-regular fa-envelope input-icon"></i>
+                                <input type="email" id="email" placeholder="Seu melhor e-mail" required>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn-primary" id="btn-next-1">Continuar <i class="fa-solid fa-arrow-right"></i></button>
+                        
+                        <div class="signup-footer">
+                            Já tem uma conta? <a href="../login/index.html">Entrar</a>
+                        </div>
+                    </div>
+
+                    <div class="form-step" id="step-3">
+                        
+                        <div class="input-group">
+                            <div class="input-wrapper password-type">
+                                <i class="fa-solid fa-lock input-icon"></i>
+                                <input type="password" id="reg-password" placeholder="Crie uma senha forte" required>
+                                <i class="fa-regular fa-eye-slash toggle-password" data-target="reg-password"></i>
+                            </div>
+                        </div>
+
+                        <div class="input-group">
+                            <div class="input-wrapper password-type">
+                                <i class="fa-solid fa-lock input-icon"></i>
+                                <input type="password" id="confirm-password" placeholder="Confirme a senha" required>
+                            </div>
+                        </div>
+
+                        <div class="password-strength-meter">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strength-fill"></div>
+                            </div>
+                            <span class="strength-text" id="strength-text">Digite sua senha</span>
+                        </div>
+
+                        <ul class="password-requirements">
+                            <li id="req-length" class="requirement">
+                                <i class="fa-regular fa-circle"></i> Mínimo 8 caracteres
+                            </li>
+                            <li id="req-number" class="requirement">
+                                <i class="fa-regular fa-circle"></i> Pelo menos 1 número
+                            </li>
+                            <li id="req-special" class="requirement">
+                                <i class="fa-regular fa-circle"></i> 1 caractere especial (!@#$...)
+                            </li>
+                        </ul>
+
+                        <div class="form-options">
+                            <label class="remember-me">
+                                <input type="checkbox" required>
+                                <span class="text" style="font-size: 0.8rem;">Li e concordo com os Termos.</span>
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Finalizar Cadastro</button>
+                        
+                        <a href="#" class="back-step-link" id="back-to-1">Voltar</a>
+                    </div>
+
+                </form>
+
+                <div class="footer-links" id="legal-footer">
+                    <p>
+                        Ao se cadastrar, você concorda com nossos 
+                        <a href="../termos/index.html#termos">Termos de Uso</a> e nossa 
+                        <a href="../termos/index.html#privacidade">Política de Privacidade</a>.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="../firebase-config.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

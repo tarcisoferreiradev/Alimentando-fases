@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensagens - Alimentando Fases</title>
+    
+    <link rel="icon" href="../Imagens/logofavicon.webp">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="stylesheet" href="css/core.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/call.css">
+</head>
+<body class="dashboard-body chat-body-lock">
+
+    <div class="main-layout chat-layout">
+        
+        <nav class="sidebar">
+            <div class="logo-area">
+                <img src="../Imagens/logofavicon.webp" alt="Logo" class="sidebar-logo-img">
+                <div class="brand-text">ALIMENTANDO <span>FASES</span></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html"><i class="fa-solid fa-house"></i> <span>Início</span></a></li>
+                <li><a href="../comunidade/index.html"><i class="fa-solid fa-earth-americas"></i> <span>Comunidade</span></a></li>
+                <li><a href="#" id="btn-open-tools"><i class="fa-solid fa-screwdriver-wrench"></i> <span>Ferramentas</span></a></li>
+                <li><a href="../notificacoes/index.html"><i class="fa-regular fa-bell"></i> <span>Notificações</span></a></li>
+                <li>
+                    <a href="#" class="active">
+                        <div class="icon-container">
+                            <i class="fa-solid fa-envelope"></i>
+                            <span id="sidebar-badge" class="nav-badge hidden">0</span>
+                        </div>
+                        <span>Mensagens</span>
+                    </a>
+                </li>
+                <li><a href="../calendario.html"><i class="fa-regular fa-calendar-check"></i> <span>Calendário</span></a></li>
+                <li><a href="#" id="btn-open-settings"><i class="fa-solid fa-gear"></i> <span>Configurações</span></a></li>
+            </ul>
+            <div class="nav-footer">
+                <a href="../perfil/index.html" class="profile-pill-link">
+                    <img src="https://ui-avatars.com/api/?name=User" class="nav-avatar" id="nav-avatar-img"> 
+                    <div class="profile-info-mini"><span class="p-name">Meu Perfil</span></div>
+                </a>
+            </div>
+        </nav>
+
+        <aside class="chat-sidebar-panel" id="chat-sidebar-panel">
+            <div class="chat-sidebar-header">
+                <span id="current-username-display" class="my-username">Carregando...</span>
+                <button class="new-chat-btn" onclick="document.getElementById('modal-new-chat').classList.add('open')"><i class="fa-regular fa-pen-to-square"></i></button>
+            </div>
+            <div class="chat-search-bar"><h4>Mensagens</h4></div>
+            <div id="conversations-list" class="conversations-list"></div>
+        </aside>
+
+        <section class="chat-window-panel empty" id="chat-window-panel">
+            
+            <div class="empty-chat-state" id="empty-state-view">
+                <div class="empty-icon-circle"><i class="fa-brands fa-facebook-messenger"></i></div>
+                <h2>Suas mensagens</h2>
+                <p>Envie fotos e mensagens privadas para um amigo.</p>
+                <button class="btn-send-msg-primary" onclick="document.getElementById('modal-new-chat').classList.add('open')">Enviar mensagem</button>
+            </div>
+
+            <div class="active-chat-view hidden" id="active-chat-view">
+                <header class="chat-header">
+                    <div class="user-details">
+                        <button class="btn-back-mobile" id="btn-back-mobile"><i class="fa-solid fa-arrow-left"></i></button>
+                        <div class="avatar-container">
+                            <img src="" id="chat-header-avatar" class="header-avatar">
+                            <div id="header-status-dot" class="status-dot offline"></div>
+                        </div>
+                        <div class="header-info">
+                            <h4 id="chat-header-name">Nome</h4>
+                            <span id="chat-header-status" class="status-text">Offline</span>
+                        </div>
+                    </div>
+                    <div class="header-actions">
+                        <button class="action-btn" onclick="initializeCall()" title="Iniciar Chamada de Vídeo"><i class="fa-solid fa-video"></i></button>
+                        <button class="action-btn" title="Info"><i class="fa-solid fa-circle-info"></i></button>
+                    </div>
+                </header>
+
+                <div class="messages-area" id="messages-area"></div>
+
+                <div class="chat-input-area">
+                    <div id="reply-preview-bar" class="reply-preview hidden">
+                        <div class="reply-info">
+                            <span class="reply-label" id="reply-target-name">Respondendo a...</span>
+                            <span class="reply-text-content" id="reply-target-text">...</span>
+                        </div>
+                        <button id="btn-close-reply" class="btn-close-reply"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+
+                    <div id="emoji-popup-container" class="hidden"></div>
+
+                    <div id="attachment-menu" class="attachment-menu hidden">
+                        <div class="attach-item" id="btn-open-gallery">
+                            <div class="attach-icon color-gallery"><i class="fa-regular fa-image"></i></div><span>Galeria</span>
+                        </div>
+                        <div class="attach-item" id="btn-open-camera">
+                            <div class="attach-icon color-camera"><i class="fa-solid fa-camera"></i></div><span>Câmera</span>
+                        </div>
+                        <div class="attach-item" id="btn-open-gif">
+                            <div class="attach-icon color-gif"><i class="fa-solid fa-film"></i></div><span>GIFs</span>
+                        </div>
+                        <div class="attach-item" id="btn-open-sticker">
+                            <div class="attach-icon color-sticker"><i class="fa-solid fa-note-sticky"></i></div><span>Figurinhas</span>
+                        </div>
+                    </div>
+
+                    <div class="input-wrapper">
+                        <button id="btn-emoji-trigger" class="btn-input-icon"><i class="fa-regular fa-face-smile"></i></button>
+                        <input type="text" id="message-input" placeholder="Mensagem..." autocomplete="off">
+                        
+                        <div class="right-actions" id="input-actions">
+                            <button id="btn-attach-trigger" class="btn-input-icon"><i class="fa-solid fa-paperclip"></i></button>
+                            <input type="file" id="chat-img-upload" hidden accept="image/*">
+                            <button class="btn-input-icon"><i class="fa-regular fa-heart"></i></button>
+                        </div>
+                        <button id="btn-send-message" class="btn-send-text hidden">Enviar</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <div id="modal-media-selector" class="modal-overlay">
+        <div class="modal-content-media">
+            <div class="modal-header-nc">
+                <button class="btn-close-nc"><i class="fa-solid fa-xmark"></i></button>
+                <h3>Selecionar GIF</h3>
+                <div style="width:30px;"></div>
+            </div>
+            
+            <div class="modal-search-nc">
+                <i class="fa-solid fa-magnifying-glass" style="color:#999;"></i>
+                <input type="text" id="giphy-search-input" placeholder="Pesquise no Giphy...">
+            </div>
+
+            <div class="media-grid" id="media-grid-content">
+                <div class="loading-spinner">Carregando...</div>
+            </div>
+            
+            <div style="padding: 5px; text-align: center;">
+                <img src="https://developers.giphy.com/static/img/powered_by_giphy.png" alt="Powered by Giphy" style="height: 15px; opacity: 0.5;">
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-delete-confirm" class="modal-overlay glass-overlay" style="z-index: 3005;">
+        <div class="modal-confirm-box">
+            <div class="modal-icon-danger"><i class="fa-regular fa-trash-can"></i></div>
+            <h3>Excluir mensagem?</h3>
+            <p>A mensagem será removida permanentemente.</p>
+            <div class="modal-confirm-actions">
+                <button id="btn-cancel-delete" class="btn-clean-cancel">Cancelar</button>
+                <button id="btn-confirm-delete" class="btn-clean-danger">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-new-chat" class="modal-overlay">
+        <div class="modal-content-new-chat">
+            <div class="modal-header-nc">
+                <button class="btn-close-nc" onclick="document.getElementById('modal-new-chat').classList.remove('open')"><i class="fa-solid fa-xmark"></i></button>
+                <h3>Nova mensagem</h3><div style="width:30px;"></div>
+            </div>
+            <div class="modal-search-nc"><span>Para:</span><input type="text" id="search-user-input" placeholder="Pesquisar..."></div>
+            <div class="modal-results-nc" id="user-search-results"><p class="helper-text" style="text-align:center;margin-top:20px;color:#999;">Digite um nome.</p></div>
+        </div>
+    </div>
+
+    <script type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script type="module" src="js/main.js"></script>
+
+</body>
+</html>
