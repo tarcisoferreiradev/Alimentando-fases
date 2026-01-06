@@ -1,40 +1,44 @@
-// ATENÇÃO: USE ESTA SINTAXE PARA FIREBASE V8 (compat)
+/**
+ * Configuração do Firebase (Padrão Sênior)
+ * Utiliza variáveis de ambiente (.env) para proteger as credenciais.
+ */
 
+// Importações necessárias para a versão V8 (Compat) no Vite
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
+
+// Configuração lendo do arquivo .env
 const firebaseConfig = {
-  apiKey: "AIzaSyCUjS5ZmQBJdv5TVBKayG_YIxYgDBFIauo", 
-  authDomain: "alimentando-fases.firebaseapp.com",
-  projectId: "alimentando-fases",
-  storageBucket: "alimentando-fases.firebasestorage.app",
-  messagingSenderId: "312896864162",
-  appId: "1:312896864162:web:ee61bac2c67b19303dbcfb",
-  measurementId: "G-9865RHDG8Z"
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
+  measurementId: "G-9865RHDG8Z" // Analytics ID geralmente é público
 };
 
-// 1. Inicializa o aplicativo Firebase (com proteção contra reinicialização)
+// 1. Inicialização com padrão Singleton (Evita erro de "App already exists")
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);
 } else {
-    firebase.app(); // Se já estiver inicializado, usa a instância existente
+  firebase.app(); // Usa a instância que já foi carregada
 }
 
-// 2. Define a variável 'auth' (Login)
+// 2. Instâncias de Serviços
 const auth = firebase.auth();
+const db = firebase.firestore();
 
-// 3. Define a variável 'db' (Banco de Dados Firestore)
-const db = firebase.firestore(); 
-
-// 4. Habilitar persistência offline (Recomendado para apps estilo Feed)
-// Isso permite que o usuário veja os posts antigos mesmo sem internet
+// 3. Persistência Offline (Mantém o app funcionando sem internet)
 db.enablePersistence()
   .catch((err) => {
-      if (err.code == 'failed-precondition') {
-          // Falha se houver múltiplas abas abertas ao mesmo tempo
-          console.warn("Persistência offline falhou: Múltiplas abas abertas.");
-      } else if (err.code == 'unimplemented') {
-          // O navegador não suporta
-          console.warn("Persistência offline não suportada neste navegador.");
-      }
+    if (err.code === 'failed-precondition') {
+      console.warn("Persistência offline: Múltiplas abas abertas. Apenas uma terá persistência.");
+    } else if (err.code === 'unimplemented') {
+      console.warn("Persistência offline: Navegador não suporta este recurso.");
+    }
   });
 
-// Opcional: Analytics
-// const analytics = firebase.analytics();
+// 4. Exportação para uso no restante do App
+export { auth, db, firebase };
