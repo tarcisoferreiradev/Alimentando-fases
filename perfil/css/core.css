@@ -1,0 +1,33 @@
+:root {
+    /* === CORES DO SISTEMA === */
+    --color-primary: #53954a;
+    --color-secondary: #6e513d;
+    --color-background: #f9efd4;
+    --color-text-dark: #3a3a3a;
+    --color-white: #ffffff;
+    --color-border: #e6dac0;
+    --color-danger: #d92d2d;
+    
+    /* Variáveis de Compatibilidade (Mensagens/Admin) */
+    --primary-color: #53954a;
+    --text-main: #1c1e21;
+    --text-secondary: #65676b;
+    --border-light: rgba(110, 81, 61, 0.15);
+    
+    --font-heading: 'Montserrat', sans-serif;
+    --font-body: 'Lato', sans-serif;
+    
+    --radius-sm: 8px;
+    --radius-md: 15px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: var(--font-body); text-decoration: none; list-style: none; outline: none; }
+
+body.dashboard-body {
+    background-color: var(--color-background);
+    background-image: url('https://www.transparenttextures.com/patterns/noise-lines.png');
+    color: var(--color-text-dark);
+    overflow-x: hidden; /* Evita rolagem lateral indesejada */
+}
+
+body.no-scroll { overflow: hidden !important; }
