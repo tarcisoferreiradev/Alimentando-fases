@@ -14,20 +14,18 @@
     <link rel="icon" type="image/png" href="../Imagens/favicon.png">
 
     <style>
-        /* Adiciona a bolinha de loading que faltava no CSS original */
+        /* CSS Inline para o Spinner de Loading (Para garantir que funcione) */
         .loader-spinner {
             width: 20px;
             height: 20px;
-            border: 2px solid #fff;
+            border: 2px solid #ffffff;
             border-bottom-color: transparent;
             border-radius: 50%;
-            display: none; /* Escondido por padrão */
+            display: none;
             animation: rotation 1s linear infinite;
         }
-        /* Mostra o loader quando o botão tem a classe .loading */
-        .btn-primary.loading .loader-spinner {
-            display: block;
-        }
+        .btn-primary.loading .loader-spinner { display: block; }
+        .btn-primary.loading .btn-text { display: none; }
         @keyframes rotation { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
@@ -37,14 +35,14 @@
         
         <div class="login-image-side">
             <div class="image-overlay"></div>
-            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=2053&auto=format&fit=crop" alt="Nutrição Saudável" class="cover-image">
+            <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?q=80&w=2053&auto=format&fit=crop" class="cover-image" alt="Capa">
         </div>
 
         <div class="login-form-side">
             <div class="form-wrapper">
                 
                 <div class="brand-header">
-                    <img src="../Imagens/logo-af.png" alt="Logo AF" class="logo-icon">
+                    <img src="../Imagens/logo-af.png" alt="Logo" class="logo-icon">
                     <span class="brand-name">Alimentando Fases</span>
                 </div>
 
@@ -72,7 +70,7 @@
 
                     <div class="form-options">
                         <label class="remember-me">
-                            <input type="checkbox" name="remember"> Lembrar-me
+                            <input type="checkbox"> Lembrar-me
                         </label>
                         <a href="./forgot-password.html" class="forgot-link">Esqueceu a senha?</a>
                     </div>
@@ -80,11 +78,6 @@
                     <button type="submit" class="btn-primary" id="btnSubmit">
                         <span class="btn-text">Entrar</span>
                         <span class="loader-spinner"></span>
-                    </button>
-
-                    <button type="button" class="btn-google">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" alt="G">
-                        Entrar com Google
                     </button>
 
                 </form>
@@ -95,9 +88,8 @@
 
                 <div class="footer-links">
                     <p>
-                        Ao continuar, você concorda com nossos <br>
-                        <a href="../termos/index.html">Termos de Uso</a> e 
-                        <a href="../privacidade/index.html">Política de Privacidade</a>.
+                        <a href="../termos/index.html">Termos de Uso</a> &bull; 
+                        <a href="../privacidade/index.html">Política de Privacidade</a>
                     </p>
                 </div>
             </div>
@@ -107,7 +99,7 @@
     <dialog id="errorModal" class="modal-overlay" style="border:none; border-radius:8px; padding:20px; box-shadow:0 4px 15px rgba(0,0,0,0.2);">
         <div style="text-align:center;">
             <h3 style="color:#333; margin-bottom:10px;">Atenção</h3>
-            <p id="modalDesc" style="color:#666; margin-bottom:20px;">Erro na operação.</p>
+            <p id="modalDesc" style="color:#666; margin-bottom:20px;">Erro.</p>
             <button onclick="document.getElementById('errorModal').close()" style="padding:8px 16px; background:#53954a; color:white; border:none; border-radius:4px; cursor:pointer;">OK</button>
         </div>
     </dialog>
