@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Acesso seguro à plataforma Alimentando Fases.">
+    <meta name="description" content="Acesso seguro ao Alimentando Fases.">
     <meta name="theme-color" content="#ffffff">
 
     <title>Entrar - Alimentando Fases</title>
@@ -26,7 +26,6 @@
                 width="80" 
                 height="80"
                 loading="eager" 
-                decoding="async"
             >
             <h1 class="brand-title">Alimentando Fases</h1>
         </header>
@@ -40,7 +39,6 @@
                         type="email" 
                         id="email" 
                         name="email" 
-                        class="form-input"
                         placeholder="seu@email.com" 
                         autocomplete="username" 
                         required
@@ -54,7 +52,6 @@
                         type="password" 
                         id="password" 
                         name="password" 
-                        class="form-input"
                         placeholder="Sua senha" 
                         autocomplete="current-password" 
                         required
@@ -77,10 +74,9 @@
             <p class="signup-cta">
                 Não tem conta? <a href="./register.html" class="link-highlight">Cadastre-se agora</a>
             </p>
-            
-            <nav class="legal-links" aria-label="Links legais">
+            <nav class="legal-links">
                 <a href="../terms.html">Termos de Uso</a>
-                <span aria-hidden="true">&bull;</span>
+                <span>&bull;</span>
                 <a href="../privacy.html">Política de Privacidade</a>
             </nav>
         </footer>
@@ -96,11 +92,11 @@
                 </svg>
             </div>
             <h2 class="modal-title">Atenção</h2>
-            <p id="modalDesc" class="modal-message">Ocorreu um erro na autenticação.</p>
+            <p id="modalDesc" class="modal-message">Erro na operação.</p>
             <button class="btn-secondary" onclick="document.getElementById('errorModal').close()">OK</button>
         </div>
     </dialog>
 
-    <script type="module" src="./js/login.controller.js"></script>
+    <script type="module" src="./js/controllers/login.controller.js"></script>
 </body>
 </html>
