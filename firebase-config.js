@@ -1,45 +1,40 @@
 /**
- * CONFIGURAÇÃO CENTRAL DO FIREBASE
- * Padrão: Compatibilidade (V8) + Persistência Offline
+ * CONFIGURAÇÃO FIREBASE (MODULAR & CDN)
+ * Adaptado para execução nativa no navegador (GitHub Pages / Localhost).
  */
 
-// 1. IMPORTS NECESSÁRIOS (Para o Vite entender o que é "firebase")
-import firebase from 'firebase/compat/app';
-import 'firebase/compat/auth';
-import 'firebase/compat/firestore';
-import 'firebase/compat/analytics';
+// 1. Imports via CDN (O navegador exige URLs completas)
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, enableIndexedDbPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
 
-// 2. CONFIGURAÇÃO (Lendo do .env para segurança)
+// 2. Credenciais (Hardcoded para funcionamento sem Build System)
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_API_KEY,
-    authDomain: import.meta.env.VITE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_APP_ID,
-    measurementId: import.meta.env.VITE_MEASUREMENT_ID
+  apiKey: "AIzaSyCUjS5ZmQBJdv5TVBKayG_YIxYgDBFIauo",
+  authDomain: "alimentando-fases.firebaseapp.com",
+  projectId: "alimentando-fases",
+  storageBucket: "alimentando-fases.firebasestorage.app",
+  messagingSenderId: "312896864162",
+  appId: "1:312896864162:web:ee61bac2c67b19303dbcfb",
+  measurementId: "G-9865RHDG8Z"
 };
 
-// 3. INICIALIZAÇÃO (Com proteção contra duplicidade)
-const app = !firebase.apps.length ? firebase.initializeApp(firebaseConfig) : firebase.app();
+// 3. Inicialização
+const app = initializeApp(firebaseConfig);
 
-// 4. EXPORTA AS VARIÁVEIS DO SISTEMA
-const auth = firebase.auth();
-const db = firebase.firestore();
-const analytics = firebase.analytics();
+// 4. Exportação dos Serviços (Singleton)
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const analytics = getAnalytics(app);
 
-// 5. LÓGICA DE PERSISTÊNCIA OFFLINE (A parte que faltava!)
-// Isso permite que o usuário veja os dados mesmo sem internet.
-db.enablePersistence()
-  .catch((err) => {
-      if (err.code == 'failed-precondition') {
-          // Falha se houver múltiplas abas abertas ao mesmo tempo
-          console.warn("Persistência offline falhou: Múltiplas abas abertas.");
-      } else if (err.code == 'unimplemented') {
-          // O navegador não suporta
-          console.warn("Persistência offline não suportada neste navegador.");
-      }
-  });
+// 5. Persistência Offline (Melhora UX em conexões instáveis)
+enableIndexedDbPersistence(db).catch((err) => {
+    if (err.code == 'failed-precondition') {
+        console.warn('Persistência: Múltiplas abas abertas.');
+    } else if (err.code == 'unimplemented') {
+        console.warn('Persistência não suportada neste navegador.');
+    }
+});
 
-// Exporta tudo para ser usado nos outros arquivos
-export { firebase, auth, db, analytics };
+console.log('Firebase (CDN Mode) initialized.');
