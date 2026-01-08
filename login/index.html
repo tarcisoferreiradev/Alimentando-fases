@@ -2,97 +2,105 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrar - Alimentando Fases</title>
-    
-    <link rel="canonical" href="https://alimentandofases.com/" />
-    <link rel="icon" href="../Imagens/logofavicon.webp">
-    <link rel="apple-touch-icon" href="../Imagens/logofavicon.webp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="description" content="Acesso seguro à plataforma Alimentando Fases.">
+    <meta name="theme-color" content="#ffffff">
 
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Lato:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <title>Entrar - Alimentando Fases</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./css/global.css">
+    <link rel="stylesheet" href="./css/login.css">
+    
+    <link rel="icon" type="image/png" href="../assets/favicon.png">
 </head>
 <body>
-
-    <div class="login-container">
+    <main class="login-container" role="main">
         
-        <div class="login-image-side">
-            <img src="../Imagens/loginsscreen.webp" alt="Pessoas em diversas fases da vida" class="cover-image">
-            <div class="image-overlay"></div>
-        </div>
+        <header class="login-header">
+            <img 
+                src="../assets/logo-af.png" 
+                alt="Logo Alimentando Fases" 
+                width="80" 
+                height="80"
+                loading="eager" 
+                decoding="async"
+            >
+            <h1 class="brand-title">Alimentando Fases</h1>
+        </header>
 
-        <div class="login-form-side">
-            <div class="form-wrapper">
+        <section class="auth-form-wrapper">
+            <form id="loginForm" class="auth-form" novalidate>
                 
-                <div class="form-header">
-                    <div class="brand-header">
-                        <img src="../Imagens/Alimentando fases (1).webp" alt="Logo" class="logo-icon">
-                        <span class="brand-name">Alimentando Fases</span>
-                    </div>
-
-                    <h2 class="welcome-title">Bem-vindo de volta!</h2>
-                    <p class="welcome-subtitle">Insira seus dados para acessar.</p>
+                <div class="input-group">
+                    <label for="email" class="sr-only">E-mail</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        class="form-input"
+                        placeholder="seu@email.com" 
+                        autocomplete="username" 
+                        required
+                        aria-required="true"
+                    >
                 </div>
 
-                <form class="main-form" id="loginForm">
-                    
-                    <div class="input-group">
-                        <div class="input-wrapper">
-                            <i class="fa-regular fa-envelope input-icon"></i>
-                            <input type="email" id="email" placeholder="Email" required autocomplete="email">
-                        </div>
-                    </div>
-
-                    <div class="input-group">
-                        <div class="input-wrapper password-type">
-                            <i class="fa-solid fa-lock input-icon"></i>
-                            <input type="password" id="password" placeholder="Senha" required autocomplete="current-password">
-                            <i class="fa-regular fa-eye-slash toggle-password" id="togglePassword" role="button" aria-label="Mostrar senha"></i>
-                        </div>
-                    </div>
-
-                    <div class="form-options">
-                        <label class="remember-me">
-                            <input type="checkbox" id="rememberMe">
-                            <span class="text">Lembrar de mim</span>
-                        </label>
-                        <a href="#" class="forgot-link" id="forgot-btn">Esqueceu a senha?</a>
-                    </div>
-
-                    <button type="submit" class="btn-primary">Entrar</button>
-
-                    <button type="button" class="btn-google" id="google-login-btn">
-                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google G">
-                        Entrar com Google
-                    </button>
-
-                </form>
-
-                <div class="signup-footer">
-                    Não tem conta? <a href="../registro/index.html">Cadastre-se agora</a>
+                <div class="input-group">
+                    <label for="password" class="sr-only">Senha</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        class="form-input"
+                        placeholder="Sua senha" 
+                        autocomplete="current-password" 
+                        required
+                        aria-required="true"
+                    >
                 </div>
 
-                <div class="footer-links">
-                    <p>
-                        Ao continuar, você concorda com nossos 
-                        <a href="../termos/index.html#termos">Termos de Uso</a> e nossa 
-                        <a href="../termos/index.html#privacidade">Política de Privacidade</a>.
-                    </p>
+                <div class="form-actions">
+                    <a href="./forgot-password.html" class="forgot-link">Esqueceu a senha?</a>
                 </div>
+
+                <button type="submit" class="btn-primary" id="btnSubmit">
+                    <span class="btn-text">Entrar</span>
+                    <span class="btn-loader hidden" aria-hidden="true"></span>
+                </button>
+            </form>
+        </section>
+
+        <footer class="login-footer">
+            <p class="signup-cta">
+                Não tem conta? <a href="./register.html" class="link-highlight">Cadastre-se agora</a>
+            </p>
+            
+            <nav class="legal-links" aria-label="Links legais">
+                <a href="../terms.html">Termos de Uso</a>
+                <span aria-hidden="true">&bull;</span>
+                <a href="../privacy.html">Política de Privacidade</a>
+            </nav>
+        </footer>
+    </main>
+
+    <dialog id="errorModal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-icon error">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                </svg>
             </div>
+            <h2 class="modal-title">Atenção</h2>
+            <p id="modalDesc" class="modal-message">Ocorreu um erro na autenticação.</p>
+            <button class="btn-secondary" onclick="document.getElementById('errorModal').close()">OK</button>
         </div>
-    </div>
+    </dialog>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script src="../firebase-config.js"></script>
-
-    <script type="module" src="./js/index.js"></script>
-
+    <script type="module" src="./js/login.controller.js"></script>
 </body>
 </html>
