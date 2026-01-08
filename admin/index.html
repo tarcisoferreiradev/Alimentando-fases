@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Master | God Mode</title>
+    <link rel="icon" href="../Imagens/logofavicon.webp">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=Lato:wght@400;700&display=block" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <link rel="stylesheet" href="../perfil/css/core.css">
+    <link rel="stylesheet" href="../perfil/css/layout.css">
+    <link rel="stylesheet" href="../sistema-cargos/cargos.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="dashboard-body admin-mode">
+
+    <div class="main-layout">
+        <nav class="sidebar master-sidebar">
+            <div class="logo-area">
+                <i class="fa-solid fa-crown master-icon-logo"></i>
+                <div class="brand-text">PAINEL <span>MASTER</span></div>
+            </div>
+
+            <ul class="nav-links">
+                <li><a href="../perfil/index.html"><i class="fa-solid fa-arrow-left"></i> <span>Voltar ao App</span></a></li>
+                <li class="active"><a href="#" data-target="section-users"><i class="fa-solid fa-users-gear"></i> <span>Gerenciar Cargos</span></a></li>
+                <li><a href="#" data-target="section-users"><i class="fa-solid fa-ban"></i> <span>Banimentos</span></a></li>
+                <li><a href="#" data-target="section-posts"><i class="fa-solid fa-trash-can"></i> <span>Limpeza de Conteúdo</span></a></li>
+            </ul>
+        </nav>
+
+        <main class="content-area">
+            <header class="admin-header">
+                <h1>Painel de Controle</h1>
+                <p>Você está no modo Deus. Cuidado com as alterações.</p>
+            </header>
+
+            <section id="section-users" class="admin-section active">
+                
+                <div class="admin-card my-status-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-user-astronaut"></i> Meu Status Atual</h3>
+                    </div>
+                    <div class="card-body flex-row">
+                        <div id="my-preview-area" class="preview-box"></div>
+                        <div class="controls-area">
+                            <label>Alterar meu cargo para testes:</label>
+                            <select id="select-my-role" class="admin-select">
+                                <option value="user">Usuário Comum</option>
+                                <option value="student">Estudante</option>
+                                <optgroup label="Profissionais">
+                                    <option value="nutri">Nutricionista</option>
+                                    <option value="doctor">Médico</option>
+                                    <option value="nurse">Enfermeiro</option>
+                                    <option value="pe_teacher">Personal Trainer</option>
+                                    <option value="teacher">Professor</option>
+                                </optgroup>
+                                <option value="admin_master" selected>👑 ADMIN MASTER</option>
+                            </select>
+                            <button id="btn-update-me" class="btn-admin-action">Atualizar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-users"></i> Base de Usuários</h3>
+                        <input type="text" id="search-users" placeholder="Buscar por nome ou email..." class="admin-search">
+                    </div>
+                    <div class="table-responsive">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Usuário</th>
+                                    <th>Cargo</th>
+                                    <th>Status / Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="users-table-body">
+                                <tr><td colspan="3" style="text-align:center">Carregando dados...</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-posts" class="admin-section" style="display: none;">
+                <div class="admin-card">
+                    <div class="card-header">
+                        <h3><i class="fa-solid fa-trash-can"></i> Gerenciar Postagens Recentes</h3>
+                        <button class="btn-admin-action" onclick="window.location.reload()"><i class="fa-solid fa-rotate"></i> Atualizar</button>
+                    </div>
+                    <div class="card-body">
+                        <div id="admin-feed-grid" class="admin-feed-grid">
+                            <p style="color:#888;">Carregando feed...</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>
