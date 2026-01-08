@@ -1,42 +1,55 @@
-# --- SEGURANÇA (IMPORTANTE) ---
-# Ignora o arquivo com as chaves da API do Firebase
+# --- SEGURANÇA E AMBIENTE (MISSIÓN CRITICAL) ---
+# Bloqueio de credenciais e variáveis sensíveis
 firebase-config.js
-# Ignora arquivos de variáveis de ambiente (caso use no futuro)
 .env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# --- FIREBASE ---
-# Cache e emuladores do Firebase
+# --- DEPENDÊNCIAS E BUILD (VITE/REACT 19) ---
+node_modules/
+dist/
+build/
+out/
+.vercel
+.netlify
+*.tsbuildinfo
+
+# --- FIREBASE CORE ---
 .firebase/
-firebase-debug.log
+firebase-debug.log*
+firestore-debug.log*
+pubsub-debug.log*
+ui-debug.log*
 
-# --- CONFIGURAÇÕES DE EDITOR ---
+# --- CONFIGURAÇÕES DE EDITOR E IDE ---
 .vscode/
 *.code-workspace
 .idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
 
 # --- SISTEMA OPERACIONAL ---
 .DS_Store
 Thumbs.db
 Desktop.ini
 
-# --- DEPENDÊNCIAS E BUILD ---
-node_modules/
-dist/
-build/
-out/
-
-# --- ARQUIVOS TEMPORÁRIOS E LOGS ---
+# --- LOGS, TEMPORÁRIOS E ASSETS PESADOS ---
 *.log
 *.tmp
 *.bak
 temp/
 cache/
 __pycache__/
-
-# --- ARQUIVOS GRANDES / EXPORTAÇÕES (Não versionar) ---
 *.zip
 *.rar
 *.7z
+
+# --- ASSETS DE DESIGN E MEDIA (NÃO VERSIONÁVEIS) ---
 *.psd
 *.ai
 *.mp4
@@ -45,7 +58,6 @@ __pycache__/
 *.tif
 *.tiff
 
-# --- BACKUPS E TESTES ---
+# --- BACKUPS E DEPRECATED ---
 backup/
 old/
-test/
