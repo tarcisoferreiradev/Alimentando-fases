@@ -1,115 +1,131 @@
 /**
  * LOGIN CONTROLLER
- * Arquitetura: MVC (Controller)
- * * Gerencia o fluxo de autenticação e feedback de UI.
- * Path Resolution: Sobe 3 níveis (controllers -> js -> login -> raiz) para importar config.
+ * Camada: Controller (MVC)
+ * Responsabilidade: Orquestração da autenticação e manipulação do DOM.
  */
 
+// Importa config da raiz (Sobe 3 níveis: controllers -> js -> login -> raiz)
 import { auth } from '../../../firebase-config.js'; 
 import { signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
 class LoginController {
     constructor() {
-        // Cache DOM Elements (Performance Optimization)
+        // Mapeamento dos elementos do DOM para acesso rápido
         this.dom = {
             form: document.getElementById('loginForm'),
             email: document.getElementById('email'),
             password: document.getElementById('password'),
             submitBtn: document.getElementById('btnSubmit'),
-            loader: document.querySelector('.btn-loader'),
-            btnText: document.querySelector('.btn-text'),
+            // Loader opcional interno, caso o CSS use apenas a classe .loading no botão
+            loaderIcon: document.querySelector('.btn-loader'), 
             errorModal: document.getElementById('errorModal'),
             modalMessage: document.getElementById('modalDesc')
         };
     }
 
     /**
-     * Inicializa listeners de eventos.
+     * Inicializa os listeners da aplicação.
      */
     init() {
-        if (!this.dom.form) return console.error('Critical: Login DOM binding failed');
+        if (!this.dom.form) {
+            console.error('Critical Error: Elemento #loginForm não encontrado no DOM.');
+            return;
+        }
+        
         this.dom.form.addEventListener('submit', (e) => this.handleLogin(e));
     }
 
     /**
-     * Handler assíncrono de login.
-     * @param {Event} e 
+     * Processa a submissão do formulário de login.
+     * @param {Event} e Evento de submit
      */
     async handleLogin(e) {
         e.preventDefault();
         
-        if (!this.validateConstraints()) return;
+        // Validação HTML5 Nativa
+        if (!this.dom.form.checkValidity()) {
+            this.dom.form.reportValidity();
+            return;
+        }
 
         this.setLoading(true);
 
         try {
-            const credential = await signInWithEmailAndPassword(
-                auth, 
-                this.dom.email.value.trim(), 
-                this.dom.password.value
-            );
+            const email = this.dom.email.value.trim();
+            const password = this.dom.password.value;
+
+            // Chamada ao serviço de Autenticação
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
             
-            this.handleSuccess(credential.user);
+            console.info(`Auth Success: User ${userCredential.user.uid} logged in.`);
+            
+            // Redirecionamento (Sobe 3 níveis para encontrar a dashboard na raiz)
+            window.location.href = '../../../dashboard/index.html'; 
 
         } catch (error) {
-            this.handleError(error);
+            this.handleAuthError(error);
         } finally {
             this.setLoading(false);
         }
     }
 
     /**
-     * Validação HTML5 Constraint API.
+     * Gerencia o estado visual de carregamento.
+     * Adiciona classe .loading para integração com o CSS existente.
+     * @param {boolean} isLoading 
      */
-    validateConstraints() {
-        if (!this.dom.form.checkValidity()) {
-            this.dom.form.reportValidity();
-            return false;
+    setLoading(isLoading) {
+        if (isLoading) {
+            this.dom.submitBtn.classList.add('loading');
+            this.dom.submitBtn.disabled = true;
+            if (this.dom.loaderIcon) this.dom.loaderIcon.classList.remove('hidden');
+        } else {
+            this.dom.submitBtn.classList.remove('loading');
+            this.dom.submitBtn.disabled = false;
+            if (this.dom.loaderIcon) this.dom.loaderIcon.classList.add('hidden');
         }
-        return true;
     }
 
     /**
-     * Gerenciamento de estado de UI (Loading/Idle).
-     * @param {boolean} active 
+     * Trata erros retornados pelo Firebase Auth.
+     * @param {Error} error Objeto de erro do Firebase
      */
-    setLoading(active) {
-        this.dom.submitBtn.disabled = active;
-        this.dom.loader.classList.toggle('hidden', !active);
-        this.dom.btnText.style.opacity = active ? '0' : '1';
-    }
-
-    handleSuccess(user) {
-        console.info(`Auth: Session established for ${user.uid}`);
-        // Redirecionamento seguro (Sobe 3 níveis para a raiz -> dashboard)
-        window.location.href = '../../../dashboard/index.html';
-    }
-
-    /**
-     * Tratamento de erros tipados do Firebase Auth.
-     */
-    handleError(error) {
-        console.error(`Auth Failure: ${error.code}`);
+    handleAuthError(error) {
+        console.error('Auth Error:', error.code);
         
-        const errorMap = {
-            'auth/invalid-credential': 'E-mail ou senha incorretos.',
-            'auth/user-not-found': 'Usuário não encontrado.',
-            'auth/wrong-password': 'Senha incorreta.',
-            'auth/too-many-requests': 'Muitas tentativas. Aguarde instantes.',
-            'auth/network-request-failed': 'Erro de conexão. Verifique sua internet.'
-        };
+        let message = 'Ocorreu um erro ao tentar entrar.';
+        
+        switch (error.code) {
+            case 'auth/invalid-credential':
+            case 'auth/user-not-found':
+            case 'auth/wrong-password':
+                message = 'E-mail ou senha incorretos.';
+                break;
+            case 'auth/too-many-requests':
+                message = 'O acesso a esta conta foi temporariamente desativado devido a muitas tentativas falhas de login. Tente novamente mais tarde.';
+                break;
+            case 'auth/network-request-failed':
+                message = 'Erro de conexão. Verifique sua internet.';
+                break;
+        }
 
-        const msg = errorMap[error.code] || 'Falha ao autenticar. Tente novamente.';
-        this.showModal(msg);
+        this.showErrorModal(message);
     }
 
-    showModal(msg) {
-        if (this.dom.modalMessage) this.dom.modalMessage.textContent = msg;
-        this.dom.errorModal?.showModal();
+    showErrorModal(message) {
+        if (this.dom.modalMessage) {
+            this.dom.modalMessage.textContent = message;
+        }
+        if (this.dom.errorModal) {
+            this.dom.errorModal.showModal();
+        } else {
+            alert(message); // Fallback caso o modal não exista
+        }
     }
 }
 
-// Inicialização Autônoma
+// Inicialização automática ao carregar o DOM
 document.addEventListener('DOMContentLoaded', () => {
-    new LoginController().init();
+    const controller = new LoginController();
+    controller.init();
 });
