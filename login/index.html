@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-    <meta name="description" content="Acesso seguro ao Alimentando Fases.">
+    <meta name="description" content="Acesse sua conta no Alimentando Fases. Gerencie sua dieta e acompanhe seu progresso.">
     <meta name="theme-color" content="#ffffff">
 
     <title>Entrar - Alimentando Fases</title>
@@ -11,18 +11,18 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     
-    <link rel="stylesheet" href="./css/global.css">
-    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./style.css">
     
-    <link rel="icon" type="image/png" href="../assets/favicon.png">
+    <link rel="icon" type="image/png" href="../Imagens/favicon.png">
 </head>
 <body>
     <main class="login-container" role="main">
         
         <header class="login-header">
             <img 
-                src="../assets/logo-af.png" 
+                src="../Imagens/logo-af.png" 
                 alt="Logo Alimentando Fases" 
+                class="brand-logo"
                 width="80" 
                 height="80"
                 loading="eager" 
@@ -42,7 +42,6 @@
                         placeholder="seu@email.com" 
                         autocomplete="username" 
                         required
-                        aria-required="true"
                     >
                 </div>
 
@@ -55,7 +54,6 @@
                         placeholder="Sua senha" 
                         autocomplete="current-password" 
                         required
-                        aria-required="true"
                     >
                 </div>
 
@@ -74,10 +72,11 @@
             <p class="signup-cta">
                 Não tem conta? <a href="./register.html" class="link-highlight">Cadastre-se agora</a>
             </p>
+            
             <nav class="legal-links">
-                <a href="../terms.html">Termos de Uso</a>
-                <span>&bull;</span>
-                <a href="../privacy.html">Política de Privacidade</a>
+                <a href="../termos/index.html">Termos de Uso</a>
+                <span aria-hidden="true">&bull;</span>
+                <a href="../privacidade/index.html">Política de Privacidade</a>
             </nav>
         </footer>
     </main>
@@ -87,12 +86,12 @@
             <div class="modal-icon error">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="8" x2="12" y2="12"></line>
-                    <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    <line x1="15" y1="9" x2="9" y2="15"></line>
+                    <line x1="9" y1="9" x2="15" y2="15"></line>
                 </svg>
             </div>
             <h2 class="modal-title">Atenção</h2>
-            <p id="modalDesc" class="modal-message">Erro na operação.</p>
+            <p id="modalDesc" class="modal-message">Ocorreu um erro na autenticação.</p>
             <button class="btn-secondary" onclick="document.getElementById('errorModal').close()">OK</button>
         </div>
     </dialog>
